@@ -1,53 +1,32 @@
-import { NumberResult } from "../result/NumberResult";
-import { NumberSchema } from "../schema/NumberSchema";
+import { ObjectResult } from "../result/ObjectResult";
+import { ObjectSchema } from "../schema/ObjectSchema";
 import { FieldPath, fieldPathStr } from "../utils/FieldPath";
-import { isNil, isString, isNumber } from "../utils/is";
+import { isNil } from "../utils/is";
+import { validate } from "./validate";
 
-export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPath): NumberResult => {
+export const validateObject = <T>(o: T, schema: ObjectSchema<T>, fieldPath: FieldPath): ObjectResult<T> => {
   //
   const path = fieldPathStr(fieldPath);
+
+  const result: ObjectResult<T> = {
+    isValid: true,
+    errorMessage: "",
+    properties: {} as any
+  };
 
   // isnil
   if (isNil(o)) {
     if (schema.required) {
-      return {
-        isValid: false,
-        errorMessage: `${path} is required.`
-      };
+      result.isValid = false;
+      result.errorMessage = `${path} is required.`;
     }
-    return {
-      isValid: true,
-      errorMessage: ""
-    };
   }
 
-  if (!isNumber(o)) {
-    return {
-      isValid: false,
-      errorMessage: `${path} should be a number.`
-    };
+  // for each key, validate
+  for (const key of Object.keys(schema.properties)) {
+    //@ts-ignore
+    result.properties[key] = validate(o ? o[key] : null, schema.properties[key], fieldPath.concat([key]));
   }
 
-  const numbr = o as number;
-
-  // min length
-  if (!isNil(schema.min) && numbr < schema.min) {
-    return {
-      isValid: false,
-      errorMessage: `${path} should not be less than ${schema.min}.`
-    };
-  }
-
-  // max length
-  if (!isNil(schema.max) && numbr > schema.max) {
-    return {
-      isValid: false,
-      errorMessage: `${path} should not be larger than ${schema.max}.`
-    };
-  }
-
-  return {
-    isValid: true,
-    errorMessage: ``
-  };
+  return result;
 };

@@ -1,0 +1,24 @@
+{
+  "name": "nutso",
+  "version": "1.0.0",
+  "description": "a typesafe validation library for typescript",
+  "main": "index.ts",
+  "private": false,
+  "scripts": {
+    "test": "npm test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/sowdri/nutso.git"
+  },
+  "keywords": [
+    "typescript",
+    "validation"
+  ],
+  "author": "sowdri@restoplus.com.au",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sowdri/nutso/issues"
+  },
+  "homepage": "https://github.com/sowdri/nutso#readme"
+}

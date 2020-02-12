@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/sowdri/nutso.svg?branch=master)]
+
 # nutso
 
 A typesafe validation library for typescript

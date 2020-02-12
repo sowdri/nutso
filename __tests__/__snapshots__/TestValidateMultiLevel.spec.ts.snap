@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test multi-level 1`] = `
+Object {
+  "errorMessage": "",
+  "isValid": true,
+  "properties": Object {
+    "name": Object {
+      "errorMessage": "name is required.",
+      "isValid": false,
+    },
+    "next": Object {
+      "errorMessage": "next is required.",
+      "isValid": false,
+      "properties": Object {
+        "name": Object {
+          "errorMessage": "next.name is required.",
+          "isValid": false,
+        },
+        "next": Object {
+          "errorMessage": "next.next is required.",
+          "isValid": false,
+          "properties": Object {
+            "name": Object {
+              "errorMessage": "next.next.name is required.",
+              "isValid": false,
+            },
+            "next": Object {
+              "errorMessage": "next.next.next is required.",
+              "isValid": false,
+              "properties": Object {
+                "name": Object {
+                  "errorMessage": "next.next.next.name is required.",
+                  "isValid": false,
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}
+`;

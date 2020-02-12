@@ -1,7 +1,8 @@
 module.exports = {
-  preset: 'ts-jest',
+  preset: "ts-jest",
   transform: {
-    '^.+\\.tsx?$': 'ts-jest'
+    "^.+\\.tsx?$": "ts-jest"
   },
-  snapshotSerializers: ['jest-html']
+  testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
+  snapshotSerializers: ["jest-html"]
 };

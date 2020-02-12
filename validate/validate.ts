@@ -8,8 +8,11 @@ import { BooleanSchema } from "../schema/BooleanSchema";
 import { validateBoolean } from "./validateBoolean";
 import { ObjectSchema } from "../schema/ObjectSchema";
 import { validateObject } from "./validateObject";
+import { FieldPath } from "../utils/FieldPath";
+import { validateArray } from "./validateArray";
+import { ArraySchema } from "../schema/ArraySchema";
 
-export const validate = <T>(o: T, schema: Schema<T>): Result<T> => {
+export const validate = <T>(o: T, schema: Schema<T>, fieldPath: FieldPath): Result<T> => {
   //
   if (!schema) throw new Error("Schema should not be null");
 
@@ -18,13 +21,15 @@ export const validate = <T>(o: T, schema: Schema<T>): Result<T> => {
    */
   switch (schema.type) {
     case "number":
-      return validateNumber(o, schema as NumberSchema, []) as Result<T>;
+      return validateNumber(o, schema as NumberSchema, fieldPath) as Result<T>;
     case "string":
-      return validateString(o, schema as StringSchema, []) as Result<T>;
+      return validateString(o, schema as StringSchema, fieldPath) as Result<T>;
     case "boolean":
-      return validateBoolean(o, schema as BooleanSchema, []) as Result<T>;
+      return validateBoolean(o, schema as BooleanSchema, fieldPath) as Result<T>;
+    case "array":
+      return validateArray(o as any, schema as ArraySchema<T>, fieldPath) as Result<T>;
     case "object":
-      return validateObject(o, schema as ObjectSchema<T>, []) as Result<T>;
+      return validateObject(o, schema as ObjectSchema<T>, fieldPath) as Result<T>;
 
     //   return vr;
     // case "date":

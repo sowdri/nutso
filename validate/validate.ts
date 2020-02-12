@@ -35,18 +35,6 @@ export const validate = <T>(o: T, schema: Schema<T>, fieldPath: FieldPath): Resu
     // case "date":
     //   validateDate(o, schema, path, vr);
     //   return vr;
-    // case "number":
-    //   validateNumber(o, schema, path, vr);
-    //   return vr;
-    // case "boolean":
-    //   validateBoolean(o, schema, path, vr);
-    //   return vr;
-    // case "array":
-    //   validateArray(o, schema, path, vr);
-    //   return vr;
-    // case "map":
-    //   validateMap(o, schema, path, vr);
-    //   return vr;
   }
   return null as any;
 };

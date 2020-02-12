@@ -24,3 +24,11 @@ There are 2 mandatory information for each field:
 ```
 
 Note: Even if the field is marked as an optional field in the interface, the type information is lost at runtime, so from the point of view of validation, the user has to still say if it's required or optional.
+
+# Result
+
+The result returned by `nutso` is also typesafe, meaning you will be able to access the validation result and the `errorMessage` in a type-safe way.
+
+```
+TODO
+```

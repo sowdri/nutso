@@ -1,1 +1,3 @@
-export type DateSchema = {};
+import { BaseSchema } from "./BaseSchema";
+
+export type DateSchema = BaseSchema & {};

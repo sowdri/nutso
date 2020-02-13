@@ -21,11 +21,21 @@ export const validateObject = <T>(o: T, schema: ObjectSchema<T>, fieldPath: Fiel
       result.errorMessage = `Required field.`;
     }
   }
+  const fields = Object.keys(schema.properties);
 
   // for each key, validate
-  for (const key of Object.keys(schema.properties)) {
+  for (const field of fields) {
     //@ts-ignore
-    result.properties[key] = validate(o ? o[key] : null, schema.properties[key], fieldPath.concat([key]));
+    result.properties[field] = validate(o ? o[field] : null, schema.properties[field], fieldPath.concat([field]));
+  }
+
+  // object is invalid if any of it's properties are invalid
+  for (const field of fields) {
+    //@ts-ignore
+    if (!result.properties[field].isValid) {
+      result.isValid = false;
+      break;
+    }
   }
 
   return result;

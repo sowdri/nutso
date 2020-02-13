@@ -6,6 +6,7 @@
   "private": false,
   "scripts": {
     "test": "jest",
+    "release": "npm-github-release",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -28,6 +29,7 @@
     "jest": "25.1.0",
     "jest-html": "1.5.0",
     "ts-jest": "^25.2.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "npm-github-release": "0.12.0"
   }
 }

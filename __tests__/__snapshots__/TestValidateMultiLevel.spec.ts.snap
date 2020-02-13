@@ -4,7 +4,7 @@ exports[`Test multi-level 1`] = `
 Object {
   "errorMessage": "",
   "fieldPath": Array [],
-  "isValid": true,
+  "isValid": false,
   "properties": Object {
     "name": Object {
       "errorMessage": "Required field.",

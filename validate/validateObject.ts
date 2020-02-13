@@ -1,6 +1,6 @@
 import { ObjectResult } from "../result/ObjectResult";
 import { ObjectSchema } from "../schema/ObjectSchema";
-import { FieldPath } from "../utils/FieldPath";
+import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/is";
 import { validate } from "./validate";
 

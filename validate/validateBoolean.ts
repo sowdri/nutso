@@ -1,6 +1,6 @@
 import { BooleanResult } from "../result/BooleanResult";
 import { BooleanSchema } from "../schema/BooleanSchema";
-import { FieldPath } from "../utils/FieldPath";
+import { FieldPath } from "../models/FieldPath";
 import { isBoolean, isNil } from "../utils/is";
 
 export const validateBoolean = (o: any, schema: BooleanSchema, fieldPath: FieldPath): BooleanResult => {

@@ -1,3 +1,5 @@
-export const nutso = () => {
-  console.log(`Hello from nutso 🤮`);
+import { validate } from "./validate/validate";
+
+export const nutso = {
+  validate
 };

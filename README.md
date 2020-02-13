@@ -19,11 +19,12 @@ A typesafe validation library for typescript
 
 The idea behind this library is to create a schema from a typescript type. The schema should reflect the structure of the type and should be in sync with it. If the type changes the schema should be updated to reflect it.
 
-Writing the `Schema` is super simple and there is just one 1 mandatory information for each field:
+- Writing the `Schema` is super simple and there is just one 1 mandatory `type` information for each field.
+- By default each field in the schema is `required`, if you want to make a field optional, then use the `optional: true` flag to mark it as optional.
 
-```
+```typescript
 {
-  type: 'number' | 'string' | 'date' | 'boolean' | 'array' | 'object'
+  type: "number" | "string" | "date" | "boolean" | "array" | "object";
 }
 ```
 
@@ -80,4 +81,52 @@ const customer: Customer = {
 };
 
 const result: Result<Customer> = validate(customer, customerSchema);
+console.log(JSON.stringify(result, null, 2));
 ```
+
+The above validation will produce the following output:
+
+```json
+{
+  "isValid": true,
+  "errorMessage": "",
+  "properties": {
+    "name": {
+      "isValid": true,
+      "errorMessage": "",
+      "fieldPath": ["name"]
+    },
+    "dob": {
+      "isValid": true,
+      "errorMessage": "",
+      "fieldPath": ["dob"]
+    },
+    "height": {
+      "isValid": true,
+      "errorMessage": "",
+      "fieldPath": ["height"]
+    }
+  },
+  "fieldPath": []
+}
+```
+
+The beauty of the `Result<T>` is the fact that it's typesafe as well.
+
+So you could access the validation result using the following notation:
+
+```typescript
+const result: Result<Customer> = validate(customer, customerSchema);
+
+result.isValid;
+result.properties.name.isValid;
+result.properties.age.isValid;
+result.properties.height.errorMessage;
+```
+
+# Applications
+
+- Nutso can be used in the UI for form validation and the error messages could be displayed to the users using static typesafe access to the error message.
+- Can aso be used on the server to validate incoming objects against the schema.
+
+> You can defind the schema along side your models and use it both on the client and server.

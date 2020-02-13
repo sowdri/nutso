@@ -1,5 +1,3 @@
-import { validate } from "./validate/validate";
-
-export const nutso = {
-  validate
-};
+export * from "./validate/validate";
+export * from "./schema/Schema";
+export * from "./result/Result";

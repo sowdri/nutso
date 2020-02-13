@@ -1,6 +1,6 @@
 import { DateResult } from "../result/DateResult";
 import { DateSchema } from "../schema/DateSchema";
-import { FieldPath } from "../utils/FieldPath";
+import { FieldPath } from "../models/FieldPath";
 import { isDate, isNil } from "../utils/is";
 
 export const validateDate = (o: any, schema: DateSchema, fieldPath: FieldPath): DateResult => {

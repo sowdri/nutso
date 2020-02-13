@@ -8,7 +8,7 @@ import { BooleanSchema } from "../schema/BooleanSchema";
 import { validateBoolean } from "./validateBoolean";
 import { ObjectSchema } from "../schema/ObjectSchema";
 import { validateObject } from "./validateObject";
-import { FieldPath } from "../utils/FieldPath";
+import { FieldPath } from "../models/FieldPath";
 import { validateArray } from "./validateArray";
 import { ArraySchema } from "../schema/ArraySchema";
 

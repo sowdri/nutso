@@ -12,7 +12,7 @@ import { FieldPath } from "../models/FieldPath";
 import { validateArray } from "./validateArray";
 import { ArraySchema } from "../schema/ArraySchema";
 
-export const validate = <T>(o: T, schema: Schema<T>, fieldPath: FieldPath): Result<T> => {
+export const validate = <T>(o: T, schema: Schema<T>, fieldPath: FieldPath = []): Result<T> => {
   //
   if (!schema) throw new Error("Schema should not be null");
 

@@ -6,8 +6,7 @@ module.exports = {
   devtool: "source-map",
   output: {
     path: path.join(__dirname, "lib"),
-    filename: "index.js",
-    library: "nutso"
+    filename: "index.js"
   },
   resolve: {
     extensions: [".ts"]

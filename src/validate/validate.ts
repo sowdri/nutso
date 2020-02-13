@@ -11,10 +11,14 @@ import { validateObject } from "./validateObject";
 import { FieldPath } from "../models/FieldPath";
 import { validateArray } from "./validateArray";
 import { ArraySchema } from "../schema/ArraySchema";
+import { validateDate } from "./validateDate";
+import { DateSchema } from "../schema/DateSchema";
 
 export const validate = <T>(o: T, schema: Schema<T>, fieldPath: FieldPath = []): Result<T> => {
   //
-  if (!schema) throw new Error("Schema should not be null");
+  if (!schema) {
+    throw new Error("Schema should not be null");
+  }
 
   /**
    * validate object against the schema
@@ -30,11 +34,8 @@ export const validate = <T>(o: T, schema: Schema<T>, fieldPath: FieldPath = []):
       return validateArray(o as any, schema as ArraySchema<T>, fieldPath) as Result<T>;
     case "object":
       return validateObject(o, schema as ObjectSchema<T>, fieldPath) as Result<T>;
-
-    //   return vr;
-    // case "date":
-    //   validateDate(o, schema, path, vr);
-    //   return vr;
+    case "date":
+      return validateDate(o, schema as DateSchema, fieldPath) as Result<T>;
   }
-  return null as any;
+  throw new Error(`Unhandled data type`);
 };

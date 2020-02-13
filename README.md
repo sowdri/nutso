@@ -17,14 +17,13 @@ A typesafe validation library for typescript
 
 # Concept
 
-The idea behind this library is to create a schema from a typescript type. The schema should reflect the structure of the type and should be in sync with it. If the type changes the schema should be updated to reflect it. So every field in the parent type will have an entry in the schema.
+The idea behind this library is to create a schema from a typescript type. The schema should reflect the structure of the type and should be in sync with it. If the type changes the schema should be updated to reflect it.
 
-There are 2 mandatory information for each field:
+Writing the `Schema` is super simple and there is just one 1 mandatory information for each field:
 
 ```
 {
-  type: 'number' | 'string' | 'date' | 'boolean' | 'array' | 'object',
-  required: boolean
+  type: 'number' | 'string' | 'date' | 'boolean' | 'array' | 'object'
 }
 ```
 

@@ -1,9 +1,9 @@
-import { BooleanResult } from "../result/BooleanResult";
-import { BooleanSchema } from "../schema/BooleanSchema";
+import { DateResult } from "../result/DateResult";
+import { DateSchema } from "../schema/DateSchema";
 import { FieldPath } from "../utils/FieldPath";
-import { isBoolean, isNil } from "../utils/is";
+import { isDate, isNil } from "../utils/is";
 
-export const validateBoolean = (o: any, schema: BooleanSchema, fieldPath: FieldPath): BooleanResult => {
+export const validateDate = (o: any, schema: DateSchema, fieldPath: FieldPath): DateResult => {
   //
 
   // isnil
@@ -22,10 +22,10 @@ export const validateBoolean = (o: any, schema: BooleanSchema, fieldPath: FieldP
     };
   }
 
-  if (!isBoolean(o)) {
+  if (!isDate(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be true or false.`,
+      errorMessage: `Should be a valid date.`,
       fieldPath
     };
   }

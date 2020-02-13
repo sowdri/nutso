@@ -2,10 +2,11 @@
   "name": "nutso",
   "version": "1.12.0",
   "description": "a typesafe validation library for typescript",
-  "main": "index.ts",
+  "main": "lib/index.js",
   "private": false,
   "scripts": {
     "test": "jest",
+    "build": "webpack",
     "release": "npm-github-release",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
@@ -30,6 +31,9 @@
     "jest-html": "1.5.0",
     "npm-github-release": "0.12.0",
     "ts-jest": "^25.2.0",
-    "typescript": "^3.7.5"
+    "typescript": "^3.7.5",
+    "webpack": "4.41.6",
+    "webpack-cli": "3.3.11",
+    "ts-loader": "6.2.1"
   }
 }

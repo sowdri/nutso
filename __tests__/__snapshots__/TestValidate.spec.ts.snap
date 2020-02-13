@@ -3,20 +3,31 @@
 exports[`Test customer schema 1`] = `
 Object {
   "errorMessage": "",
+  "fieldPath": Array [],
   "isValid": true,
   "properties": Object {
     "address": Object {
       "errorMessage": "",
+      "fieldPath": Array [
+        "address",
+      ],
       "isValid": true,
       "properties": Object {
         "line1": Object {
           "errorMessage": "",
+          "fieldPath": Array [
+            "address",
+            "line1",
+          ],
           "isValid": true,
         },
       },
     },
     "name": Object {
       "errorMessage": "",
+      "fieldPath": Array [
+        "name",
+      ],
       "isValid": true,
     },
   },

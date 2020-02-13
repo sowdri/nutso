@@ -3,34 +3,65 @@
 exports[`Test multi-level 1`] = `
 Object {
   "errorMessage": "",
+  "fieldPath": Array [],
   "isValid": true,
   "properties": Object {
     "name": Object {
-      "errorMessage": "name is required.",
+      "errorMessage": "Required field.",
+      "fieldPath": Array [
+        "name",
+      ],
       "isValid": false,
     },
     "next": Object {
-      "errorMessage": "next is required.",
+      "errorMessage": "Required field.",
+      "fieldPath": Array [
+        "next",
+      ],
       "isValid": false,
       "properties": Object {
         "name": Object {
-          "errorMessage": "next.name is required.",
+          "errorMessage": "Required field.",
+          "fieldPath": Array [
+            "next",
+            "name",
+          ],
           "isValid": false,
         },
         "next": Object {
-          "errorMessage": "next.next is required.",
+          "errorMessage": "Required field.",
+          "fieldPath": Array [
+            "next",
+            "next",
+          ],
           "isValid": false,
           "properties": Object {
             "name": Object {
-              "errorMessage": "next.next.name is required.",
+              "errorMessage": "Required field.",
+              "fieldPath": Array [
+                "next",
+                "next",
+                "name",
+              ],
               "isValid": false,
             },
             "next": Object {
-              "errorMessage": "next.next.next is required.",
+              "errorMessage": "Required field.",
+              "fieldPath": Array [
+                "next",
+                "next",
+                "next",
+              ],
               "isValid": false,
               "properties": Object {
                 "name": Object {
-                  "errorMessage": "next.next.next.name is required.",
+                  "errorMessage": "Required field.",
+                  "fieldPath": Array [
+                    "next",
+                    "next",
+                    "next",
+                    "name",
+                  ],
                   "isValid": false,
                 },
               },

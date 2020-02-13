@@ -2,15 +2,22 @@
 
 exports[`Test simple array 1`] = `
 Object {
-  "errorMessage": "Object should have at least 3 items.",
+  "errorMessage": "Should have at least 3 items.",
+  "fieldPath": Array [],
   "isValid": false,
   "items": Array [
     Object {
       "errorMessage": "",
+      "fieldPath": Array [
+        0,
+      ],
       "isValid": true,
     },
     Object {
       "errorMessage": "",
+      "fieldPath": Array [
+        1,
+      ],
       "isValid": true,
     },
   ],
@@ -19,15 +26,22 @@ Object {
 
 exports[`Test simple array values 1`] = `
 Object {
-  "errorMessage": "Object should have at least 3 items.",
+  "errorMessage": "Should have at least 3 items.",
+  "fieldPath": Array [],
   "isValid": false,
   "items": Array [
     Object {
-      "errorMessage": "0 should be at least 5 characters.",
+      "errorMessage": "Should be at least 5 characters.",
+      "fieldPath": Array [
+        0,
+      ],
       "isValid": false,
     },
     Object {
       "errorMessage": "",
+      "fieldPath": Array [
+        1,
+      ],
       "isValid": true,
     },
   ],

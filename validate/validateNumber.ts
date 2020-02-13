@@ -1,30 +1,32 @@
 import { NumberResult } from "../result/NumberResult";
 import { NumberSchema } from "../schema/NumberSchema";
-import { FieldPath, fieldPathStr } from "../utils/FieldPath";
-import { isNil, isString, isNumber } from "../utils/is";
+import { FieldPath } from "../utils/FieldPath";
+import { isNil, isNumber } from "../utils/is";
 
 export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPath): NumberResult => {
   //
-  const path = fieldPathStr(fieldPath);
 
   // isnil
   if (isNil(o)) {
     if (schema.required) {
       return {
         isValid: false,
-        errorMessage: `${path} is required.`
+        errorMessage: `Required field.`,
+        fieldPath
       };
     }
     return {
       isValid: true,
-      errorMessage: ""
+      errorMessage: "",
+      fieldPath
     };
   }
 
   if (!isNumber(o)) {
     return {
       isValid: false,
-      errorMessage: `${path} should be a number.`
+      errorMessage: `Should be a number.`,
+      fieldPath
     };
   }
 
@@ -34,7 +36,8 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
   if (!isNil(schema.min) && numbr < schema.min) {
     return {
       isValid: false,
-      errorMessage: `${path} should not be less than ${schema.min}.`
+      errorMessage: `Should not be less than ${schema.min}.`,
+      fieldPath
     };
   }
 
@@ -42,12 +45,14 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
   if (!isNil(schema.max) && numbr > schema.max) {
     return {
       isValid: false,
-      errorMessage: `${path} should not be larger than ${schema.max}.`
+      errorMessage: `Should not be larger than ${schema.max}.`,
+      fieldPath
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``
+    errorMessage: ``,
+    fieldPath
   };
 };

@@ -20,43 +20,35 @@ interface Level4 {
 test(`Test multi-level`, () => {
   const levelSchema: Schema<Level1> = {
     type: "object",
-    required: true,
     properties: {
       name: {
         type: "string",
         minLength: 3,
-        maxLength: 24,
-        required: true
+        maxLength: 24
       },
       next: {
         type: "object",
-        required: true,
         properties: {
           name: {
             type: "string",
             minLength: 3,
-            maxLength: 24,
-            required: true
+            maxLength: 24
           },
           next: {
             type: "object",
-            required: true,
             properties: {
               name: {
                 type: "string",
                 minLength: 3,
-                maxLength: 24,
-                required: true
+                maxLength: 24
               },
               next: {
                 type: "object",
-                required: true,
                 properties: {
                   name: {
                     type: "string",
                     minLength: 3,
-                    maxLength: 24,
-                    required: true
+                    maxLength: 24
                   }
                 }
               }

@@ -8,7 +8,7 @@ export const validateDate = (o: any, schema: DateSchema, fieldPath: FieldPath): 
 
   // isnil
   if (isNil(o)) {
-    if (schema.required) {
+    if (!schema.optional) {
       return {
         isValid: false,
         errorMessage: `Required field.`,

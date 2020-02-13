@@ -16,7 +16,7 @@ export const validateObject = <T>(o: T, schema: ObjectSchema<T>, fieldPath: Fiel
 
   // isnil
   if (isNil(o)) {
-    if (schema.required) {
+    if (!schema.optional) {
       result.isValid = false;
       result.errorMessage = `Required field.`;
     }

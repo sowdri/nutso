@@ -1,3 +1,3 @@
 export type BaseSchema = {
-  required: boolean;
+  optional?: boolean;
 };

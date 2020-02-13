@@ -9,7 +9,7 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
 
   // isnil
   if (isNil(arr)) {
-    if (schema.required) {
+    if (!schema.optional) {
       return {
         isValid: false,
         errorMessage: `Required field.`,

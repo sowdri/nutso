@@ -20,63 +20,59 @@ interface Address {
 
 export const customerSchema1: Schema<Customer> = {
   type: "object",
-  required: false,
+  optional: false,
   properties: {
     name: {
       type: "string",
       minLength: 3,
-      maxLength: 24,
-      required: true
+      maxLength: 24
     },
     sex: {
       type: "string",
-      required: true,
+
       regex: /male|female/
     },
     dob: {
       type: "date",
-      required: false
+      optional: false
     },
     age: {
       type: "number",
       min: 0,
-      max: 100,
-      required: true
+      max: 100
     },
     favouriteColors: {
       type: "array",
       minItems: 1,
       maxItems: 4,
-      required: false,
+      optional: false,
       item: {
         type: "string",
-        regex: /(blue)|(green)/,
-        required: true
+        regex: /(blue)|(green)/
       }
     },
     address: {
       type: "object",
-      required: false,
+      optional: false,
       properties: {
         line1: {
           type: "string",
-          required: false
+          optional: false
         },
         city: {
           type: "string",
-          required: false
+          optional: false
         },
         state: {
           type: "string",
-          required: false
+          optional: false
         },
         country: {
-          type: "string",
-          required: true
+          type: "string"
         },
         postcode: {
           type: "number",
-          required: true,
+
           min: 4999,
           max: 6000
         }
@@ -86,28 +82,27 @@ export const customerSchema1: Schema<Customer> = {
 };
 
 export const addressSchema1: Schema<Address> = {
-  required: false,
+  optional: false,
   type: "object",
   properties: {
     line1: {
       type: "string",
-      required: false
+      optional: false
     },
     city: {
       type: "string",
-      required: false
+      optional: false
     },
     state: {
       type: "string",
-      required: false
+      optional: false
     },
     country: {
-      type: "string",
-      required: true
+      type: "string"
     },
     postcode: {
       type: "number",
-      required: true,
+
       min: 4999,
       max: 6000
     }
@@ -116,38 +111,35 @@ export const addressSchema1: Schema<Address> = {
 
 export const customerSchema2: Schema<Customer> = {
   type: "object",
-  required: false,
+  optional: false,
   properties: {
     name: {
       type: "string",
       minLength: 3,
-      maxLength: 24,
-      required: true
+      maxLength: 24
     },
     sex: {
       type: "string",
-      required: true,
+
       regex: /male|female/
     },
     dob: {
       type: "date",
-      required: false
+      optional: false
     },
     age: {
       type: "number",
       min: 0,
-      max: 100,
-      required: true
+      max: 100
     },
     favouriteColors: {
       type: "array",
       minItems: 1,
       maxItems: 4,
-      required: false,
+      optional: false,
       item: {
         type: "string",
-        regex: /(blue)|(green)/,
-        required: true
+        regex: /(blue)|(green)/
       }
     },
     address: addressSchema1

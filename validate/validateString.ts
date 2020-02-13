@@ -8,7 +8,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
 
   // isnil
   if (isNil(o)) {
-    if (schema.required) {
+    if (!schema.optional) {
       return {
         isValid: false,
         errorMessage: `Required field.`,

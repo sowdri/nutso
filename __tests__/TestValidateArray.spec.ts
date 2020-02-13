@@ -6,11 +6,9 @@ test(`Test simple array`, () => {
   const favColors: Colors = ["blue", "green"];
   const colorsSchema: Schema<Colors> = {
     type: "array",
-    required: true,
     minItems: 3,
     maxItems: 10,
     item: {
-      required: true,
       type: "string"
     }
   };
@@ -22,11 +20,10 @@ test(`Test simple array values`, () => {
   const favColors: Colors = ["blue", "green"];
   const colorsSchema: Schema<Colors> = {
     type: "array",
-    required: true,
+
     minItems: 3,
     maxItems: 10,
     item: {
-      required: true,
       type: "string",
       minLength: 5 // blue will fail
     }

@@ -12,21 +12,18 @@ interface Address {
 test(`Test customer schema`, () => {
   const customerSchema: Schema<Customer> = {
     type: "object",
-    required: false,
+    optional: false,
     properties: {
       name: {
         type: "string",
         minLength: 3,
-        maxLength: 24,
-        required: true
+        maxLength: 24
       },
       address: {
         type: "object",
-        required: false,
         properties: {
           line1: {
-            type: "string",
-            required: true
+            type: "string"
           }
         }
       }

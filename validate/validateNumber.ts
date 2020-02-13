@@ -8,7 +8,7 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
 
   // isnil
   if (isNil(o)) {
-    if (schema.required) {
+    if (!schema.optional) {
       return {
         isValid: false,
         errorMessage: `Required field.`,

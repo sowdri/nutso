@@ -2,8 +2,8 @@
   "name": "nutso",
   "version": "1.23.0",
   "description": "a typesafe validation library for typescript",
-  "module": "lib/index.js",
-  "types": "lib/src/index.d.ts",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "private": false,
   "scripts": {
     "test": "jest",

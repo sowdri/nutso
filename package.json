@@ -1,6 +1,6 @@
 {
   "name": "nutso",
-  "version": "1.24.0",
+  "version": "1.25.0",
   "description": "a typesafe validation library for typescript",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",

@@ -3,6 +3,7 @@
   "version": "1.13.0",
   "description": "a typesafe validation library for typescript",
   "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "private": false,
   "scripts": {
     "test": "jest",

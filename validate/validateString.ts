@@ -1,7 +1,7 @@
 import { StringResult } from "../result/StringResult";
 import { StringSchema } from "../schema/StringSchema";
 import { FieldPath } from "../models/FieldPath";
-import { isNil, isString } from "../utils/is";
+import { isNil, isString } from "../utils/typeChecker";
 
 export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPath): StringResult => {
   //

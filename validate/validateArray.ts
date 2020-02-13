@@ -1,7 +1,7 @@
 import { ArrayResult } from "../result/ArrayResult";
 import { ArraySchema } from "../schema/ArraySchema";
 import { FieldPath } from "../models/FieldPath";
-import { isNil } from "../utils/is";
+import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";
 
 export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: FieldPath): ArrayResult<T> => {

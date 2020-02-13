@@ -1,4 +1,4 @@
-import { isString, isNumber, isNil, isDate, isBoolean, isArray } from "../utils/is";
+import { isString, isNumber, isNil, isDate, isBoolean, isArray } from "../utils/typeChecker";
 
 test(`Test isNil`, () => {
   expect(isNil(undefined)).toBe(true);

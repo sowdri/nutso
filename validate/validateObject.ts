@@ -1,7 +1,7 @@
 import { ObjectResult } from "../result/ObjectResult";
 import { ObjectSchema } from "../schema/ObjectSchema";
 import { FieldPath } from "../models/FieldPath";
-import { isNil } from "../utils/is";
+import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";
 
 export const validateObject = <T>(o: T, schema: ObjectSchema<T>, fieldPath: FieldPath): ObjectResult<T> => {

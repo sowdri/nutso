@@ -8,7 +8,7 @@ test(`Test simple array`, () => {
     type: "array",
     minItems: 3,
     maxItems: 10,
-    item: {
+    items: {
       type: "string"
     }
   };
@@ -23,7 +23,7 @@ test(`Test simple array values`, () => {
 
     minItems: 3,
     maxItems: 10,
-    item: {
+    items: {
       type: "string",
       minLength: 5 // blue will fail
     }

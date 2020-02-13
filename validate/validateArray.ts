@@ -46,7 +46,7 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = validate(arr[i], schema.item, fieldPath.concat([i]));
+    result.items[i] = validate(arr[i], schema.items, fieldPath.concat([i]));
   }
 
   return result;

@@ -46,7 +46,7 @@ export const customerSchema1: Schema<Customer> = {
       minItems: 1,
       maxItems: 4,
       optional: false,
-      item: {
+      items: {
         type: "string",
         regex: /(blue)|(green)/
       }
@@ -137,7 +137,7 @@ export const customerSchema2: Schema<Customer> = {
       minItems: 1,
       maxItems: 4,
       optional: false,
-      item: {
+      items: {
         type: "string",
         regex: /(blue)|(green)/
       }

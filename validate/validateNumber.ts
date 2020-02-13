@@ -1,7 +1,7 @@
 import { NumberResult } from "../result/NumberResult";
 import { NumberSchema } from "../schema/NumberSchema";
 import { FieldPath } from "../models/FieldPath";
-import { isNil, isNumber } from "../utils/is";
+import { isNil, isNumber } from "../utils/typeChecker";
 
 export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPath): NumberResult => {
   //

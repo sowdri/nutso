@@ -5,5 +5,5 @@ export type ArraySchema<T> = BaseSchema & {
   type: "array";
   minItems: number;
   maxItems: number;
-  item: Schema<T>;
+  items: Schema<T>;
 };

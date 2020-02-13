@@ -12,9 +12,10 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "isolatedModules": true,
-    "noEmit": true,
     "jsx": "react",
-    "rootDir": "."
+    "rootDir": ".",
+    "declaration": true,
+    "outDir": "lib"
   },
   "exclude": ["node_modules", "build"]
 }

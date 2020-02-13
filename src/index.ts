@@ -2,6 +2,10 @@
 // export * from "./schema/Schema";
 // export * from "./result/Result";
 
+export default {
+  foo: "bar"
+};
+
 export function validate() {
   console.log("hello from nutso 🦸🏼‍♂️");
 }

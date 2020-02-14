@@ -1,6 +1,6 @@
 import { Result } from "./Result";
-import { BaseResult } from "./BaseResult";
+import { ValidationResult } from "./BaseResult";
 
-export type ArrayResult<T> = BaseResult & {
+export type ArrayResult<T> = ValidationResult & {
   items: Result<T>[];
 };

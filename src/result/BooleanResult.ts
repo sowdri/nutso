@@ -1,3 +1,3 @@
-import { BaseResult } from "./BaseResult";
+import { ValidationResult } from "./BaseResult";
 
-export type BooleanResult = BaseResult & {};
+export type BooleanResult = ValidationResult & {};

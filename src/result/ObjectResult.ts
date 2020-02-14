@@ -1,5 +1,5 @@
 import { Result } from "./Result";
-import { ValidationResult } from "./BaseResult";
+import { ValidationResult } from "./ValidationResult";
 
 export type ObjectResult<T> = ValidationResult & {
   properties: {

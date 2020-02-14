@@ -1,3 +1,3 @@
-import { BaseResult } from "./BaseResult";
+import { ValidationResult } from "./BaseResult";
 
-export type TupleSchema<T> = BaseResult & {};
+export type TupleSchema<T> = ValidationResult & {};

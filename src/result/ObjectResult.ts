@@ -1,7 +1,7 @@
 import { Result } from "./Result";
-import { BaseResult } from "./BaseResult";
+import { ValidationResult } from "./BaseResult";
 
-export type ObjectResult<T> = BaseResult & {
+export type ObjectResult<T> = ValidationResult & {
   properties: {
     [P in keyof T]: Result<T[P]>;
   };

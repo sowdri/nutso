@@ -1,6 +1,6 @@
 import { FieldPath } from "../models/FieldPath";
 
-export type BaseResult = {
+export type ValidationResult = {
   isValid: boolean;
   errorMessage: string;
   fieldPath: FieldPath;

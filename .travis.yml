@@ -1,17 +1,17 @@
 sudo: false
 language: node_js
 node_js:
-- '10'
+  - "10"
 branches:
   only:
-  - master
+    - master
 cache:
   directories:
-  - node_modules
+    - node_modules
 install:
-- yarn install
+  - yarn install
 script:
-- yarn test
+  - yarn test
 deploy:
   provider: npm
   email: sowdri@gmail.com

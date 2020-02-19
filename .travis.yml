@@ -1,14 +1,21 @@
 sudo: false
 language: node_js
 node_js:
-  - "10"
+- '10'
 branches:
   only:
-    - master
+  - master
 cache:
   directories:
-    - node_modules
+  - node_modules
 install:
-  - yarn install
+- yarn install
 script:
-  - yarn test
+- yarn test
+deploy:
+  provider: npm
+  email: sowdri@gmail.com
+  api_key:
+    secure: Ahx+zF7fKE1QiQA8cG6By2V0sjIq+saecsXoJz7j6sOR4dCRhGwZ65WWPMeqXDQxLCrEA/tyzIm+IV56T9wZx0yNB3dwjAGiSmfv+SuFu3Mhw2fQqa+oZGa6XcjAX5rtekSs2dGoVbfj4443W1DMxjPohBciHiPs5cpOn+0AJOtyv3BwDR3JyhoGFzaNsFDiwMkcC3BGyCC1qPdEsGUxf35a0VmbLEcS+zRKydm2iv3gRVTH3g3lkmDKvnaSNbKVhkGrbw/ra+iN3vb1sIR539AoSjOzDa064bWNnPTpQ0B1hcs59w3bR/fapBbsQqjP+wSsNMpY9bXUYLcMdI5/b9KK7Wp4iEBiwEfe9jhgkIU9aAKzSYvkfRUbLoeHwowUMo+zfmxdtMBSveUHrktN/h8Nt/5AKxoZoVYebIMAdFmliAPCLw5SeY5FONlloe1corGFA/T7D7DkIpCvCOxmsMZh5kq+ZbjTrjo6dZebtpUv0cI92SGG6G7yuuCBXgql/28g0cUn0QjcFD6TfIJK/1i8m5rcCZGvg6jRT+kb+//j85xBY1ZPCo9zeOvRk8MoDIG91lItbye5lQZsYz6OKEa8mOrn2uJjzEvwWnwuQWzhKO0iiYdbRVswat2JELR5Kp5JHiqGcuYTV2czlnsUAifJ5NOltWlk7IZeoVY8ekE=
+  on:
+    repo: sowdri/nutso

@@ -7,8 +7,7 @@
   "private": false,
   "scripts": {
     "test": "jest",
-    "build": "webpack",
-    "release": "npm-github-release",
+    "build": "tsc",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "repository": {

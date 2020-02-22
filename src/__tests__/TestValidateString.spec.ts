@@ -39,3 +39,18 @@ test(`Basic - invalid max-length`, () => {
   const result2 = validate(str, schema);
   expect(result2.isValid).toBe(false);
 });
+
+test(`Regex match`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    regex: /5\d{3}/
+  };
+  const valid = "5085";
+  const invalid = "508";
+
+  const result1 = validateString(valid, schema, []);
+  expect(result1.isValid).toBe(true);
+
+  const result2 = validate(invalid, schema);
+  expect(result2.isValid).toBe(false);
+});

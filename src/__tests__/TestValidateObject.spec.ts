@@ -2,9 +2,9 @@ import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { validateObject } from "../validate/validateObject";
 import { validate } from "../validate/validate";
 
-interface Customer {
+type Customer = {
   name: "";
-}
+};
 
 test(`Basic`, () => {
   const obj: Customer = { name: "" };

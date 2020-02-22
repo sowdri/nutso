@@ -33,7 +33,7 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
   const numbr = o as number;
 
   // min length
-  if (!isNil(schema.min) && numbr < schema.min) {
+  if (!isNil(schema.min) && numbr < schema.min!) {
     return {
       isValid: false,
       errorMessage: `Should not be less than ${schema.min}.`,
@@ -42,7 +42,7 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
   }
 
   // max length
-  if (!isNil(schema.max) && numbr > schema.max) {
+  if (!isNil(schema.max) && numbr > schema.max!) {
     return {
       isValid: false,
       errorMessage: `Should not be larger than ${schema.max}.`,

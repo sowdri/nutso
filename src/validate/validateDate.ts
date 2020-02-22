@@ -1,5 +1,5 @@
-import { DateResult } from "../result/DateResult";
-import { DateSchema } from "../schema/DateSchema";
+import { DateResult } from "../models/result/DateResult";
+import { DateSchema } from "../models/schema/DateSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isDate, isNil } from "../utils/typeChecker";
 

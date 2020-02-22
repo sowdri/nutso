@@ -1,5 +1,5 @@
-import { BooleanResult } from "../result/BooleanResult";
-import { BooleanSchema } from "../schema/BooleanSchema";
+import { BooleanResult } from "../models/result/BooleanResult";
+import { BooleanSchema } from "../models/schema/BooleanSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isBoolean, isNil } from "../utils/typeChecker";
 

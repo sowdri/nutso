@@ -1,5 +1,5 @@
-import { StringResult } from "../result/StringResult";
-import { StringSchema } from "../schema/StringSchema";
+import { StringResult } from "../models/result/StringResult";
+import { StringSchema } from "../models/schema/StringSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isString } from "../utils/typeChecker";
 

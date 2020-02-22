@@ -1,5 +1,5 @@
-import { ArrayResult } from "../result/ArrayResult";
-import { ArraySchema } from "../schema/ArraySchema";
+import { ArrayResult } from "../models/result/ArrayResult";
+import { ArraySchema } from "../models/schema/ArraySchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";

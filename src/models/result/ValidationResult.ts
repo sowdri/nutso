@@ -1,4 +1,4 @@
-import { FieldPath } from "../models/FieldPath";
+import { FieldPath } from "../FieldPath";
 
 export type ValidationResult = {
   isValid: boolean;

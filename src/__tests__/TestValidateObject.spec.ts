@@ -1,4 +1,4 @@
-import { ObjectSchema } from "../schema/ObjectSchema";
+import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { validateObject } from "../validate/validateObject";
 import { validate } from "../validate/validate";
 

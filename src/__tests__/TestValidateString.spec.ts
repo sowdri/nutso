@@ -1,4 +1,4 @@
-import { StringSchema } from "../schema/StringSchema";
+import { StringSchema } from "../models/schema/StringSchema";
 import { validateString } from "../validate/validateString";
 import { validate } from "../validate/validate";
 

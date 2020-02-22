@@ -1,5 +1,5 @@
-import { ObjectResult } from "../result/ObjectResult";
-import { ObjectSchema } from "../schema/ObjectSchema";
+import { ObjectResult } from "../models/result/ObjectResult";
+import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";

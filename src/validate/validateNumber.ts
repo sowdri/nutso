@@ -1,5 +1,5 @@
-import { NumberResult } from "../result/NumberResult";
-import { NumberSchema } from "../schema/NumberSchema";
+import { NumberResult } from "../models/result/NumberResult";
+import { NumberSchema } from "../models/schema/NumberSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isNumber } from "../utils/typeChecker";
 

@@ -35,5 +35,5 @@ test(`Test customer schema`, () => {
       line1: "18/19 Lightsview"
     }
   };
-  expect(validate(customer, customerSchema, [])).toMatchSnapshot();
+  expect(validate(customer, customerSchema)).toMatchSnapshot();
 });

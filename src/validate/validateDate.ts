@@ -1,9 +1,8 @@
 import { DateResult } from "../models/result/DateResult";
 import { DateSchema } from "../models/schema/DateSchema";
-import { FieldPath } from "../models/FieldPath";
 import { isDate, isNil } from "../utils/typeChecker";
 
-export const validateDate = (o: any, schema: DateSchema, fieldPath: FieldPath): DateResult => {
+export const validateDate = (o: any, schema: DateSchema): DateResult => {
   //
 
   // isnil
@@ -11,28 +10,24 @@ export const validateDate = (o: any, schema: DateSchema, fieldPath: FieldPath): 
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`,
-        fieldPath
+        errorMessage: `Required field.`
       };
     }
     return {
       isValid: true,
-      errorMessage: "",
-      fieldPath
+      errorMessage: ""
     };
   }
 
   if (!isDate(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be a valid date.`,
-      fieldPath
+      errorMessage: `Should be a valid date.`
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``,
-    fieldPath
+    errorMessage: ``
   };
 };

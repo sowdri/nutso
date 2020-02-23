@@ -59,5 +59,5 @@ test(`Test multi-level`, () => {
     }
   };
   const level: Level1 = {} as any;
-  expect(validate(level, levelSchema, [])).toMatchSnapshot();
+  expect(validate(level, levelSchema)).toMatchSnapshot();
 });

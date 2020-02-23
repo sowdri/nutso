@@ -3,7 +3,7 @@ import { StringSchema } from "../models/schema/StringSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isString } from "../utils/typeChecker";
 
-export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPath): StringResult => {
+export const validateString = (o: any, schema: StringSchema): StringResult => {
   //
 
   // isnil
@@ -11,22 +11,19 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`,
-        fieldPath
+        errorMessage: `Required field.`
       };
     }
     return {
       isValid: true,
-      errorMessage: "",
-      fieldPath
+      errorMessage: ""
     };
   }
 
   if (!isString(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be a string.`,
-      fieldPath
+      errorMessage: `Should be a string.`
     };
   }
 
@@ -36,8 +33,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
   if (!isNil(schema.minLength) && str.length < schema.minLength!) {
     return {
       isValid: false,
-      errorMessage: `Should be at least ${schema.minLength} characters.`,
-      fieldPath
+      errorMessage: `Should be at least ${schema.minLength} characters.`
     };
   }
 
@@ -45,8 +41,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
   if (!isNil(schema.maxLength) && str.length > schema.maxLength!) {
     return {
       isValid: false,
-      errorMessage: `Should not be longer than ${schema.maxLength} characters.`,
-      fieldPath
+      errorMessage: `Should not be longer than ${schema.maxLength} characters.`
     };
   }
 
@@ -56,15 +51,13 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
     if (!match) {
       return {
         isValid: false,
-        errorMessage: `Should match the pattern ${schema.regex} .`,
-        fieldPath
+        errorMessage: `Should match the pattern ${schema.regex} .`
       };
     }
   }
 
   return {
     isValid: true,
-    errorMessage: ``,
-    fieldPath
+    errorMessage: ``
   };
 };

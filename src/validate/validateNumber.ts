@@ -3,7 +3,7 @@ import { NumberSchema } from "../models/schema/NumberSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isNumber } from "../utils/typeChecker";
 
-export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPath): NumberResult => {
+export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
   //
 
   // isnil
@@ -11,22 +11,19 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`,
-        fieldPath
+        errorMessage: `Required field.`
       };
     }
     return {
       isValid: true,
-      errorMessage: "",
-      fieldPath
+      errorMessage: ""
     };
   }
 
   if (!isNumber(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be a number.`,
-      fieldPath
+      errorMessage: `Should be a number.`
     };
   }
 
@@ -36,8 +33,7 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
   if (!isNil(schema.min) && numbr < schema.min!) {
     return {
       isValid: false,
-      errorMessage: `Should not be less than ${schema.min}.`,
-      fieldPath
+      errorMessage: `Should not be less than ${schema.min}.`
     };
   }
 
@@ -45,14 +41,12 @@ export const validateNumber = (o: any, schema: NumberSchema, fieldPath: FieldPat
   if (!isNil(schema.max) && numbr > schema.max!) {
     return {
       isValid: false,
-      errorMessage: `Should not be larger than ${schema.max}.`,
-      fieldPath
+      errorMessage: `Should not be larger than ${schema.max}.`
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``,
-    fieldPath
+    errorMessage: ``
   };
 };

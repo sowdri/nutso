@@ -10,24 +10,28 @@ export const validateDate = (o: any, schema: DateSchema): DateResult => {
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`
+        errorMessage: `Required field.`,
+        errorPath: []
       };
     }
     return {
       isValid: true,
-      errorMessage: ""
+      errorMessage: "",
+      errorPath: []
     };
   }
 
   if (!isDate(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be a valid date.`
+      errorMessage: `Should be a valid date.`,
+      errorPath: []
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``
+    errorMessage: ``,
+    errorPath: []
   };
 };

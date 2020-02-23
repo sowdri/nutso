@@ -2,19 +2,25 @@
 
 exports[`Test array is valid, but one item is not 1`] = `
 Object {
-  "errorMessage": "",
+  "errorMessage": "Should be at least 5 characters.",
+  "errorPath": Array [
+    0,
+  ],
   "isValid": false,
   "items": Array [
     Object {
       "errorMessage": "Should be at least 5 characters.",
+      "errorPath": Array [],
       "isValid": false,
     },
     Object {
       "errorMessage": "",
+      "errorPath": Array [],
       "isValid": true,
     },
     Object {
       "errorMessage": "",
+      "errorPath": Array [],
       "isValid": true,
     },
   ],
@@ -24,14 +30,17 @@ Object {
 exports[`Test simple array 1`] = `
 Object {
   "errorMessage": "Should have at least 3 items.",
+  "errorPath": Array [],
   "isValid": false,
   "items": Array [
     Object {
       "errorMessage": "",
+      "errorPath": Array [],
       "isValid": true,
     },
     Object {
       "errorMessage": "",
+      "errorPath": Array [],
       "isValid": true,
     },
   ],
@@ -41,14 +50,17 @@ Object {
 exports[`Test simple array values 1`] = `
 Object {
   "errorMessage": "Should have at least 3 items.",
+  "errorPath": Array [],
   "isValid": false,
   "items": Array [
     Object {
       "errorMessage": "Should be at least 5 characters.",
+      "errorPath": Array [],
       "isValid": false,
     },
     Object {
       "errorMessage": "",
+      "errorPath": Array [],
       "isValid": true,
     },
   ],

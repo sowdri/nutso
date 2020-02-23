@@ -8,7 +8,8 @@ export const validateObject = <T extends { [key: string]: any }>(o: T, schema: O
   const result: ObjectResult<T> = {
     isValid: true,
     errorMessage: "",
-    properties: {} as any
+    properties: {} as any,
+    errorPath: []
   };
 
   // isnil
@@ -31,7 +32,8 @@ export const validateObject = <T extends { [key: string]: any }>(o: T, schema: O
       const property = result.properties[field];
       if (!property.isValid) {
         result.isValid = false;
-        // result.errorMessage = property.errorMessage;
+        result.errorMessage = property.errorMessage;
+        result.errorPath = [field, ...property.errorPath];
         break;
       }
     }

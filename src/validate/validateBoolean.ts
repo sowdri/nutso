@@ -11,24 +11,28 @@ export const validateBoolean = (o: any, schema: BooleanSchema): BooleanResult =>
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`
+        errorMessage: `Required field.`,
+        errorPath: []
       };
     }
     return {
       isValid: true,
-      errorMessage: ""
+      errorMessage: "",
+      errorPath: []
     };
   }
 
   if (!isBoolean(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be true or false.`
+      errorMessage: `Should be true or false.`,
+      errorPath: []
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``
+    errorMessage: ``,
+    errorPath: []
   };
 };

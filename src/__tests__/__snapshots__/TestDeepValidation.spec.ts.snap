@@ -2,25 +2,35 @@
 
 exports[`Test multi-level 1`] = `
 Object {
-  "errorMessage": "",
+  "errorMessage": "Should be at least 8 characters.",
+  "errorPath": Array [
+    "address",
+    "country",
+  ],
   "isValid": false,
   "properties": Object {
     "address": Object {
-      "errorMessage": "",
+      "errorMessage": "Should be at least 8 characters.",
+      "errorPath": Array [
+        "country",
+      ],
       "isValid": false,
       "properties": Object {
         "country": Object {
           "errorMessage": "Should be at least 8 characters.",
+          "errorPath": Array [],
           "isValid": false,
         },
         "line1": Object {
           "errorMessage": "",
+          "errorPath": Array [],
           "isValid": true,
         },
       },
     },
     "name": Object {
       "errorMessage": "",
+      "errorPath": Array [],
       "isValid": true,
     },
   },

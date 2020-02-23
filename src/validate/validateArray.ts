@@ -13,20 +13,23 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<
       return {
         isValid: false,
         errorMessage: `Required field.`,
-        items: []
+        items: [],
+        errorPath: []
       };
     }
     return {
       isValid: true,
       errorMessage: ``,
-      items: []
+      items: [],
+      errorPath: []
     };
   }
 
   const result: ArrayResult<T> = {
     isValid: true,
     errorMessage: "",
-    items: []
+    items: [],
+    errorPath: []
   };
 
   // array min-items
@@ -53,7 +56,8 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<
       const item = result.items[i];
       if (!item.isValid) {
         result.isValid = false;
-        // result.errorMessage = property.errorMessage;
+        result.errorMessage = item.errorMessage;
+        result.errorPath = [i, ...item.errorPath];
         break;
       }
     }

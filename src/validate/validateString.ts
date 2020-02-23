@@ -11,19 +11,22 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`
+        errorMessage: `Required field.`,
+        errorPath: []
       };
     }
     return {
       isValid: true,
-      errorMessage: ""
+      errorMessage: "",
+      errorPath: []
     };
   }
 
   if (!isString(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be a string.`
+      errorMessage: `Should be a string.`,
+      errorPath: []
     };
   }
 
@@ -33,7 +36,8 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
   if (!isNil(schema.minLength) && str.length < schema.minLength!) {
     return {
       isValid: false,
-      errorMessage: `Should be at least ${schema.minLength} characters.`
+      errorMessage: `Should be at least ${schema.minLength} characters.`,
+      errorPath: []
     };
   }
 
@@ -41,7 +45,8 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
   if (!isNil(schema.maxLength) && str.length > schema.maxLength!) {
     return {
       isValid: false,
-      errorMessage: `Should not be longer than ${schema.maxLength} characters.`
+      errorMessage: `Should not be longer than ${schema.maxLength} characters.`,
+      errorPath: []
     };
   }
 
@@ -51,13 +56,15 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
     if (!match) {
       return {
         isValid: false,
-        errorMessage: `Should match the pattern ${schema.regex} .`
+        errorMessage: `Should match the pattern ${schema.regex} .`,
+        errorPath: []
       };
     }
   }
 
   return {
     isValid: true,
-    errorMessage: ``
+    errorMessage: ``,
+    errorPath: []
   };
 };

@@ -18,7 +18,7 @@ test(`Basic`, () => {
     }
   };
 
-  const result1 = validateObject(obj, schema, []);
+  const result1 = validateObject(obj, schema);
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(obj, schema);

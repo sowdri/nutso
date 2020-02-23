@@ -7,7 +7,7 @@ test(`Basic`, () => {
   const schema: StringSchema = {
     type: "string"
   };
-  const result1 = validateString(str, schema, []);
+  const result1 = validateString(str, schema);
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(str, schema);
@@ -20,7 +20,7 @@ test(`Basic - invalid min-length`, () => {
     type: "string",
     minLength: 3
   };
-  const result1 = validateString(str, schema, []);
+  const result1 = validateString(str, schema);
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str, schema);
@@ -33,7 +33,7 @@ test(`Basic - invalid max-length`, () => {
     type: "string",
     maxLength: 3
   };
-  const result1 = validateString(str, schema, []);
+  const result1 = validateString(str, schema);
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str, schema);
@@ -48,7 +48,7 @@ test(`Regex match`, () => {
   const valid = "5085";
   const invalid = "508";
 
-  const result1 = validateString(valid, schema, []);
+  const result1 = validateString(valid, schema);
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(invalid, schema);

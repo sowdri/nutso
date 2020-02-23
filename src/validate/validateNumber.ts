@@ -11,19 +11,22 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`
+        errorMessage: `Required field.`,
+        errorPath: []
       };
     }
     return {
       isValid: true,
-      errorMessage: ""
+      errorMessage: "",
+      errorPath: []
     };
   }
 
   if (!isNumber(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be a number.`
+      errorMessage: `Should be a number.`,
+      errorPath: []
     };
   }
 
@@ -33,7 +36,8 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
   if (!isNil(schema.min) && numbr < schema.min!) {
     return {
       isValid: false,
-      errorMessage: `Should not be less than ${schema.min}.`
+      errorMessage: `Should not be less than ${schema.min}.`,
+      errorPath: []
     };
   }
 
@@ -41,12 +45,14 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
   if (!isNil(schema.max) && numbr > schema.max!) {
     return {
       isValid: false,
-      errorMessage: `Should not be larger than ${schema.max}.`
+      errorMessage: `Should not be larger than ${schema.max}.`,
+      errorPath: []
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``
+    errorMessage: ``,
+    errorPath: []
   };
 };

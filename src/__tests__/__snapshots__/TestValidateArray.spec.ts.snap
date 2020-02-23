@@ -1,5 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Test array is valid, but one item is not 1`] = `
+Object {
+  "errorMessage": "",
+  "isValid": false,
+  "items": Array [
+    Object {
+      "errorMessage": "Should be at least 5 characters.",
+      "isValid": false,
+    },
+    Object {
+      "errorMessage": "",
+      "isValid": true,
+    },
+    Object {
+      "errorMessage": "",
+      "isValid": true,
+    },
+  ],
+}
+`;
+
 exports[`Test simple array 1`] = `
 Object {
   "errorMessage": "Should have at least 3 items.",

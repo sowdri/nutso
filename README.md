@@ -132,3 +132,9 @@ result.properties.height.errorMessage;
 - Can aso be used on the server to validate incoming objects against the schema.
 
 > You can defind the schema along side your models and use it both on the client and server.
+
+# TODO
+
+- Tuple support
+- Object valiation with circular reference
+- Custom validation function

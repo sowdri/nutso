@@ -4,7 +4,7 @@ import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";
 
-export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: FieldPath): ArrayResult<T> => {
+export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<T> => {
   //
 
   // isnil
@@ -13,23 +13,20 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
       return {
         isValid: false,
         errorMessage: `Required field.`,
-        items: [],
-        fieldPath
+        items: []
       };
     }
     return {
       isValid: true,
       errorMessage: ``,
-      items: [],
-      fieldPath
+      items: []
     };
   }
 
   const result: ArrayResult<T> = {
     isValid: true,
     errorMessage: "",
-    items: [],
-    fieldPath
+    items: []
   };
 
   // array min-items
@@ -46,7 +43,7 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = validate(arr[i], schema.items, fieldPath.concat([i]));
+    result.items[i] = validate(arr[i], schema.items);
   }
 
   return result;

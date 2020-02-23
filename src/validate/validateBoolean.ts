@@ -3,7 +3,7 @@ import { BooleanSchema } from "../models/schema/BooleanSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isBoolean, isNil } from "../utils/typeChecker";
 
-export const validateBoolean = (o: any, schema: BooleanSchema, fieldPath: FieldPath): BooleanResult => {
+export const validateBoolean = (o: any, schema: BooleanSchema): BooleanResult => {
   //
 
   // isnil
@@ -11,28 +11,24 @@ export const validateBoolean = (o: any, schema: BooleanSchema, fieldPath: FieldP
     if (!schema.optional) {
       return {
         isValid: false,
-        errorMessage: `Required field.`,
-        fieldPath
+        errorMessage: `Required field.`
       };
     }
     return {
       isValid: true,
-      errorMessage: "",
-      fieldPath
+      errorMessage: ""
     };
   }
 
   if (!isBoolean(o)) {
     return {
       isValid: false,
-      errorMessage: `Should be true or false.`,
-      fieldPath
+      errorMessage: `Should be true or false.`
     };
   }
 
   return {
     isValid: true,
-    errorMessage: ``,
-    fieldPath
+    errorMessage: ``
   };
 };

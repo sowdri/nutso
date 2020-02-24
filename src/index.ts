@@ -1,4 +1,4 @@
 export * from "./validate/validate";
-export * from "./schema/Schema";
-export * from "./result/Result";
-export * from "./result/ValidationResult";
+export * from "./models/schema/Schema";
+export * from "./models/result/Result";
+export * from "./models/result/ValidationResult";

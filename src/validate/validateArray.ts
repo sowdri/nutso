@@ -1,10 +1,10 @@
-import { ArrayResult } from "../result/ArrayResult";
-import { ArraySchema } from "../schema/ArraySchema";
+import { ArrayResult } from "../models/result/ArrayResult";
+import { ArraySchema } from "../models/schema/ArraySchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";
 
-export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: FieldPath): ArrayResult<T> => {
+export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<T> => {
   //
 
   // isnil
@@ -14,14 +14,14 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
         isValid: false,
         errorMessage: `Required field.`,
         items: [],
-        fieldPath
+        errorPath: []
       };
     }
     return {
       isValid: true,
       errorMessage: ``,
       items: [],
-      fieldPath
+      errorPath: []
     };
   }
 
@@ -29,7 +29,7 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
     isValid: true,
     errorMessage: "",
     items: [],
-    fieldPath
+    errorPath: []
   };
 
   // array min-items
@@ -46,7 +46,21 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>, fieldPath: Fi
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = validate(arr[i], schema.items, fieldPath.concat([i]));
+    result.items[i] = validate(arr[i], schema.items);
+  }
+
+  // if this node is valid, then check if all of it's children are valid
+  // because the node is invalid, if any of it's children are invalid
+  if (result.isValid) {
+    for (let i = 0; i < arr.length; i++) {
+      const item = result.items[i];
+      if (!item.isValid) {
+        result.isValid = false;
+        result.errorMessage = item.errorMessage;
+        result.errorPath = [i, ...item.errorPath];
+        break;
+      }
+    }
   }
 
   return result;

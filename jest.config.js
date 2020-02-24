@@ -3,6 +3,6 @@ module.exports = {
   transform: {
     "^.+\\.tsx?$": "ts-jest"
   },
-  testMatch: ["**/?(*.)+(spec|test).[jt]s?(x)"],
+  testMatch: ["**/?(*.)+(spec|test).[t]s?(x)"],
   snapshotSerializers: ["jest-html"]
 };

@@ -1,5 +1,5 @@
-import { Schema } from "../../schema/Schema";
-import { Result } from "../../result/Result";
+import { Schema } from "../../models/schema/Schema";
+import { Result } from "../../models/result/Result";
 
 interface Customer {
   name: string;

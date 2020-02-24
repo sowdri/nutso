@@ -1,18 +1,17 @@
 import { Schema } from "../models/schema/Schema";
 import { validate } from "../validate/validate";
 
-interface Customer {
+type Customer = {
   name: string;
-  address: Address;
-}
-interface Address {
-  line1: string;
-}
+  address: {
+    line1: string;
+    country: string;
+  };
+};
 
-test(`Test customer schema`, () => {
+test(`Test multi-level`, () => {
   const customerSchema: Schema<Customer> = {
     type: "object",
-    optional: false,
     properties: {
       name: {
         type: "string",
@@ -24,16 +23,23 @@ test(`Test customer schema`, () => {
         properties: {
           line1: {
             type: "string"
+          },
+          country: {
+            type: "string",
+            minLength: 8
           }
         }
       }
     }
   };
+
   const customer: Customer = {
-    name: "nish",
+    name: "John",
     address: {
-      line1: "18/19 Lightsview"
+      line1: "6 Example St",
+      country: "US"
     }
   };
+
   expect(validate(customer, customerSchema)).toMatchSnapshot();
 });

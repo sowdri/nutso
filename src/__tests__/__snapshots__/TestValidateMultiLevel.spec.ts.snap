@@ -2,66 +2,45 @@
 
 exports[`Test multi-level 1`] = `
 Object {
-  "errorMessage": "",
-  "fieldPath": Array [],
+  "errorMessage": "Required field.",
+  "errorPath": Array [
+    "name",
+  ],
   "isValid": false,
   "properties": Object {
     "name": Object {
       "errorMessage": "Required field.",
-      "fieldPath": Array [
-        "name",
-      ],
+      "errorPath": Array [],
       "isValid": false,
     },
     "next": Object {
       "errorMessage": "Required field.",
-      "fieldPath": Array [
-        "next",
-      ],
+      "errorPath": Array [],
       "isValid": false,
       "properties": Object {
         "name": Object {
           "errorMessage": "Required field.",
-          "fieldPath": Array [
-            "next",
-            "name",
-          ],
+          "errorPath": Array [],
           "isValid": false,
         },
         "next": Object {
           "errorMessage": "Required field.",
-          "fieldPath": Array [
-            "next",
-            "next",
-          ],
+          "errorPath": Array [],
           "isValid": false,
           "properties": Object {
             "name": Object {
               "errorMessage": "Required field.",
-              "fieldPath": Array [
-                "next",
-                "next",
-                "name",
-              ],
+              "errorPath": Array [],
               "isValid": false,
             },
             "next": Object {
               "errorMessage": "Required field.",
-              "fieldPath": Array [
-                "next",
-                "next",
-                "next",
-              ],
+              "errorPath": Array [],
               "isValid": false,
               "properties": Object {
                 "name": Object {
                   "errorMessage": "Required field.",
-                  "fieldPath": Array [
-                    "next",
-                    "next",
-                    "next",
-                    "name",
-                  ],
+                  "errorPath": Array [],
                   "isValid": false,
                 },
               },

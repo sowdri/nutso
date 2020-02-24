@@ -1,17 +1,15 @@
-import { ObjectResult } from "../result/ObjectResult";
-import { ObjectSchema } from "../schema/ObjectSchema";
-import { FieldPath } from "../models/FieldPath";
+import { ObjectResult } from "../models/result/ObjectResult";
+import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { isNil } from "../utils/typeChecker";
 import { validate } from "./validate";
 
-export const validateObject = <T>(o: T, schema: ObjectSchema<T>, fieldPath: FieldPath): ObjectResult<T> => {
+export const validateObject = <T extends { [key: string]: any }>(o: T, schema: ObjectSchema<T>): ObjectResult<T> => {
   //
-
   const result: ObjectResult<T> = {
     isValid: true,
     errorMessage: "",
     properties: {} as any,
-    fieldPath
+    errorPath: []
   };
 
   // isnil
@@ -21,20 +19,23 @@ export const validateObject = <T>(o: T, schema: ObjectSchema<T>, fieldPath: Fiel
       result.errorMessage = `Required field.`;
     }
   }
-  const fields = Object.keys(schema.properties);
 
   // for each key, validate
-  for (const field of fields) {
-    //@ts-ignore
-    result.properties[field] = validate(o ? o[field] : null, schema.properties[field], fieldPath.concat([field]));
+  for (let field in schema.properties) {
+    result.properties[field] = validate(o ? o[field] : null, schema.properties[field]);
   }
 
-  // object is invalid if any of it's properties are invalid
-  for (const field of fields) {
-    //@ts-ignore
-    if (!result.properties[field].isValid) {
-      result.isValid = false;
-      break;
+  // if this node is valid, then check if all of it's children are valid
+  // because the node is invalid, if any of it's children are invalid
+  if (result.isValid) {
+    for (let field in schema.properties) {
+      const property = result.properties[field];
+      if (!property.isValid) {
+        result.isValid = false;
+        result.errorMessage = property.errorMessage;
+        result.errorPath = [field, ...property.errorPath];
+        break;
+      }
     }
   }
 

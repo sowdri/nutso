@@ -1,6 +1,6 @@
-import { Schema } from "../schema/Schema";
+import { Schema } from "../models/schema/Schema";
 import { validate } from "../validate/validate";
-import { Result } from "../result/Result";
+import { Result } from "../models/result/Result";
 
 type Customer = {
   name: string;

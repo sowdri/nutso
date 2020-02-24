@@ -136,3 +136,9 @@ result.properties.height.errorMessage;
 # Notes
 
 - Follows JSON Schema terminology whereever possible [https://json-schema.org/specification.html]
+
+# TODO
+
+- Tuple support
+- Object valiation with circular reference
+- Custom validation function

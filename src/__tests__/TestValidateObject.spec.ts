@@ -1,10 +1,10 @@
-import { ObjectSchema } from "../schema/ObjectSchema";
+import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { validateObject } from "../validate/validateObject";
 import { validate } from "../validate/validate";
 
-interface Customer {
+type Customer = {
   name: "";
-}
+};
 
 test(`Basic`, () => {
   const obj: Customer = { name: "" };
@@ -18,7 +18,7 @@ test(`Basic`, () => {
     }
   };
 
-  const result1 = validateObject(obj, schema, []);
+  const result1 = validateObject(obj, schema);
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(obj, schema);

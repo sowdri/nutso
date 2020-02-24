@@ -1,9 +1,9 @@
-import { StringResult } from "../result/StringResult";
-import { StringSchema } from "../schema/StringSchema";
+import { StringResult } from "../models/result/StringResult";
+import { StringSchema } from "../models/schema/StringSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isString } from "../utils/typeChecker";
 
-export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPath): StringResult => {
+export const validateString = (o: any, schema: StringSchema): StringResult => {
   //
 
   // isnil
@@ -12,13 +12,13 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
       return {
         isValid: false,
         errorMessage: `Required field.`,
-        fieldPath
+        errorPath: []
       };
     }
     return {
       isValid: true,
       errorMessage: "",
-      fieldPath
+      errorPath: []
     };
   }
 
@@ -26,7 +26,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
     return {
       isValid: false,
       errorMessage: `Should be a string.`,
-      fieldPath
+      errorPath: []
     };
   }
 
@@ -37,7 +37,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
     return {
       isValid: false,
       errorMessage: `Should be at least ${schema.minLength} characters.`,
-      fieldPath
+      errorPath: []
     };
   }
 
@@ -46,7 +46,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
     return {
       isValid: false,
       errorMessage: `Should not be longer than ${schema.maxLength} characters.`,
-      fieldPath
+      errorPath: []
     };
   }
 
@@ -57,7 +57,7 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
       return {
         isValid: false,
         errorMessage: `Should match the pattern ${schema.regex} .`,
-        fieldPath
+        errorPath: []
       };
     }
   }
@@ -65,6 +65,6 @@ export const validateString = (o: any, schema: StringSchema, fieldPath: FieldPat
   return {
     isValid: true,
     errorMessage: ``,
-    fieldPath
+    errorPath: []
   };
 };

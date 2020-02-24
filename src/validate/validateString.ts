@@ -51,12 +51,12 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
   }
 
   // pattern
-  if (!isNil(schema.regex)) {
-    const match = schema.regex!.test(o);
+  if (!isNil(schema.pattern)) {
+    const match = schema.pattern!.test(o);
     if (!match) {
       return {
         isValid: false,
-        errorMessage: `Should match the pattern ${schema.regex} .`,
+        errorMessage: `Should match the pattern ${schema.pattern} .`,
         errorPath: []
       };
     }

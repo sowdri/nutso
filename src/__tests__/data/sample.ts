@@ -30,7 +30,7 @@ export const customerSchema1: Schema<Customer> = {
     sex: {
       type: "string",
 
-      regex: /male|female/
+      pattern: /male|female/
     },
     dob: {
       type: "date",
@@ -48,7 +48,7 @@ export const customerSchema1: Schema<Customer> = {
       optional: false,
       items: {
         type: "string",
-        regex: /(blue)|(green)/
+        pattern: /(blue)|(green)/
       }
     },
     address: {
@@ -121,7 +121,7 @@ export const customerSchema2: Schema<Customer> = {
     sex: {
       type: "string",
 
-      regex: /male|female/
+      pattern: /male|female/
     },
     dob: {
       type: "date",
@@ -139,7 +139,7 @@ export const customerSchema2: Schema<Customer> = {
       optional: false,
       items: {
         type: "string",
-        regex: /(blue)|(green)/
+        pattern: /(blue)|(green)/
       }
     },
     address: addressSchema1

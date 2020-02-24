@@ -43,7 +43,7 @@ test(`Basic - invalid max-length`, () => {
 test(`Regex match`, () => {
   const schema: StringSchema = {
     type: "string",
-    regex: /5\d{3}/
+    pattern: /5\d{3}/
   };
   const valid = "5085";
   const invalid = "508";

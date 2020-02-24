@@ -96,17 +96,17 @@ The above validation will produce the following output:
     "name": {
       "isValid": true,
       "errorMessage": "",
-      "fieldPath": ["name"]
+      "errorPath": []
     },
     "dob": {
       "isValid": true,
       "errorMessage": "",
-      "fieldPath": ["dob"]
+      "errorPath": []
     },
     "height": {
       "isValid": true,
       "errorMessage": "",
-      "fieldPath": ["height"]
+      "errorPath": []
     }
   },
   "fieldPath": []
@@ -132,3 +132,7 @@ result.properties.height.errorMessage;
 - Can aso be used on the server to validate incoming objects against the schema.
 
 > You can defind the schema along side your models and use it both on the client and server.
+
+# Notes
+
+- Follows JSON Schema terminology whereever possible [https://json-schema.org/specification.html]

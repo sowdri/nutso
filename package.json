@@ -8,6 +8,7 @@
   "scripts": {
     "test": "jest",
     "build": "tsc",
+    "release": "release-it",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
   },
   "repository": {
@@ -29,11 +30,11 @@
     "coveralls": "3.0.9",
     "jest": "25.1.0",
     "jest-html": "1.5.0",
-    "npm-github-release": "0.12.0",
+    "release-it": "^12.6.1",
     "ts-jest": "^25.2.0",
+    "ts-loader": "6.2.1",
     "typescript": "^3.7.5",
     "webpack": "4.41.6",
-    "webpack-cli": "3.3.11",
-    "ts-loader": "6.2.1"
+    "webpack-cli": "3.3.11"
   }
 }

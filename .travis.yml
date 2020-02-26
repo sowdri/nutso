@@ -11,4 +11,7 @@ install:
 script:
   - yarn test
   - yarn build
-  - npm release
+deploy:
+  script:
+    - echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" > .npmrc
+    - npm run release

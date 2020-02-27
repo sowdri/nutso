@@ -6,7 +6,7 @@
     "commit": true,
     "tag": true,
     "push": true,
-    "commitMessage": "Release ${name} ${version} [ci skip]"
+    "commitMessage": "Release ${version} [ci skip]"
   },
   "npm": {
     "publish": true

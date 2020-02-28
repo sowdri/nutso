@@ -22,6 +22,7 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
     };
   }
 
+  // check if type is string
   if (!isString(o)) {
     return {
       isValid: false,
@@ -31,6 +32,15 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
   }
 
   const str = o as string;
+
+  // check if empty
+  if (str === "" && !schema.optional) {
+    return {
+      isValid: false,
+      errorMessage: `Should not be empty.`,
+      errorPath: []
+    };
+  }
 
   // min length
   if (!isNil(schema.minLength) && str.length < schema.minLength!) {

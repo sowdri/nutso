@@ -3,7 +3,7 @@ import { validateString } from "../validate/validateString";
 import { validate } from "../validate/validate";
 
 test(`Basic`, () => {
-  const str = "";
+  const str = "foo";
   const schema: StringSchema = {
     type: "string"
   };
@@ -12,6 +12,18 @@ test(`Basic`, () => {
 
   const result2 = validate(str, schema);
   expect(result2.isValid).toBe(true);
+});
+
+test(`Empty string - invalid`, () => {
+  const str = "";
+  const schema: StringSchema = {
+    type: "string"
+  };
+  const result1 = validateString(str, schema);
+  expect(result1.isValid).toBe(false);
+
+  const result2 = validate(str, schema);
+  expect(result2.isValid).toBe(false);
 });
 
 test(`Basic - invalid min-length`, () => {

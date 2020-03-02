@@ -41,5 +41,5 @@ test(`Test multi-level`, () => {
     }
   };
 
-  expect(validate(customer, customerSchema)).toMatchSnapshot();
+  expect(validate(customer, customer, customerSchema)).toMatchSnapshot();
 });

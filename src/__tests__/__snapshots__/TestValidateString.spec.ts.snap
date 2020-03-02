@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validation function 1`] = `
+Object {
+  "errorMessage": "Custom validation failed",
+  "errorPath": Array [],
+  "isValid": false,
+}
+`;

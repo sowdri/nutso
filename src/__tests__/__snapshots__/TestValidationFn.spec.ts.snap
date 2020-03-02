@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Custom validation - check errorPath - level 1 1`] = `
+Object {
+  "errorMessage": "Custom validation failed",
+  "errorPath": Array [
+    "name",
+  ],
+  "isValid": false,
+  "properties": Object {
+    "address": Object {
+      "errorMessage": "",
+      "errorPath": Array [],
+      "isValid": true,
+      "properties": Object {
+        "line1": Object {
+          "errorMessage": "",
+          "errorPath": Array [],
+          "isValid": true,
+        },
+      },
+    },
+    "name": Object {
+      "errorMessage": "Custom validation failed",
+      "errorPath": Array [],
+      "isValid": false,
+    },
+  },
+}
+`;
+
+exports[`Custom validation - check errorPath - level 2 1`] = `
+Object {
+  "errorMessage": "Custom validation failed",
+  "errorPath": Array [
+    "address",
+    "line1",
+  ],
+  "isValid": false,
+  "properties": Object {
+    "address": Object {
+      "errorMessage": "Custom validation failed",
+      "errorPath": Array [
+        "line1",
+      ],
+      "isValid": false,
+      "properties": Object {
+        "line1": Object {
+          "errorMessage": "Custom validation failed",
+          "errorPath": Array [],
+          "isValid": false,
+        },
+      },
+    },
+    "name": Object {
+      "errorMessage": "",
+      "errorPath": Array [],
+      "isValid": true,
+    },
+  },
+}
+`;

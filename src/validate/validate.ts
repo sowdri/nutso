@@ -14,7 +14,7 @@ import { ArraySchema } from "../models/schema/ArraySchema";
 import { validateDate } from "./validateDate";
 import { DateSchema } from "../models/schema/DateSchema";
 
-export const validate = <T>(o: T, schema: Schema<T>): Result<T> => {
+export const validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Result<T> => {
   //
   if (!schema) {
     throw new Error("Schema should not be null");
@@ -27,13 +27,13 @@ export const validate = <T>(o: T, schema: Schema<T>): Result<T> => {
     case "number":
       return validateNumber(o, schema as NumberSchema) as Result<T>;
     case "string":
-      return validateString(o, schema as StringSchema) as Result<T>;
+      return validateString(o, root, schema as StringSchema<R>) as Result<T>;
     case "boolean":
       return validateBoolean(o, schema as BooleanSchema) as Result<T>;
     case "array":
-      return validateArray(o as any, schema as ArraySchema<T>) as Result<T>;
+      return validateArray(o as any, root, schema as ArraySchema<T, R>) as Result<T>;
     case "object":
-      return validateObject(o, schema as ObjectSchema<T>) as Result<T>;
+      return validateObject(o, root, schema as ObjectSchema<T, R>) as Result<T>;
     case "date":
       return validateDate(o, schema as DateSchema) as Result<T>;
   }

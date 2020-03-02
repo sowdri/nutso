@@ -75,8 +75,12 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
   // validationFn
   if (schema.validatorFn) {
     const result = schema.validatorFn(str, root);
-    if (!result.isValid) {
-      return { ...result, errorPath: [] };
+    if (result) {
+      return {
+        ...result, // created by user, so put that first, such that `isValid` and `errorPath` are not overwritten
+        isValid: false,
+        errorPath: []
+      };
     }
   }
 

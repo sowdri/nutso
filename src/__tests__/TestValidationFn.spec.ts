@@ -63,10 +63,6 @@ test(`Custom validation - check errorPath - level 1`, () => {
         type: "string",
         validatorFn: (value, root) => {
           root.address.line1;
-          return {
-            isValid: true,
-            errorMessage: ""
-          };
         }
       }
     }
@@ -114,9 +110,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
       line1: {
         type: "string",
         validatorFn: (value, root) => {
-          root.address.line1;
           return {
-            isValid: false,
             errorMessage: "Custom validation failed"
           };
         }
@@ -129,12 +123,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     properties: {
       name: {
         type: "string",
-        validatorFn: (value, root) => {
-          return {
-            isValid: true,
-            errorMessage: ""
-          };
-        }
+        validatorFn: (value, root) => {}
       },
       address: addressSchema
     }
@@ -148,5 +137,43 @@ test(`Custom validation - check errorPath - level 2`, () => {
   };
 
   const result = validate(customer, customer, customerSchema);
+  expect(result).toMatchSnapshot();
+});
+
+test(`Password equality validation`, () => {
+  type LoginForm = {
+    username: string;
+    password: string;
+    repeatPassword: string;
+  };
+
+  const loginSchema: Schema<LoginForm> = {
+    type: "object",
+    properties: {
+      username: {
+        type: "string"
+      },
+      password: {
+        type: "string",
+        pattern: /\w{6}/
+      },
+      repeatPassword: {
+        type: "string",
+        validatorFn: (field, root) => {
+          if (field !== root.password)
+            return {
+              errorMessage: "Passwords do not match"
+            };
+        }
+      }
+    }
+  };
+
+  const form1: LoginForm = {
+    username: "John",
+    password: "foobarbaz",
+    repeatPassword: "foofoofoo"
+  };
+  const result = validate(form1, form1, loginSchema);
   expect(result).toMatchSnapshot();
 });

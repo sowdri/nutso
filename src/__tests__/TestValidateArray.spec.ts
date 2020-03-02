@@ -12,7 +12,7 @@ test(`Test simple array`, () => {
       type: "string"
     }
   };
-  expect(validate(favColors, colorsSchema)).toMatchSnapshot();
+  expect(validate(favColors, favColors, colorsSchema)).toMatchSnapshot();
 });
 
 test(`Test simple array values`, () => {
@@ -28,7 +28,7 @@ test(`Test simple array values`, () => {
       minLength: 5 // blue will fail
     }
   };
-  const result = validate(favColors, colorsSchema);
+  const result = validate(favColors, favColors, colorsSchema);
   expect(result).toMatchSnapshot();
   expect(result.items[0].isValid).toBe(false);
 });
@@ -45,7 +45,7 @@ test(`Test array is valid, but one item is not`, () => {
       minLength: 5 // blue will fail
     }
   };
-  const result = validate(favColors, colorsSchema);
+  const result = validate(favColors, favColors, colorsSchema);
   expect(result).toMatchSnapshot();
   expect(result.items[0].isValid).toBe(false);
 });

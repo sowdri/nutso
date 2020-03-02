@@ -34,6 +34,6 @@ const customer: Customer = {
 };
 
 test(`Customer schema`, () => {
-  const result: Result<Customer> = validate(customer, customerSchema);
+  const result: Result<Customer> = validate(customer, customer, customerSchema);
   expect(result).toMatchSnapshot();
 });

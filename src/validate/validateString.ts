@@ -3,7 +3,7 @@ import { StringSchema } from "../models/schema/StringSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isString } from "../utils/typeChecker";
 
-export const validateString = (o: any, schema: StringSchema): StringResult => {
+export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): StringResult => {
   //
 
   // isnil
@@ -69,6 +69,14 @@ export const validateString = (o: any, schema: StringSchema): StringResult => {
         errorMessage: `Should match the pattern ${schema.pattern} .`,
         errorPath: []
       };
+    }
+  }
+
+  // validationFn
+  if (schema.validatorFn) {
+    const result = schema.validatorFn(str, root);
+    if (!result.isValid) {
+      return { ...result, errorPath: [] };
     }
   }
 

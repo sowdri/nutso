@@ -1,5 +1,4 @@
 import { Schema } from "../../models/schema/Schema";
-import { Result } from "../../models/result/Result";
 
 interface Customer {
   name: string;
@@ -81,7 +80,7 @@ export const customerSchema1: Schema<Customer> = {
   }
 };
 
-export const addressSchema1: Schema<Address> = {
+export const addressSchema1: Schema<Address, any> = {
   optional: false,
   type: "object",
   properties: {

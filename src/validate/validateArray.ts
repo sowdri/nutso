@@ -33,15 +33,15 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<
   };
 
   // array min-items
-  if (!isNil(schema.minItems) && arr.length < schema.minItems) {
+  if (!isNil(schema.minItems) && arr.length < schema.minItems!) {
     result.isValid = false;
     result.errorMessage = `Should have at least ${schema.minItems} items.`;
   }
 
   // array max-items
-  if (!isNil(schema.maxItems) && arr.length >= schema.maxItems) {
+  if (!isNil(schema.maxItems) && arr.length >= schema.maxItems!) {
     result.isValid = false;
-    result.errorMessage = `Should not have more than ${schema.maxItems - 1} items.`;
+    result.errorMessage = `Should not have more than ${schema.maxItems! - 1} items.`;
   }
 
   // for each key, validate

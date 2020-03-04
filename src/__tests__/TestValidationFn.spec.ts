@@ -1,5 +1,5 @@
 import { Schema } from "..";
-import { validate } from "../validate/validate";
+import { _validate } from "../validate/validate";
 
 test(`Compose schema with different roots - typesafety`, () => {
   type Address = {
@@ -91,7 +91,7 @@ test(`Custom validation - check errorPath - level 1`, () => {
     }
   };
 
-  const result = validate(customer, customer, customerSchema);
+  const result = _validate(customer, customer, customerSchema);
   expect(result).toMatchSnapshot();
 });
 
@@ -136,7 +136,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     }
   };
 
-  const result = validate(customer, customer, customerSchema);
+  const result = _validate(customer, customer, customerSchema);
   expect(result).toMatchSnapshot();
 });
 
@@ -174,6 +174,6 @@ test(`Password equality validation`, () => {
     password: "foobarbaz",
     repeatPassword: "foofoofoo"
   };
-  const result = validate(form1, form1, loginSchema);
+  const result = _validate(form1, form1, loginSchema);
   expect(result).toMatchSnapshot();
 });

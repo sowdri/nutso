@@ -14,7 +14,15 @@ import { ArraySchema } from "../models/schema/ArraySchema";
 import { validateDate } from "./validateDate";
 import { DateSchema } from "../models/schema/DateSchema";
 
-export const validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Result<T> => {
+/**
+ * This is an internal API that takes the root as an argument
+ * and called recursively from `validateObject` and `validateArray` methods
+ *
+ * @param o
+ * @param root
+ * @param schema
+ */
+export const _validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Result<T> => {
   //
   if (!schema) {
     throw new Error("Schema should not be null");
@@ -38,4 +46,8 @@ export const validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Resu
       return validateDate(o, schema as DateSchema) as Result<T>;
   }
   throw new Error(`Unhandled data type`);
+};
+
+export const validate = <T>(o: T, schema: Schema<T>): Result<T> => {
+  return _validate(o, o, schema);
 };

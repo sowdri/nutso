@@ -15,7 +15,7 @@ test(`Compose schema with different roots - typesafety`, () => {
     properties: {
       line1: {
         type: "string",
-        validatorFn: (value, root) => {
+        validationFn: (value, root) => {
           root.address.line1;
           return {
             isValid: true,
@@ -31,7 +31,7 @@ test(`Compose schema with different roots - typesafety`, () => {
     properties: {
       name: {
         type: "string",
-        validatorFn: (value, root) => {
+        validationFn: (value, root) => {
           return {
             isValid: false,
             errorMessage: "Custom validation failed"
@@ -61,7 +61,7 @@ test(`Custom validation - check errorPath - level 1`, () => {
     properties: {
       line1: {
         type: "string",
-        validatorFn: (value, root) => {
+        validationFn: (value, root) => {
           root.address.line1;
         }
       }
@@ -73,7 +73,7 @@ test(`Custom validation - check errorPath - level 1`, () => {
     properties: {
       name: {
         type: "string",
-        validatorFn: (value, root) => {
+        validationFn: (value, root) => {
           return {
             isValid: false,
             errorMessage: "Custom validation failed"
@@ -109,7 +109,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     properties: {
       line1: {
         type: "string",
-        validatorFn: (value, root) => {
+        validationFn: (value, root) => {
           return {
             errorMessage: "Custom validation failed"
           };
@@ -123,7 +123,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     properties: {
       name: {
         type: "string",
-        validatorFn: (value, root) => {}
+        validationFn: (value, root) => {}
       },
       address: addressSchema
     }
@@ -159,7 +159,7 @@ test(`Password equality validation`, () => {
       },
       repeatPassword: {
         type: "string",
-        validatorFn: (field, root) => {
+        validationFn: (field, root) => {
           if (field !== root.password)
             return {
               errorMessage: "Passwords do not match"

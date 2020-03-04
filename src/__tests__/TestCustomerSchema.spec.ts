@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { validate } from "../validate/validate";
+import { _validate } from "../validate/validate";
 import { Result } from "../models/result/Result";
 
 type Customer = {
@@ -34,6 +34,6 @@ const customer: Customer = {
 };
 
 test(`Customer schema`, () => {
-  const result: Result<Customer> = validate(customer, customerSchema);
+  const result: Result<Customer> = _validate(customer, customer, customerSchema);
   expect(result).toMatchSnapshot();
 });

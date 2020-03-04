@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { validate } from "../validate/validate";
+import { _validate } from "../validate/validate";
 
 type Customer = {
   name: string;
@@ -41,5 +41,5 @@ test(`Test multi-level`, () => {
     }
   };
 
-  expect(validate(customer, customerSchema)).toMatchSnapshot();
+  expect(_validate(customer, customer, customerSchema)).toMatchSnapshot();
 });

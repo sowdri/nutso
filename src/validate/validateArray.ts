@@ -2,9 +2,9 @@ import { ArrayResult } from "../models/result/ArrayResult";
 import { ArraySchema } from "../models/schema/ArraySchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
-import { validate } from "./validate";
+import { _validate } from "./validate";
 
-export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<T> => {
+export const validateArray = <T, R>(arr: T[], root: R, schema: ArraySchema<T, R>): ArrayResult<T> => {
   //
 
   // isnil
@@ -46,7 +46,7 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = validate(arr[i], schema.items);
+    result.items[i] = _validate(arr[i], root, schema.items);
   }
 
   // if this node is valid, then check if all of it's children are valid

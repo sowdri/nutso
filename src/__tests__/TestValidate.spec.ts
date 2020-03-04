@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { validate } from "../validate/validate";
+import { _validate } from "../validate/validate";
 
 interface Customer {
   name: string;
@@ -35,5 +35,5 @@ test(`Test customer schema`, () => {
       line1: "18/19 Lightsview"
     }
   };
-  expect(validate(customer, customerSchema)).toMatchSnapshot();
+  expect(_validate(customer, customer, customerSchema)).toMatchSnapshot();
 });

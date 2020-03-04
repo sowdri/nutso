@@ -1,3 +1,5 @@
-import { ValidationResult } from "../..";
+export type ValidatorFnResult = {
+  errorMessage: string;
+};
 
-export type ValidatorFn = <T>(value: T) => ValidationResult;
+export type ValidatorFn<T, R> = (field: T, root: R) => ValidatorFnResult | void;

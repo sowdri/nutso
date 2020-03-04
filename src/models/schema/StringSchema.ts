@@ -1,10 +1,10 @@
 import { BaseSchema } from "./BaseSchema";
-import { ValidatorFn } from "../custom/ValidatorFn";
+import { ValidationFn } from "../ValidationFn";
 
 export type StringSchema<R> = BaseSchema & {
   type: "string";
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
-  validatorFn?: ValidatorFn<string, R>;
+  validationFn?: ValidationFn<string, R>;
 };

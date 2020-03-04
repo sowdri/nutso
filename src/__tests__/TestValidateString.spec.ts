@@ -71,7 +71,7 @@ test(`Regex match`, () => {
 test(`Validation function`, () => {
   const schema: StringSchema<string> = {
     type: "string",
-    validatorFn: value => {
+    validationFn: value => {
       return {
         isValid: false,
         errorMessage: "Custom validation failed",

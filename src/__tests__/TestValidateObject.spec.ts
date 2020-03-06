@@ -1,6 +1,6 @@
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { validateObject } from "../validate/validateObject";
-import { validate } from "../validate/validate";
+import { _validate } from "../validate/validate";
 
 test(`Basic`, () => {
   type Customer = {
@@ -8,7 +8,7 @@ test(`Basic`, () => {
   };
 
   const obj: Customer = { name: "" };
-  const schema: ObjectSchema<Customer> = {
+  const schema: ObjectSchema<Customer, Customer> = {
     type: "object",
     properties: {
       name: {
@@ -18,10 +18,10 @@ test(`Basic`, () => {
     }
   };
 
-  const result1 = validateObject(obj, schema);
+  const result1 = validateObject(obj, obj, schema);
   expect(result1.isValid).toBe(false);
 
-  const result2 = validate(obj, schema);
+  const result2 = _validate(obj, obj, schema);
   expect(result2.isValid).toBe(false);
 });
 

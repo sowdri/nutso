@@ -1,9 +1,13 @@
 import { ObjectResult } from "../models/result/ObjectResult";
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { isNil } from "../utils/typeChecker";
-import { validate } from "./validate";
+import { _validate } from "./validate";
 
-export const validateObject = <T extends { [key: string]: any }>(o: T, schema: ObjectSchema<T>): ObjectResult<T> => {
+export const validateObject = <T extends { [key: string]: any }, R>(
+  o: T | null,
+  root: R,
+  schema: ObjectSchema<T, R>
+): ObjectResult<T> => {
   //
   const result: ObjectResult<T> = {
     isValid: true,
@@ -22,7 +26,7 @@ export const validateObject = <T extends { [key: string]: any }>(o: T, schema: O
 
   // for each key, validate
   for (let field in schema.properties) {
-    result.properties[field] = validate(o ? o[field] : null, schema.properties[field]);
+    result.properties[field] = _validate(o ? o[field] : null, root, schema.properties[field]);
   }
 
   // if this node is valid, then check if all of it's children are valid

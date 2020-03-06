@@ -7,11 +7,11 @@ import { StringSchema } from "./StringSchema";
 import { TupleSchema } from "./TupleSchema";
 
 // prettier-ignore
-export type Schema<T> = T extends string ? StringSchema :
+export type Schema<T, R = T> = T extends string ? StringSchema<R> :
                         T extends number ? NumberSchema :
                         T extends Date ? DateSchema :
                         T extends boolean ? BooleanSchema :
-                        T extends Array<infer E> ? ArraySchema<E> : 
+                        T extends Array<infer E> ? ArraySchema<E, R> : 
                         T extends [infer U, ...unknown[]] ? TupleSchema<U> :
-                        T extends Object ? ObjectSchema<T> :
+                        T extends Object ? ObjectSchema<T, R> :
                         never;

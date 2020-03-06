@@ -2,8 +2,8 @@
 
 [![Build Status](https://travis-ci.com/sowdri/nutso.svg?branch=master)](https://travis-ci.com/sowdri/nutso)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
-[![npm version](http://img.shields.io/npm/v/nutso.svg?style=flat)](https://npmjs.org/package/nutso "View this project on npm")
-[![MIT license](http://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
+[![npm version](https://img.shields.io/npm/v/nutso.svg?style=flat)](https://npmjs.org/package/nutso "View this project on npm")
+[![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](http://opensource.org/licenses/MIT)
 
 A typesafe validation library for typescript!
 
@@ -12,14 +12,13 @@ A typesafe validation library for typescript!
 # Objective
 
 - Typesafe
-- Simple
-- Clean
-- Unambigious
-- Fast
+- Zero dependencies
+- Super Fast
+- Run everywhere (browser & nodejs)
 
 # Concept
 
-The idea behind this library is to create a schema from a typescript type. The schema should reflect the structure of the type and should be in sync with it. If the type changes the schema should be updated to reflect it.
+The idea behind this library is to create a schema from a typescript type. The schema should reflect the structure of the type and should be in sync with it. If the type changes, the typescript compiler should force the schema to be updated, such that you get all the goodness of compile time typechecking for your schema files as well.
 
 - Writing the `Schema` is super simple and there is just one 1 mandatory `type` information for each field.
 - By default each field in the schema is `required`, if you want to make a field optional, then use the `optional: true` flag to mark it as optional.
@@ -45,10 +44,11 @@ type Customer = {
 
 # Schema < T >
 
-Schema is the validation definition you write for the type T. It is typesafe, so it's super easy to write the schema as the IDE will guide you though the definition for every field. You will literally feel like magic defining schemas. And each time you update `T`, you will get compiler errors to notify of potential issues with your schema.
+Schema is the validation definition you write for the type T. It is typesafe, so it's super easy to write the schema as the IDE will guide you though the definition for every field. You will literally feel like magic defining the schema. And each time you update `T`, you will get compiler errors to notify of potential issues with your schema.
 
 - `type` is the only required information for each field. Because nutso uses type inference, the `type` field can only be the type of the field. So you can't go wrong here.
-- Optional fields in T are optional in schema as well.
+
+> Optional fields in T are optional in schema as well.
 
 ```typescript
 const customerSchema: Schema<Customer> = {
@@ -73,7 +73,7 @@ const customerSchema: Schema<Customer> = {
 
 # Result < T >
 
-The result returned by `nutso` is also typesafe, meaning you will be able to access the validation result and the `errorMessage` in a type-safe way.
+The result returned by `nutso` is also typesafe, meaning you will be able to access the validation result and the `errorMessage` in a type-safe way. You will feel absolutely in control when using the validation result. And again, because it's typesafe as well, when you update the schema, typescript will help you to fix your result where ever you have used it. voila!
 
 ```typescript
 const customer: Customer = {
@@ -113,7 +113,7 @@ The above validation will produce the following output:
 }
 ```
 
-The beauty of the `Result<T>` is the fact that it's typesafe as well.
+> The beauty of the `Result<T>` is the fact that it's typesafe as well.
 
 So you could access the validation result using the following notation:
 
@@ -125,6 +125,40 @@ result.properties.name.isValid;
 result.properties.age.isValid;
 result.properties.height.errorMessage;
 ```
+
+# Validators
+
+## Common Validators
+
+The following validators are applicable for all data types.
+
+| name     | type      | default | description                      |
+| -------- | --------- | ------- | -------------------------------- |
+| optional | `boolean` | false   | Specify if the field is optional |
+
+## String validators
+
+The following validators are applicable for `string` data types.
+
+| name         | type       | default | description                                  |
+| ------------ | ---------- | ------- | -------------------------------------------- |
+| type         | `string`   | -       | The value of this has to be 'string'         |
+| minLength    | `number`   | -       | Minimum length of the string                 |
+| maxLength    | `number`   | -       | Maximum length of the string                 |
+| pattern      | `regex`    | -       | A valid js regex to match against the string |
+| validationFn | `function` | -       | [Validation Function](#validation-function)  |
+
+# Validation Function
+
+This is arguably the most powerful feature of `nutso`. The could solve any of your validation requirements with ease.
+
+```typescript
+export type ValidationFn<T, R> = (field: T, root: R) => ValidatorFnResult | void;
+```
+
+Right now validation function is supported only for the following types, but it will be soon supported on all types.
+
+- string
 
 # Applications
 
@@ -141,4 +175,4 @@ result.properties.height.errorMessage;
 
 - Tuple support
 - Object valiation with circular reference
-- Custom validation function
+- Custom validation function for other data types

@@ -136,6 +136,45 @@ The following validators are applicable for all data types.
 | -------- | --------- | ------- | -------------------------------- |
 | optional | `boolean` | false   | Specify if the field is optional |
 
+When an object is marked as optional in the `Schema` and if it's `undefined`, then the object is `valid`, so the `Result` will not have the `properties` field populated for those fields.
+
+Look at the following example:
+
+```typescript
+type Customer = {
+  name: string;
+  address?: {
+    city: string;
+  };
+};
+
+const obj: Customer = { name: "John" };
+
+const schema: Schema<Customer> = {
+  type: "object",
+  properties: {
+    name: {
+      type: "string",
+      minLength: 3
+    },
+    address: {
+      type: "object",
+      optional: true,
+      properties: {
+        city: {
+          type: "string"
+        }
+      }
+    }
+  }
+};
+
+const result = vaildate(obj, schema);
+
+result.properties.address.isValid === true;
+result.properties.address.properties === {}; // is empty
+```
+
 ## String validators
 
 The following validators are applicable for `string` data types.

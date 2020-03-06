@@ -1,6 +1,7 @@
 import { ObjectSchema } from "../models/schema/ObjectSchema";
+import { Schema } from "../models/schema/Schema";
+import { validate, _validate } from "../validate/validate";
 import { validateObject } from "../validate/validateObject";
-import { _validate } from "../validate/validate";
 
 test(`Basic`, () => {
   type Customer = {
@@ -27,14 +28,14 @@ test(`Basic`, () => {
 
 test(`Address is optional in schema and undefined in object`, () => {
   type Customer = {
-    name: "";
+    name: string;
     address?: {
       city: string;
     };
   };
 
-  const obj: Customer = { name: "" };
-  const schema: ObjectSchema<Customer> = {
+  const obj: Customer = { name: "John" };
+  const schema: Schema<Customer> = {
     type: "object",
     properties: {
       name: {
@@ -43,6 +44,7 @@ test(`Address is optional in schema and undefined in object`, () => {
       },
       address: {
         type: "object",
+        optional: true,
         properties: {
           city: {
             type: "string"
@@ -52,6 +54,6 @@ test(`Address is optional in schema and undefined in object`, () => {
     }
   };
 
-  const result = validateObject(obj, schema);
+  const result = validate(obj, schema);
   expect(result).toMatchSnapshot();
 });

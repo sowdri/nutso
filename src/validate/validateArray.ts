@@ -2,9 +2,9 @@ import { ArrayResult } from "../models/result/ArrayResult";
 import { ArraySchema } from "../models/schema/ArraySchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
-import { validate } from "./validate";
+import { _validate } from "./validate";
 
-export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<T> => {
+export const validateArray = <T, R>(arr: T[], root: R, schema: ArraySchema<T, R>): ArrayResult<T> => {
   //
 
   // isnil
@@ -33,20 +33,20 @@ export const validateArray = <T>(arr: T[], schema: ArraySchema<T>): ArrayResult<
   };
 
   // array min-items
-  if (!isNil(schema.minItems) && arr.length < schema.minItems) {
+  if (!isNil(schema.minItems) && arr.length < schema.minItems!) {
     result.isValid = false;
     result.errorMessage = `Should have at least ${schema.minItems} items.`;
   }
 
   // array max-items
-  if (!isNil(schema.maxItems) && arr.length >= schema.maxItems) {
+  if (!isNil(schema.maxItems) && arr.length >= schema.maxItems!) {
     result.isValid = false;
-    result.errorMessage = `Should not have more than ${schema.maxItems - 1} items.`;
+    result.errorMessage = `Should not have more than ${schema.maxItems! - 1} items.`;
   }
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = validate(arr[i], schema.items);
+    result.items[i] = _validate(arr[i], root, schema.items);
   }
 
   // if this node is valid, then check if all of it's children are valid

@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { validate } from "../validate/validate";
+import { _validate } from "../validate/validate";
 
 interface Level1 {
   name: string;
@@ -59,5 +59,5 @@ test(`Test multi-level`, () => {
     }
   };
   const level: Level1 = {} as any;
-  expect(validate(level, levelSchema)).toMatchSnapshot();
+  expect(_validate(level, level, levelSchema)).toMatchSnapshot();
 });

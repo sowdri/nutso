@@ -12,14 +12,17 @@ export const validateObject = <T extends { [key: string]: any }, R>(o: T | null,
     errorPath: []
   };
 
-  // isnil
+  // isnil - no further traversal required
   if (isNil(o)) {
-    // nil & undefined - no further traversal
+    // valid
     if (schema.optional) {
+      result.isValid = true;
       return result;
     }
+    // invalid
     result.isValid = false;
     result.errorMessage = `Required field.`;
+    return result;
   }
 
   // for each key, validate

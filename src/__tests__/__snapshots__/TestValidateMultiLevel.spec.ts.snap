@@ -17,37 +17,7 @@ Object {
       "errorMessage": "Required field.",
       "errorPath": Array [],
       "isValid": false,
-      "properties": Object {
-        "name": Object {
-          "errorMessage": "Required field.",
-          "errorPath": Array [],
-          "isValid": false,
-        },
-        "next": Object {
-          "errorMessage": "Required field.",
-          "errorPath": Array [],
-          "isValid": false,
-          "properties": Object {
-            "name": Object {
-              "errorMessage": "Required field.",
-              "errorPath": Array [],
-              "isValid": false,
-            },
-            "next": Object {
-              "errorMessage": "Required field.",
-              "errorPath": Array [],
-              "isValid": false,
-              "properties": Object {
-                "name": Object {
-                  "errorMessage": "Required field.",
-                  "errorPath": Array [],
-                  "isValid": false,
-                },
-              },
-            },
-          },
-        },
-      },
+      "properties": Object {},
     },
   },
 }

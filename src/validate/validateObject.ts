@@ -3,11 +3,7 @@ import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { isNil } from "../utils/typeChecker";
 import { _validate } from "./validate";
 
-export const validateObject = <T extends { [key: string]: any }, R>(
-  o: T | null,
-  root: R,
-  schema: ObjectSchema<T, R>
-): ObjectResult<T> => {
+export const validateObject = <T extends { [key: string]: any }, R>(o: T | null, root: R, schema: ObjectSchema<T, R>): ObjectResult<T> => {
   //
   const result: ObjectResult<T> = {
     isValid: true,
@@ -18,10 +14,12 @@ export const validateObject = <T extends { [key: string]: any }, R>(
 
   // isnil
   if (isNil(o)) {
-    if (!schema.optional) {
-      result.isValid = false;
-      result.errorMessage = `Required field.`;
+    // nil & undefined - no further traversal
+    if (schema.optional) {
+      return result;
     }
+    result.isValid = false;
+    result.errorMessage = `Required field.`;
   }
 
   // for each key, validate

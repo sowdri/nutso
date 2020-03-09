@@ -19,8 +19,6 @@ export type Schema<T, R = T> = T extends string
   ? ArraySchema<E, R>
   : T extends [infer U, ...unknown[]]
   ? TupleSchema<U>
-  : T extends { [key: string]: infer E }
-  ? IndexSchema<E, R>
   : T extends Object
   ? ObjectSchema<T, R>
   : never;

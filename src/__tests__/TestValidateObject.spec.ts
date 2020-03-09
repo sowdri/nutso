@@ -57,3 +57,23 @@ test(`Address is optional in schema and undefined in object`, () => {
   const result = validate(obj, schema);
   expect(result).toMatchSnapshot();
 });
+
+test(``, () => {
+  type Customer = {
+    name: string;
+    props: { [key: string]: string };
+  };
+
+  const schema: Schema<Customer> = {
+    type: "object",
+    properties: {
+      name: {
+        type: "string"
+      },
+      props: {
+        type: "object",
+        properties: {}
+      }
+    }
+  };
+});

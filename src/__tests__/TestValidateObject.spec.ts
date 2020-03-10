@@ -1,7 +1,17 @@
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { Schema } from "../models/schema/Schema";
 import { validate, _validate } from "../validate/validate";
-import { validateObject } from "../validate/validateObject";
+import { validateObject, isRegex, getRegex } from "../validate/validateObject";
+
+test(`isRegex`, () => {
+  const test = isRegex("/.*/");
+  expect(test).toBe(true);
+});
+
+test(`getRegex`, () => {
+  const regex = getRegex("/.*/");
+  expect(regex.test("foo")).toBe(true);
+});
 
 test(`Basic`, () => {
   type Customer = {

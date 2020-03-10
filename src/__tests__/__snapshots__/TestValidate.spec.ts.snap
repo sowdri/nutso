@@ -26,3 +26,49 @@ Object {
   },
 }
 `;
+
+exports[`Test index type 1`] = `
+Object {
+  "errorMessage": "",
+  "errorPath": Array [],
+  "isValid": true,
+  "properties": Object {
+    "address": Object {
+      "errorMessage": "",
+      "errorPath": Array [],
+      "isValid": true,
+      "properties": Object {
+        "line1": Object {
+          "errorMessage": "",
+          "errorPath": Array [],
+          "isValid": true,
+        },
+      },
+    },
+    "cars": Object {
+      "errorMessage": "",
+      "errorPath": Array [],
+      "isValid": true,
+      "properties": Object {
+        "rugby": Object {
+          "errorMessage": "",
+          "errorPath": Array [],
+          "isValid": true,
+          "properties": Object {
+            "vin": Object {
+              "errorMessage": "",
+              "errorPath": Array [],
+              "isValid": true,
+            },
+          },
+        },
+      },
+    },
+    "name": Object {
+      "errorMessage": "",
+      "errorPath": Array [],
+      "isValid": true,
+    },
+  },
+}
+`;

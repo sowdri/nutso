@@ -8,7 +8,7 @@ export const isRegex = (str: string) => {
 };
 
 export const getRegex = (str: string) => {
-  return new RegExp(`^${str.substr(1, str.length - 1)}$`);
+  return new RegExp(`^${str.slice(1, -1)}$`);
 };
 
 export const validateObject = <T extends { [key: string]: any }, R>(
@@ -47,11 +47,10 @@ export const validateObject = <T extends { [key: string]: any }, R>(
     processedFields.push(field);
   }
 
-  // for each regex in schema.properties
+  // for each regex validate all matching keys
   for (let field in schema.properties) {
     if (!isRegex(field)) continue; // not-regex
     const regex = getRegex(field);
-
     // for each key
     for (let key in obj) {
       /**

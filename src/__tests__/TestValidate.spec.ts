@@ -291,3 +291,46 @@ test(`Test index type - regex - 2`, () => {
   const result = validate(customer, customerSchema);
   expect(result).toMatchSnapshot();
 });
+
+test(`Test index type - regex - index type is undefined`, () => {
+  type Car = {
+    vin: string;
+  };
+
+  interface Customer {
+    name: string;
+    cars?: {
+      [key: string]: Car;
+    };
+  }
+
+  const customerSchema: Schema<Customer> = {
+    type: "object",
+    optional: false,
+    properties: {
+      name: {
+        type: "string",
+        minLength: 3,
+        maxLength: 24
+      },
+      cars: {
+        type: "object",
+        properties: {
+          "/ru.*/": {
+            type: "object",
+            properties: {
+              vin: {
+                type: "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  };
+  const customer: Customer = {
+    name: "John"
+  };
+  const result = validate(customer, customerSchema);
+  expect(result).toMatchSnapshot();
+});

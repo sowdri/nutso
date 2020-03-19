@@ -177,7 +177,7 @@ result.properties.address.properties === {}; // is empty
 
 ## String validators
 
-The following validators are applicable for `string` data types.
+The following validators are applicable for `string` data type.
 
 | name         | type       | default | description                                  |
 | ------------ | ---------- | ------- | -------------------------------------------- |
@@ -186,6 +186,16 @@ The following validators are applicable for `string` data types.
 | maxLength    | `number`   | -       | Maximum length of the string                 |
 | pattern      | `regex`    | -       | A valid js regex to match against the string |
 | validationFn | `function` | -       | [Validation Function](#validation-function)  |
+
+## Number validators
+
+The following validators are applicable for `number` data type.
+
+| name | type     | default | description                          |
+| ---- | -------- | ------- | ------------------------------------ |
+| type | `number` | -       | The value of this has to be 'number' |
+| min  | `number` | -       | Minimum allowed value of the number  |
+| max  | `number` | -       | Maximum allowed value of the number  |
 
 # Validation Function
 

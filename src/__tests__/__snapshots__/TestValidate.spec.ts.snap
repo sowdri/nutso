@@ -94,6 +94,29 @@ Object {
 }
 `;
 
+exports[`Test index type - regex - index type is undefined 1`] = `
+Object {
+  "errorMessage": "Required field.",
+  "errorPath": Array [
+    "cars",
+  ],
+  "isValid": false,
+  "properties": Object {
+    "cars": Object {
+      "errorMessage": "Required field.",
+      "errorPath": Array [],
+      "isValid": false,
+      "properties": Object {},
+    },
+    "name": Object {
+      "errorMessage": "",
+      "errorPath": Array [],
+      "isValid": true,
+    },
+  },
+}
+`;
+
 exports[`Test index type - regex 1`] = `
 Object {
   "errorMessage": "",

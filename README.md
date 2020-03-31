@@ -193,9 +193,32 @@ The following validators are applicable for `number` data type.
 
 | name | type     | default | description                          |
 | ---- | -------- | ------- | ------------------------------------ |
-| type | `number` | -       | The value of this has to be 'number' |
+| type | `string` | -       | The value of this has to be 'number' |
 | min  | `number` | -       | Minimum allowed value of the number  |
 | max  | `number` | -       | Maximum allowed value of the number  |
+
+## Date validators
+
+The following validators are applicable for `Date` data type.
+
+| name | type     | default | description                        |
+| ---- | -------- | ------- | ---------------------------------- |
+| type | `string` | -       | The value of this has to be `date` |
+
+No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.
+
+## Array validators
+
+The following validators are applicable for `Array` data type.
+
+| name     | type          | default | description                                       |
+| -------- | ------------- | ------- | ------------------------------------------------- |
+| type     | `string`      | -       | The value of this has to be `array`               |
+| minItems | `number`      | -       | The minimun number of items required in the array |
+| maxItems | `number`      | -       | The maximum number of items allowed in the array  |
+| items    | `Schema<T,R>` | -       | The schema of the item present in the array       |
+
+No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.
 
 # Validation Function
 

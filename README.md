@@ -218,7 +218,21 @@ The following validators are applicable for `Array` data type.
 | maxItems | `number`      | -       | The maximum number of items allowed in the array  |
 | items    | `Schema<T,R>` | -       | The schema of the item present in the array       |
 
-No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.
+Example:
+
+```typescript
+type Colors = string[];
+const favColors: Colors = ["blue", "green", "black"];
+const colorsSchema: Schema<Colors> = {
+  type: "array",
+  minItems: 3,
+  maxItems: 10,
+  items: {
+    type: "string",
+    minLength: 5 // blue will fail
+  }
+};
+```
 
 # Validation Function
 

@@ -73,9 +73,7 @@ test(`Validation function`, () => {
     type: "string",
     validationFn: value => {
       return {
-        isValid: false,
-        errorMessage: "Custom validation failed",
-        errorPath: []
+        errorMessage: "Custom validation failed"
       };
     }
   };

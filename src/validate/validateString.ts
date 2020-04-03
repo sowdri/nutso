@@ -1,7 +1,7 @@
 import { StringResult } from "../models/result/StringResult";
 import { StringSchema } from "../models/schema/StringSchema";
-import { FieldPath } from "../models/FieldPath";
 import { isNil, isString } from "../utils/typeChecker";
+import { validationFnExecutor } from "../utils/validationFnExecutor";
 
 export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): StringResult => {
   //
@@ -74,14 +74,8 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
 
   // validationFn
   if (schema.validationFn) {
-    const result = schema.validationFn(str, root);
-    if (result) {
-      return {
-        ...result, // created by user, so put that first, such that `isValid` and `errorPath` are not overwritten
-        isValid: false,
-        errorPath: []
-      };
-    }
+    const result = validationFnExecutor({ value: str, validationFn: schema.validationFn, root });
+    if (result) return result;
   }
 
   return {

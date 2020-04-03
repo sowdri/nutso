@@ -23,7 +23,7 @@ export const validationFnExecutor = <T, R>(args: {
         errorPath: []
       };
     }
-    console.error(`Exception executing executor function`);
+    console.error(`Exception executing executor function`, e);
     return {
       errorMessage: `Exception in validationFn`,
       isValid: false,

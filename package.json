@@ -7,6 +7,7 @@
   "private": false,
   "scripts": {
     "test": "jest",
+    "jest-html": "jest-html",
     "build": "tsc",
     "release": "release-it",
     "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"

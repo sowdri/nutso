@@ -82,3 +82,42 @@ test(`Validation function`, () => {
   const result = validateString(valid, valid, schema);
   expect(result).toMatchSnapshot();
 });
+
+test(`Validation function - throw error`, () => {
+  const schema: StringSchema<string> = {
+    type: "string",
+    validationFn: value => {
+      throw new Error(`Validation fn threw!`);
+    }
+  };
+  const valid = "5085";
+
+  const result = validateString(valid, valid, schema);
+  expect(result).toMatchSnapshot();
+});
+
+test(`Validation function - throw error object - valid`, () => {
+  const schema: StringSchema<string> = {
+    type: "string",
+    validationFn: value => {
+      throw { message: "Custom error object, with message field" };
+    }
+  };
+  const valid = "5085";
+
+  const result = validateString(valid, valid, schema);
+  expect(result).toMatchSnapshot();
+});
+
+test(`Validation function - throw error object - invalid`, () => {
+  const schema: StringSchema<string> = {
+    type: "string",
+    validationFn: value => {
+      throw { foo: "Custom error object, with message field" };
+    }
+  };
+  const valid = "5085";
+
+  const result = validateString(valid, valid, schema);
+  expect(result).toMatchSnapshot();
+});

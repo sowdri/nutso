@@ -2,8 +2,9 @@ import { NumberResult } from "../models/result/NumberResult";
 import { NumberSchema } from "../models/schema/NumberSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isNumber } from "../utils/typeChecker";
+import { validationFnExecutor } from "../utils/validationFnExecutor";
 
-export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
+export const validateNumber = <R>(o: any, root: R, schema: NumberSchema<R>): NumberResult => {
   //
 
   // isnil
@@ -12,13 +13,13 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
       return {
         isValid: false,
         errorMessage: `Required field.`,
-        errorPath: []
+        errorPath: [],
       };
     }
     return {
       isValid: true,
       errorMessage: "",
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -26,7 +27,7 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
     return {
       isValid: false,
       errorMessage: `Should be a number.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -37,7 +38,7 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
     return {
       isValid: false,
       errorMessage: `Should not be less than ${schema.min}.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -46,13 +47,31 @@ export const validateNumber = (o: any, schema: NumberSchema): NumberResult => {
     return {
       isValid: false,
       errorMessage: `Should not be larger than ${schema.max}.`,
-      errorPath: []
+      errorPath: [],
     };
+  }
+
+  // pattern
+  if (!isNil(schema.pattern)) {
+    const match = schema.pattern!.test(o);
+    if (!match) {
+      return {
+        isValid: false,
+        errorMessage: `Should match the pattern ${schema.pattern} .`,
+        errorPath: [],
+      };
+    }
+  }
+
+  // validationFn
+  if (schema.validationFn) {
+    const result = validationFnExecutor({ value: numbr, validationFn: schema.validationFn, root });
+    if (result) return result;
   }
 
   return {
     isValid: true,
     errorMessage: ``,
-    errorPath: []
+    errorPath: [],
   };
 };

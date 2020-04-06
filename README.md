@@ -57,17 +57,17 @@ const customerSchema: Schema<Customer> = {
     name: {
       type: "string",
       minLength: 3,
-      maxLength: 24
+      maxLength: 24,
     },
     dob: {
-      type: "date"
+      type: "date",
     },
     height: {
       type: "number",
       min: 0.1,
-      max: 7.5
-    }
-  }
+      max: 7.5,
+    },
+  },
 };
 ```
 
@@ -79,7 +79,7 @@ The result returned by `nutso` is also typesafe, meaning you will be able to acc
 const customer: Customer = {
   name: "John Appleseed",
   dob: new Date(), // just born
-  height: 3.2
+  height: 3.2,
 };
 
 const result: Result<Customer> = validate(customer, customerSchema);
@@ -155,18 +155,18 @@ const schema: Schema<Customer> = {
   properties: {
     name: {
       type: "string",
-      minLength: 3
+      minLength: 3,
     },
     address: {
       type: "object",
       optional: true,
       properties: {
         city: {
-          type: "string"
-        }
-      }
-    }
-  }
+          type: "string",
+        },
+      },
+    },
+  },
 };
 
 const result = vaildate(obj, schema);
@@ -191,11 +191,13 @@ The following validators are applicable for `string` data type.
 
 The following validators are applicable for `number` data type.
 
-| name | type     | default | description                          |
-| ---- | -------- | ------- | ------------------------------------ |
-| type | `string` | -       | The value of this has to be 'number' |
-| min  | `number` | -       | Minimum allowed value of the number  |
-| max  | `number` | -       | Maximum allowed value of the number  |
+| name         | type       | default | description                                  |
+| ------------ | ---------- | ------- | -------------------------------------------- |
+| type         | `string`   | -       | The value of this has to be 'number'         |
+| min          | `number`   | -       | Minimum allowed value of the number          |
+| max          | `number`   | -       | Maximum allowed value of the number          |
+| pattern      | `regex`    | -       | A valid js regex to match against the string |
+| validationFn | `function` | -       | [Validation Function](#validation-function)  |
 
 ## Date validators
 
@@ -229,8 +231,8 @@ const colorsSchema: Schema<Colors> = {
   maxItems: 10,
   items: {
     type: "string",
-    minLength: 5 // blue will fail
-  }
+    minLength: 5, // blue will fail
+  },
 };
 ```
 

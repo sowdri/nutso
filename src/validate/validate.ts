@@ -33,7 +33,7 @@ export const _validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Res
    */
   switch (schema.type) {
     case "number":
-      return validateNumber(o, schema as NumberSchema) as Result<T>;
+      return validateNumber(o, root, schema as NumberSchema<R>) as Result<T>;
     case "string":
       return validateString(o, root, schema as StringSchema<R>) as Result<T>;
     case "boolean":

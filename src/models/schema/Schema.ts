@@ -8,7 +8,7 @@ import { TupleSchema } from "./TupleSchema";
 
 // prettier-ignore
 export type Schema<T, R = T> = T extends string ? StringSchema<R> :
-                        T extends number ? NumberSchema :
+                        T extends number ? NumberSchema<R> :
                         T extends Date ? DateSchema :
                         T extends boolean ? BooleanSchema :
                         T extends Array<infer E> ? ArraySchema<E, R> : 

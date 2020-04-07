@@ -16,7 +16,7 @@ export const isNumber = (o: any) => {
   return false;
 };
 
-export const isDate = (o: any) => {
+export const isDate = (o: any): o is Date => {
   if (isNil(o)) return false;
   if (o instanceof Date) return true;
   return false;

@@ -196,16 +196,17 @@ The following validators are applicable for `number` data type.
 | type         | `string`   | -       | The value of this has to be 'number'         |
 | min          | `number`   | -       | Minimum allowed value of the number          |
 | max          | `number`   | -       | Maximum allowed value of the number          |
-| pattern      | `regex`    | -       | A valid js regex to match against the string |
+| pattern      | `regex`    | -       | A valid js regex to match against the number |
 | validationFn | `function` | -       | [Validation Function](#validation-function)  |
 
 ## Date validators
 
 The following validators are applicable for `Date` data type.
 
-| name | type     | default | description                        |
-| ---- | -------- | ------- | ---------------------------------- |
-| type | `string` | -       | The value of this has to be `date` |
+| name         | type       | default | description                                 |
+| ------------ | ---------- | ------- | ------------------------------------------- |
+| type         | `string`   | -       | The value of this has to be `date`          |
+| validationFn | `function` | -       | [Validation Function](#validation-function) |
 
 No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.
 
@@ -247,6 +248,8 @@ export type ValidationFn<T, R> = (field: T, root: R) => ValidatorFnResult | void
 Right now validation function is supported only for the following types, but it will be soon supported on all types.
 
 - string
+- number
+- date
 
 # Applications
 

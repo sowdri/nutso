@@ -43,7 +43,7 @@ export const _validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Res
     case "object":
       return validateObject(o, root, schema as ObjectSchema<T, R>) as Result<T>;
     case "date":
-      return validateDate(o, schema as DateSchema) as Result<T>;
+      return validateDate(o, root, schema as DateSchema<R>) as Result<T>;
   }
   throw new Error(`Unhandled data type`);
 };

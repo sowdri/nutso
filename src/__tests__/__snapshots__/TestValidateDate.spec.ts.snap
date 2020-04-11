@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Validation function - throw error 1`] = `
+Object {
+  "errorMessage": "Validation fn threw!",
+  "errorPath": Array [],
+  "isValid": false,
+}
+`;
+
+exports[`Validation function - throw error object - invalid 1`] = `
+Object {
+  "errorMessage": "Exception in validationFn",
+  "errorPath": Array [],
+  "isValid": false,
+}
+`;
+
+exports[`Validation function - throw error object - valid 1`] = `
+Object {
+  "errorMessage": "Custom error object, with message field",
+  "errorPath": Array [],
+  "isValid": false,
+}
+`;
+
+exports[`Validation function 1`] = `
+Object {
+  "errorMessage": "Custom validation failed",
+  "errorPath": Array [],
+  "isValid": false,
+}
+`;

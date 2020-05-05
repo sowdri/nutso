@@ -5,7 +5,7 @@ import { validateDate } from "../validate/validateDate";
 test(`Basic`, () => {
   const date = new Date();
 
-  const schema: DateSchema<any> = {
+  const schema: DateSchema = {
     type: "date",
   };
   const result1 = validateDate({ value: date, schema, parent: undefined as any });
@@ -17,7 +17,7 @@ test(`Basic`, () => {
 
 test(`Empty date - invalid`, () => {
   const date = undefined as any;
-  const schema: DateSchema<any> = {
+  const schema: DateSchema = {
     type: "date",
   };
   const result1 = validateDate({ value: date, schema, parent: undefined as any });

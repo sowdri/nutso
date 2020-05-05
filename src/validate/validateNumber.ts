@@ -3,24 +3,14 @@ import { NumberSchema } from "../models/schema/NumberSchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil, isNumber } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const validateNumber = <R>(o: any, root: R, schema: NumberSchema<R>): NumberResult => {
   //
 
   // isnil
   if (isNil(o)) {
-    if (!schema.optional) {
-      return {
-        isValid: false,
-        errorMessage: `Required field.`,
-        errorPath: [],
-      };
-    }
-    return {
-      isValid: true,
-      errorMessage: "",
-      errorPath: [],
-    };
+    return optionalFlagValidator(root, schema.optional);
   }
 
   if (!isNumber(o)) {

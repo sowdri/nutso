@@ -1,5 +1,5 @@
 // utility to check a type
-export const isNil = (o: any) => {
+export const isNil = (o: any): o is undefined => {
   if (o === undefined || o === null) return true;
   return false;
 };

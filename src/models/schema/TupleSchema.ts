@@ -1,5 +1,8 @@
-import { BaseSchema } from "./BaseSchema";
+// import { BaseSchema } from "./BaseSchema";
 
-export type TupleSchema<T> = BaseSchema & {
+import { OptionalFlag } from "../OptionalFlag";
+
+export type TupleSchema<T, R> = {
   type: "tuple";
+  optional?: OptionalFlag<R>;
 };

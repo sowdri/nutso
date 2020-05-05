@@ -1,5 +1,8 @@
-import { BaseSchema } from "./BaseSchema";
+// import { BaseSchema } from "./BaseSchema";
 
-export type BooleanSchema = BaseSchema & {
+import { OptionalFlag } from "../OptionalFlag";
+
+export type BooleanSchema<R> = {
   type: "boolean";
+  optional?: OptionalFlag<R>;
 };

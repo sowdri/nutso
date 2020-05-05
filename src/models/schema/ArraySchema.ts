@@ -8,7 +8,7 @@ import { Schema } from "./Schema";
  *
  * Look at this type, we need all 3 types
  */
-export type ArraySchema<E, T extends E[], P> = {
+export type ArraySchema<E, T extends E[], P = unknown> = {
   type: "array";
   optional?: OptionalFlag<P>;
   minItems?: number;

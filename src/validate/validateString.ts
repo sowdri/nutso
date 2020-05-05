@@ -2,24 +2,14 @@ import { StringResult } from "../models/result/StringResult";
 import { StringSchema } from "../models/schema/StringSchema";
 import { isNil, isString } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): StringResult => {
   //
 
   // isnil
   if (isNil(o)) {
-    if (!schema.optional) {
-      return {
-        isValid: false,
-        errorMessage: `Required field.`,
-        errorPath: []
-      };
-    }
-    return {
-      isValid: true,
-      errorMessage: "",
-      errorPath: []
-    };
+    return optionalFlagValidator(root, schema.optional);
   }
 
   // check if type is string
@@ -27,7 +17,7 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
     return {
       isValid: false,
       errorMessage: `Should be a string.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -38,7 +28,7 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
     return {
       isValid: false,
       errorMessage: `Should not be empty.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -47,7 +37,7 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
     return {
       isValid: false,
       errorMessage: `Should be at least ${schema.minLength} characters.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -56,7 +46,7 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
     return {
       isValid: false,
       errorMessage: `Should not be longer than ${schema.maxLength} characters.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
@@ -67,7 +57,7 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
       return {
         isValid: false,
         errorMessage: `Should match the pattern ${schema.pattern} .`,
-        errorPath: []
+        errorPath: [],
       };
     }
   }
@@ -81,6 +71,6 @@ export const validateString = <R>(o: any, root: R, schema: StringSchema<R>): Str
   return {
     isValid: true,
     errorMessage: ``,
-    errorPath: []
+    errorPath: [],
   };
 };

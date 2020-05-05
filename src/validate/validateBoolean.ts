@@ -1,38 +1,25 @@
 import { BooleanResult } from "../models/result/BooleanResult";
 import { BooleanSchema } from "../models/schema/BooleanSchema";
-import { FieldPath } from "../models/FieldPath";
 import { isBoolean, isNil } from "../utils/typeChecker";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
-export const validateBoolean = (o: any, schema: BooleanSchema): BooleanResult => {
-  //
-
+export const validateBoolean = <R>(o: any, root: R, schema: BooleanSchema<R>): BooleanResult => {
   // isnil
   if (isNil(o)) {
-    if (!schema.optional) {
-      return {
-        isValid: false,
-        errorMessage: `Required field.`,
-        errorPath: []
-      };
-    }
-    return {
-      isValid: true,
-      errorMessage: "",
-      errorPath: []
-    };
+    return optionalFlagValidator(root, schema.optional);
   }
 
   if (!isBoolean(o)) {
     return {
       isValid: false,
       errorMessage: `Should be true or false.`,
-      errorPath: []
+      errorPath: [],
     };
   }
 
   return {
     isValid: true,
     errorMessage: ``,
-    errorPath: []
+    errorPath: [],
   };
 };

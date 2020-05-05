@@ -1,3 +1,3 @@
-export type BaseSchema = {
-  optional?: boolean;
-};
+// export type BaseSchema<R> = {
+//   optional?: OptionalFlag<R>;
+// };

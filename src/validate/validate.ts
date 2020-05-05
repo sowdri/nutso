@@ -37,7 +37,7 @@ export const _validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Res
     case "string":
       return validateString(o, root, schema as StringSchema<R>) as Result<T>;
     case "boolean":
-      return validateBoolean(o, schema as BooleanSchema) as Result<T>;
+      return validateBoolean(o, root, schema as BooleanSchema<R>) as Result<T>;
     case "array":
       return validateArray(o as any, root, schema as ArraySchema<T, R>) as Result<T>;
     case "object":

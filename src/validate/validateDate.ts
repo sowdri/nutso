@@ -2,22 +2,12 @@ import { DateResult } from "../models/result/DateResult";
 import { DateSchema } from "../models/schema/DateSchema";
 import { isDate, isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const validateDate = <R>(o: any, root: R, schema: DateSchema<R>): DateResult => {
   // isnil
   if (isNil(o)) {
-    if (!schema.optional) {
-      return {
-        isValid: false,
-        errorMessage: `Required field.`,
-        errorPath: [],
-      };
-    }
-    return {
-      isValid: true,
-      errorMessage: "",
-      errorPath: [],
-    };
+    return optionalFlagValidator(root, schema.optional);
   }
 
   // is date object

@@ -9,8 +9,8 @@ test(`Test simple array`, () => {
     minItems: 3,
     maxItems: 10,
     items: {
-      type: "string"
-    }
+      type: "string",
+    },
   };
   expect(_validate(favColors, favColors, colorsSchema)).toMatchSnapshot();
 });
@@ -25,8 +25,8 @@ test(`Test simple array values`, () => {
     maxItems: 10,
     items: {
       type: "string",
-      minLength: 5 // blue will fail
-    }
+      minLength: 5, // blue will fail
+    },
   };
   const result = _validate(favColors, favColors, colorsSchema);
   expect(result).toMatchSnapshot();
@@ -42,8 +42,8 @@ test(`Test array is valid, but one item is not`, () => {
     maxItems: 10,
     items: {
       type: "string",
-      minLength: 5 // blue will fail
-    }
+      minLength: 5, // blue will fail
+    },
   };
   const result = _validate(favColors, favColors, colorsSchema);
   expect(result).toMatchSnapshot();

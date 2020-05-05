@@ -2,6 +2,7 @@ import { ObjectResult } from "../models/result/ObjectResult";
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { isNil } from "../utils/typeChecker";
 import { _validate } from "./validate";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const isRegex = (str: string) => {
   return str.startsWith("/") && str.endsWith("/");
@@ -21,20 +22,12 @@ export const validateObject = <T extends { [key: string]: any }, R>(
     isValid: true,
     errorMessage: "",
     properties: {} as any,
-    errorPath: []
+    errorPath: [],
   };
 
-  // isnil - no further traversal required
+  // isnil
   if (isNil(o)) {
-    // valid
-    if (schema.optional) {
-      result.isValid = true;
-      return result;
-    }
-    // invalid
-    result.isValid = false;
-    result.errorMessage = `Required field.`;
-    return result;
+    return { ...optionalFlagValidator(root, schema.optional), properties: {} as any };
   }
 
   const obj = o as T;

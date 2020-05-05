@@ -3,33 +3,19 @@ import { ArraySchema } from "../models/schema/ArraySchema";
 import { FieldPath } from "../models/FieldPath";
 import { isNil } from "../utils/typeChecker";
 import { _validate } from "./validate";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const validateArray = <T, R>(arr: T[], root: R, schema: ArraySchema<T, R>): ArrayResult<T> => {
-  //
-
   // isnil
   if (isNil(arr)) {
-    if (!schema.optional) {
-      return {
-        isValid: false,
-        errorMessage: `Required field.`,
-        items: [],
-        errorPath: []
-      };
-    }
-    return {
-      isValid: true,
-      errorMessage: ``,
-      items: [],
-      errorPath: []
-    };
+    return { ...optionalFlagValidator(root, schema.optional), items: [] };
   }
 
   const result: ArrayResult<T> = {
     isValid: true,
     errorMessage: "",
     items: [],
-    errorPath: []
+    errorPath: [],
   };
 
   // array min-items

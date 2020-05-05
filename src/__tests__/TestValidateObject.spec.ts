@@ -1,6 +1,6 @@
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { Schema } from "../models/schema/Schema";
-import { validate, _validate } from "../validate/validate";
+import { validate } from "../validate/validate";
 import { validateObject, isRegex, getRegex } from "../validate/validateObject";
 
 test(`isRegex`, () => {
@@ -19,20 +19,20 @@ test(`Basic`, () => {
   };
 
   const obj: Customer = { name: "" };
-  const schema: ObjectSchema<Customer, Customer> = {
+  const schema: ObjectSchema<Customer> = {
     type: "object",
     properties: {
       name: {
         type: "string",
-        minLength: 3
-      }
-    }
+        minLength: 3,
+      },
+    },
   };
 
-  const result1 = validateObject(obj, obj, schema);
+  const result1 = validateObject({ value: obj, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
-  const result2 = _validate(obj, obj, schema);
+  const result2 = validate(obj, schema);
   expect(result2.isValid).toBe(false);
 });
 
@@ -50,18 +50,18 @@ test(`Address is optional in schema and undefined in object`, () => {
     properties: {
       name: {
         type: "string",
-        minLength: 3
+        minLength: 3,
       },
       address: {
         type: "object",
         optional: true,
         properties: {
           city: {
-            type: "string"
-          }
-        }
-      }
-    }
+            type: "string",
+          },
+        },
+      },
+    },
   };
 
   const result = validate(obj, schema);

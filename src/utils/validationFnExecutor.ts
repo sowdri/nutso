@@ -1,18 +1,18 @@
-import { ValidationFn } from "../models/ValidationFn";
 import { ValidationResult } from "..";
+import { ValidationFn } from "../models/ValidationFn";
 
-export const validationFnExecutor = <T, R>(args: {
+export const validationFnExecutor = <T, P>(args: {
   value: T;
-  validationFn: ValidationFn<T, R>;
-  root: R;
+  validationFn: ValidationFn<T, P>;
+  parent: P;
 }): ValidationResult | undefined => {
   try {
-    const result = args.validationFn(args.value, args.root);
+    const result = args.validationFn(args.value, args.parent);
     if (result) {
       return {
         ...result, // created by user, so put that first, such that `isValid` and `errorPath` are not overwritten
         isValid: false,
-        errorPath: []
+        errorPath: [],
       };
     }
   } catch (e) {
@@ -20,14 +20,14 @@ export const validationFnExecutor = <T, R>(args: {
       return {
         errorMessage: e.message,
         isValid: false,
-        errorPath: []
+        errorPath: [],
       };
     }
     console.error(`Exception executing executor function`, e);
     return {
       errorMessage: `Exception in validationFn`,
       isValid: false,
-      errorPath: []
+      errorPath: [],
     };
   }
 };

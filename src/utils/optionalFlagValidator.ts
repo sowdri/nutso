@@ -15,18 +15,18 @@ const VALID: ValidationResult = {
 };
 
 // this has to be called only when the value is empty
-export const optionalFlagValidator = <R>(root: R, flag?: OptionalFlag<R>): ValidationResult => {
+export const optionalFlagValidator = <P>(args: { parent: P; flag?: OptionalFlag<P> }): ValidationResult => {
   // flag not set, so it's required
-  if (isNil(flag)) return INVALID;
+  if (isNil(args.flag)) return INVALID;
   // flag is boolean
-  if (typeof flag === "boolean") {
+  if (typeof args.flag === "boolean") {
     // optional field
-    if (flag === true) return VALID;
+    if (args.flag === true) return VALID;
     // required field
     return INVALID;
   }
   // flag is a function
-  const value = flag(root);
+  const value = args.flag(args.parent);
   // optional field
   if (value === true) return VALID;
   // required field

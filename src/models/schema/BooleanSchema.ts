@@ -1,6 +1,6 @@
 import { OptionalFlag } from "../OptionalFlag";
 
-export type BooleanSchema<R> = {
+export type BooleanSchema<P> = {
   type: "boolean";
-  optional?: OptionalFlag<R>;
+  optional?: OptionalFlag<P>;
 };

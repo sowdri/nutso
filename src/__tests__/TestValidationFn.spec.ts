@@ -1,5 +1,5 @@
 import { Schema } from "..";
-import { _validate } from "../validate/validate";
+import { validate } from "../validate/validate";
 
 test(`Compose schema with different roots - typesafety`, () => {
   type Address = {
@@ -10,20 +10,20 @@ test(`Compose schema with different roots - typesafety`, () => {
     address: Address;
   };
 
-  const addressSchema: Schema<Address, Customer> = {
+  const addressSchema: Schema<Address> = {
     type: "object",
     properties: {
       line1: {
         type: "string",
-        validationFn: (value, root) => {
-          root.address.line1;
+        validationFn: (value, address) => {
+          address.line1;
           return {
             isValid: true,
-            errorMessage: ""
+            errorMessage: "",
           };
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   const customerSchema: Schema<Customer> = {
@@ -34,12 +34,12 @@ test(`Compose schema with different roots - typesafety`, () => {
         validationFn: (value, root) => {
           return {
             isValid: false,
-            errorMessage: "Custom validation failed"
+            errorMessage: "Custom validation failed",
           };
-        }
+        },
       },
-      address: addressSchema
-    }
+      address: addressSchema,
+    },
   };
 
   // this test is just to ensure typescript is not complaining!
@@ -61,11 +61,11 @@ test(`Custom validation - check errorPath - level 1`, () => {
     properties: {
       line1: {
         type: "string",
-        validationFn: (value, root) => {
-          root.address.line1;
-        }
-      }
-    }
+        validationFn: (value, address) => {
+          address.line1;
+        },
+      },
+    },
   };
 
   const customerSchema: Schema<Customer> = {
@@ -76,22 +76,22 @@ test(`Custom validation - check errorPath - level 1`, () => {
         validationFn: (value, root) => {
           return {
             isValid: false,
-            errorMessage: "Custom validation failed"
+            errorMessage: "Custom validation failed",
           };
-        }
+        },
       },
-      address: addressSchema
-    }
+      address: addressSchema,
+    },
   };
 
   const customer: Customer = {
     name: "John",
     address: {
-      line1: "10 Downing St"
-    }
+      line1: "10 Downing St",
+    },
   };
 
-  const result = _validate(customer, customer, customerSchema);
+  const result = validate(customer, customerSchema);
   expect(result).toMatchSnapshot();
 });
 
@@ -111,11 +111,11 @@ test(`Custom validation - check errorPath - level 2`, () => {
         type: "string",
         validationFn: (value, root) => {
           return {
-            errorMessage: "Custom validation failed"
+            errorMessage: "Custom validation failed",
           };
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   const customerSchema: Schema<Customer> = {
@@ -123,20 +123,20 @@ test(`Custom validation - check errorPath - level 2`, () => {
     properties: {
       name: {
         type: "string",
-        validationFn: (value, root) => {}
+        validationFn: (value, root) => {},
       },
-      address: addressSchema
-    }
+      address: addressSchema,
+    },
   };
 
   const customer: Customer = {
     name: "John",
     address: {
-      line1: "10 Downing St"
-    }
+      line1: "10 Downing St",
+    },
   };
 
-  const result = _validate(customer, customer, customerSchema);
+  const result = validate(customer, customerSchema);
   expect(result).toMatchSnapshot();
 });
 
@@ -151,29 +151,29 @@ test(`Password equality validation`, () => {
     type: "object",
     properties: {
       username: {
-        type: "string"
+        type: "string",
       },
       password: {
         type: "string",
-        pattern: /\w{6}/
+        pattern: /\w{6}/,
       },
       repeatPassword: {
         type: "string",
         validationFn: (field, root) => {
           if (field !== root.password)
             return {
-              errorMessage: "Passwords do not match"
+              errorMessage: "Passwords do not match",
             };
-        }
-      }
-    }
+        },
+      },
+    },
   };
 
   const form1: LoginForm = {
     username: "John",
     password: "foobarbaz",
-    repeatPassword: "foofoofoo"
+    repeatPassword: "foofoofoo",
   };
-  const result = _validate(form1, form1, loginSchema);
+  const result = validate(form1, loginSchema);
   expect(result).toMatchSnapshot();
 });

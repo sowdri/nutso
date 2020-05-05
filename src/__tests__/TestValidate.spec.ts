@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { _validate, validate } from "../validate/validate";
+import { validate } from "../validate/validate";
 
 test(`Test customer schema`, () => {
   interface Customer {
@@ -34,7 +34,7 @@ test(`Test customer schema`, () => {
       line1: "18/19 Lightsview",
     },
   };
-  expect(_validate(customer, customer, customerSchema)).toMatchSnapshot();
+  expect(validate(customer, customerSchema)).toMatchSnapshot();
 });
 
 test(`Test index type`, () => {
@@ -517,7 +517,7 @@ test(`Test optional flag - number`, () => {
       },
       weight: {
         type: "number",
-        optional: (person: Person) => person.isBorn,
+        optional: (person) => person.isBorn,
       },
     },
   };

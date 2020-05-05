@@ -1,6 +1,6 @@
 import { OptionalFlag } from "../OptionalFlag";
 
-export type TupleSchema<T, R> = {
+export type TupleSchema<T, P> = {
   type: "tuple";
-  optional?: OptionalFlag<R>;
+  optional?: OptionalFlag<P>;
 };

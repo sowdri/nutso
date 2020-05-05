@@ -1,19 +1,18 @@
 import { NumberResult } from "../models/result/NumberResult";
 import { NumberSchema } from "../models/schema/NumberSchema";
-import { FieldPath } from "../models/FieldPath";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil, isNumber } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
-import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
-export const validateNumber = <R>(o: any, root: R, schema: NumberSchema<R>): NumberResult => {
+export const validateNumber = <P>(args: { value: any; parent: P; schema: NumberSchema<P> }): NumberResult => {
   //
-
+  const { value, parent, schema } = args;
   // isnil
-  if (isNil(o)) {
-    return optionalFlagValidator(root, schema.optional);
+  if (isNil(value)) {
+    return optionalFlagValidator({ parent, flag: schema.optional });
   }
 
-  if (!isNumber(o)) {
+  if (!isNumber(value)) {
     return {
       isValid: false,
       errorMessage: `Should be a number.`,
@@ -21,7 +20,7 @@ export const validateNumber = <R>(o: any, root: R, schema: NumberSchema<R>): Num
     };
   }
 
-  const numbr = o as number;
+  const numbr = value as number;
 
   // min length
   if (!isNil(schema.min) && numbr < schema.min!) {
@@ -43,7 +42,7 @@ export const validateNumber = <R>(o: any, root: R, schema: NumberSchema<R>): Num
 
   // pattern
   if (!isNil(schema.pattern)) {
-    const match = schema.pattern!.test(o);
+    const match = schema.pattern!.test(value);
     if (!match) {
       return {
         isValid: false,
@@ -55,7 +54,7 @@ export const validateNumber = <R>(o: any, root: R, schema: NumberSchema<R>): Num
 
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ value: numbr, validationFn: schema.validationFn, root });
+    const result = validationFnExecutor({ value: numbr, validationFn: schema.validationFn, parent });
     if (result) return result;
   }
 

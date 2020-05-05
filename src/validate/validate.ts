@@ -1,53 +1,53 @@
-import { Schema } from "../models/schema/Schema";
 import { Result } from "../models/result/Result";
-import { validateString } from "./validateString";
-import { StringSchema } from "../models/schema/StringSchema";
-import { NumberSchema } from "../models/schema/NumberSchema";
-import { validateNumber } from "./validateNumber";
 import { BooleanSchema } from "../models/schema/BooleanSchema";
-import { validateBoolean } from "./validateBoolean";
-import { ObjectSchema } from "../models/schema/ObjectSchema";
-import { validateObject } from "./validateObject";
-import { FieldPath } from "../models/FieldPath";
-import { validateArray } from "./validateArray";
-import { ArraySchema } from "../models/schema/ArraySchema";
-import { validateDate } from "./validateDate";
 import { DateSchema } from "../models/schema/DateSchema";
+import { NumberSchema } from "../models/schema/NumberSchema";
+import { ObjectSchema } from "../models/schema/ObjectSchema";
+import { Schema } from "../models/schema/Schema";
+import { StringSchema } from "../models/schema/StringSchema";
+import { validateArray } from "./validateArray";
+import { validateBoolean } from "./validateBoolean";
+import { validateDate } from "./validateDate";
+import { validateNumber } from "./validateNumber";
+import { validateObject } from "./validateObject";
+import { validateString } from "./validateString";
 
 /**
  * This is an internal API that takes the root as an argument
  * and called recursively from `validateObject` and `validateArray` methods
  *
- * @param o
- * @param root
+ * @param value
+ * @param parent
  * @param schema
  */
-export const _validate = <T, R>(o: T | null, root: R, schema: Schema<T, R>): Result<T> => {
+export const _validate = <T, P>(args: { value: T | null; parent: P; schema: Schema<T, P> }): Result<T> => {
   //
-  if (!schema) {
+
+  if (!args.schema) {
     throw new Error("Schema should not be null");
   }
 
   /**
    * validate object against the schema
    */
-  switch (schema.type) {
+  switch (args.schema.type) {
     case "number":
-      return validateNumber(o, root, schema as NumberSchema<R>) as Result<T>;
+      return validateNumber({ ...args, schema: args.schema as NumberSchema<P> }) as Result<T>;
     case "string":
-      return validateString(o, root, schema as StringSchema<R>) as Result<T>;
+      return validateString({ ...args, schema: args.schema as StringSchema<P> }) as Result<T>;
     case "boolean":
-      return validateBoolean(o, root, schema as BooleanSchema<R>) as Result<T>;
+      return validateBoolean({ ...args, schema: args.schema as BooleanSchema<P> }) as Result<T>;
     case "array":
-      return validateArray(o as any, root, schema as ArraySchema<T, R>) as Result<T>;
+      return validateArray({ value: args.value as any, parent: args.parent, schema: args.schema as any }) as Result<T>;
     case "object":
-      return validateObject(o, root, schema as ObjectSchema<T, R>) as Result<T>;
+      return validateObject({ ...args, schema: args.schema as ObjectSchema<T, P> }) as Result<T>;
     case "date":
-      return validateDate(o, root, schema as DateSchema<R>) as Result<T>;
+      return validateDate({ ...args, schema: args.schema as DateSchema<P> }) as Result<T>;
   }
   throw new Error(`Unhandled data type`);
 };
 
-export const validate = <T>(o: T, schema: Schema<T>): Result<T> => {
-  return _validate(o, o, schema);
+// public api
+export const validate = <T>(value: T, schema: Schema<T>): Result<T> => {
+  return _validate({ value, parent: null as any, schema });
 };

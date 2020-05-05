@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { _validate } from "../validate/validate";
+import { validate } from "../validate/validate";
 
 interface Level1 {
   name: string;
@@ -24,7 +24,7 @@ test(`Test multi-level`, () => {
       name: {
         type: "string",
         minLength: 3,
-        maxLength: 24
+        maxLength: 24,
       },
       next: {
         type: "object",
@@ -32,7 +32,7 @@ test(`Test multi-level`, () => {
           name: {
             type: "string",
             minLength: 3,
-            maxLength: 24
+            maxLength: 24,
           },
           next: {
             type: "object",
@@ -40,7 +40,7 @@ test(`Test multi-level`, () => {
               name: {
                 type: "string",
                 minLength: 3,
-                maxLength: 24
+                maxLength: 24,
               },
               next: {
                 type: "object",
@@ -48,16 +48,16 @@ test(`Test multi-level`, () => {
                   name: {
                     type: "string",
                     minLength: 3,
-                    maxLength: 24
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    }
+                    maxLength: 24,
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+    },
   };
   const level: Level1 = {} as any;
-  expect(_validate(level, level, levelSchema)).toMatchSnapshot();
+  expect(validate(level, levelSchema)).toMatchSnapshot();
 });

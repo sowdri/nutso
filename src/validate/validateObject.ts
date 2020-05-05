@@ -1,8 +1,8 @@
 import { ObjectResult } from "../models/result/ObjectResult";
 import { ObjectSchema } from "../models/schema/ObjectSchema";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
 import { _validate } from "./validate";
-import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const isRegex = (str: string) => {
   return str.startsWith("/") && str.endsWith("/");
@@ -12,12 +12,14 @@ export const getRegex = (str: string) => {
   return new RegExp(`^${str.slice(1, -1)}$`);
 };
 
-export const validateObject = <T extends { [key: string]: any }, R>(
-  o: T | null,
-  root: R,
-  schema: ObjectSchema<T, R>
-): ObjectResult<T> => {
+export const validateObject = <T extends { [key: string]: any }, P>(args: {
+  value: T | null;
+  parent: P;
+  schema: ObjectSchema<T, P>;
+}): ObjectResult<T> => {
   //
+  const { value, parent, schema } = args;
+
   const result: ObjectResult<T> = {
     isValid: true,
     errorMessage: "",
@@ -26,17 +28,21 @@ export const validateObject = <T extends { [key: string]: any }, R>(
   };
 
   // isnil
-  if (isNil(o)) {
-    return { ...optionalFlagValidator(root, schema.optional), properties: {} as any };
+  if (isNil(value)) {
+    return { ...optionalFlagValidator({ parent, flag: schema.optional }), properties: {} as any };
   }
 
-  const obj = o as T;
+  const obj = value as T;
   const processedFields: string[] = [];
 
   // for each static key, validate
   for (let field in schema.properties) {
     if (isRegex(field)) continue;
-    result.properties[field] = _validate(o ? o[field] : null, root, schema.properties[field]);
+    result.properties[field] = _validate({
+      value: value ? value[field] : null,
+      parent: value,
+      schema: schema.properties[field],
+    });
     processedFields.push(field);
   }
 
@@ -52,7 +58,11 @@ export const validateObject = <T extends { [key: string]: any }, R>(
        */
       if (processedFields.includes(key)) continue;
       if (!regex.test(key)) continue;
-      result.properties[key] = _validate(o ? o[key] : null, root, schema.properties[field]);
+      result.properties[key] = _validate({
+        value: value ? value[key] : null,
+        parent: value,
+        schema: schema.properties[field],
+      });
       processedFields.push(key);
     }
   }

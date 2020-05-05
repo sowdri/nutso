@@ -1,5 +1,5 @@
 import { Schema } from "../models/schema/Schema";
-import { _validate } from "../validate/validate";
+import { validate } from "../validate/validate";
 
 type Customer = {
   name: string;
@@ -16,30 +16,30 @@ test(`Test multi-level`, () => {
       name: {
         type: "string",
         minLength: 3,
-        maxLength: 24
+        maxLength: 24,
       },
       address: {
         type: "object",
         properties: {
           line1: {
-            type: "string"
+            type: "string",
           },
           country: {
             type: "string",
-            minLength: 8
-          }
-        }
-      }
-    }
+            minLength: 8,
+          },
+        },
+      },
+    },
   };
 
   const customer: Customer = {
     name: "John",
     address: {
       line1: "6 Example St",
-      country: "US"
-    }
+      country: "US",
+    },
   };
 
-  expect(_validate(customer, customer, customerSchema)).toMatchSnapshot();
+  expect(validate(customer, customerSchema)).toMatchSnapshot();
 });

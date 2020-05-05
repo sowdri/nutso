@@ -1,31 +1,29 @@
-import { StringSchema } from "../models/schema/StringSchema";
-import { validateDate } from "../validate/validateDate";
-import { _validate } from "../validate/validate";
-import { Schema } from "../models/schema/Schema";
 import { DateSchema } from "../models/schema/DateSchema";
+import { validate } from "../validate/validate";
+import { validateDate } from "../validate/validateDate";
 
 test(`Basic`, () => {
   const date = new Date();
 
-  const schema: DateSchema<Date> = {
+  const schema: DateSchema<any> = {
     type: "date",
   };
-  const result1 = validateDate(date, date, schema);
+  const result1 = validateDate({ value: date, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
-  const result2 = _validate(date, date, schema);
+  const result2 = validate(date, schema);
   expect(result2.isValid).toBe(true);
 });
 
 test(`Empty date - invalid`, () => {
   const date = undefined as any;
-  const schema: DateSchema<Date> = {
+  const schema: DateSchema<any> = {
     type: "date",
   };
-  const result1 = validateDate(date, date, schema);
+  const result1 = validateDate({ value: date, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
-  const result2 = _validate(date, date, schema);
+  const result2 = validate(date, schema);
   expect(result2.isValid).toBe(false);
 });
 
@@ -40,7 +38,7 @@ test(`Validation function`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate(valid, valid, schema);
+  const result = validateDate({ value: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -53,7 +51,7 @@ test(`Validation function - throw error`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate(valid, valid, schema);
+  const result = validateDate({ value: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -66,7 +64,7 @@ test(`Validation function - throw error object - valid`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate(valid, valid, schema);
+  const result = validateDate({ value: valid, parent: undefined as any, schema });
   expect(result).toMatchSnapshot();
 });
 
@@ -79,6 +77,6 @@ test(`Validation function - throw error object - invalid`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate(valid, valid, schema);
+  const result = validateDate({ value: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });

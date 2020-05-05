@@ -6,12 +6,20 @@ import { ObjectSchema } from "./ObjectSchema";
 import { StringSchema } from "./StringSchema";
 import { TupleSchema } from "./TupleSchema";
 
+/**
+ * # Terminology (Only required to refer the code)
+ * T => Type of the value currently being validated
+ * P => Type of parent of T
+ * K => Type of Key
+ * root => The root of the object that is being validated
+ * parent => The parent of the object being validated. If for [K in keyof T],
+ */
 // prettier-ignore
-export type Schema<T, R = T> = T extends string ? StringSchema<R> :
-                        T extends number ? NumberSchema<R> :
-                        T extends Date ? DateSchema<R> :
-                        T extends boolean ? BooleanSchema<R> :
-                        T extends Array<infer E> ? ArraySchema<E, R> : 
-                        T extends [infer U, ...unknown[]] ? TupleSchema<U,R> :
-                        T extends Object ? ObjectSchema<T, R> :
+export type Schema<T, P = unknown> = T extends string ? StringSchema<P> :
+                        T extends number ? NumberSchema<P> :
+                        T extends Date ? DateSchema<P> :
+                        T extends boolean ? BooleanSchema<P> :
+                        T extends Array<infer E> ? ArraySchema<E, T, P> : 
+                        T extends [infer U, ...unknown[]] ? TupleSchema<U,P> :
+                        T extends Object ? ObjectSchema<T, P> :
                         never;

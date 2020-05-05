@@ -1,17 +1,21 @@
 import { ArrayResult } from "../models/result/ArrayResult";
 import { ArraySchema } from "../models/schema/ArraySchema";
-import { FieldPath } from "../models/FieldPath";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
 import { _validate } from "./validate";
-import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
-export const validateArray = <T, R>(arr: T[], root: R, schema: ArraySchema<T, R>): ArrayResult<T> => {
+export const validateArray = <E, T extends E[], P>(args: {
+  value: T | null;
+  parent: P;
+  schema: ArraySchema<E, T, P>;
+}): ArrayResult<E> => {
+  const { value: arr, parent, schema } = args;
   // isnil
   if (isNil(arr)) {
-    return { ...optionalFlagValidator(root, schema.optional), items: [] };
+    return { ...optionalFlagValidator({ parent, flag: schema.optional }), items: [] };
   }
 
-  const result: ArrayResult<T> = {
+  const result: ArrayResult<E> = {
     isValid: true,
     errorMessage: "",
     items: [],
@@ -32,7 +36,7 @@ export const validateArray = <T, R>(arr: T[], root: R, schema: ArraySchema<T, R>
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = _validate(arr[i], root, schema.items);
+    result.items[i] = _validate({ value: arr[i], parent: arr as any, schema: schema.items });
   }
 
   // if this node is valid, then check if all of it's children are valid

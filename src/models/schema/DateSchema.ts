@@ -1,8 +1,8 @@
-import { ValidationFn } from "../ValidationFn";
 import { OptionalFlag } from "../OptionalFlag";
+import { ValidationFn } from "../ValidationFn";
 
-export type DateSchema<R> = {
+export type DateSchema<P> = {
   type: "date";
-  optional?: OptionalFlag<R>;
-  validationFn?: ValidationFn<Date, R>;
+  optional?: OptionalFlag<P>;
+  validationFn?: ValidationFn<Date, P>;
 };

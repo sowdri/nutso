@@ -1,11 +1,11 @@
-import { ValidationFn } from "../ValidationFn";
 import { OptionalFlag } from "../OptionalFlag";
+import { ValidationFn } from "../ValidationFn";
 
-export type NumberSchema<R> = {
+export type NumberSchema<P = unknown> = {
   type: "number";
   min?: number;
   max?: number;
   pattern?: RegExp;
-  optional?: OptionalFlag<R>;
-  validationFn?: ValidationFn<number, R>;
+  optional?: OptionalFlag<P>;
+  validationFn?: ValidationFn<number, P>;
 };

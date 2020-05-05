@@ -1,10 +1,17 @@
-import { Schema } from "./Schema";
 import { OptionalFlag } from "../OptionalFlag";
+import { Schema } from "./Schema";
 
-export type ArraySchema<T, R> = {
+/**
+ * E => Element
+ * T => Type (this is the array)
+ * P => Parent of the array
+ *
+ * Look at this type, we need all 3 types
+ */
+export type ArraySchema<E, T extends E[], P> = {
   type: "array";
-  optional?: OptionalFlag<R>;
+  optional?: OptionalFlag<P>;
   minItems?: number;
   maxItems?: number;
-  items: Schema<T, R>;
+  items: Schema<E, T>;
 };

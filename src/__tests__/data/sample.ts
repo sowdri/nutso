@@ -24,21 +24,21 @@ export const customerSchema1: Schema<Customer> = {
     name: {
       type: "string",
       minLength: 3,
-      maxLength: 24
+      maxLength: 24,
     },
     sex: {
       type: "string",
 
-      pattern: /male|female/
+      pattern: /male|female/,
     },
     dob: {
       type: "date",
-      optional: false
+      optional: false,
     },
     age: {
       type: "number",
       min: 0,
-      max: 100
+      max: 100,
     },
     favouriteColors: {
       type: "array",
@@ -47,8 +47,8 @@ export const customerSchema1: Schema<Customer> = {
       optional: false,
       items: {
         type: "string",
-        pattern: /(blue)|(green)/
-      }
+        pattern: /(blue)|(green)/,
+      },
     },
     address: {
       type: "object",
@@ -56,56 +56,56 @@ export const customerSchema1: Schema<Customer> = {
       properties: {
         line1: {
           type: "string",
-          optional: false
+          optional: false,
         },
         city: {
           type: "string",
-          optional: false
+          optional: false,
         },
         state: {
           type: "string",
-          optional: false
+          optional: false,
         },
         country: {
-          type: "string"
+          type: "string",
         },
         postcode: {
           type: "number",
 
           min: 4999,
-          max: 6000
-        }
-      }
-    }
-  }
+          max: 6000,
+        },
+      },
+    },
+  },
 };
 
-export const addressSchema1: Schema<Address, any> = {
+export const addressSchema1: Schema<Address> = {
   optional: false,
   type: "object",
   properties: {
     line1: {
       type: "string",
-      optional: false
+      optional: false,
     },
     city: {
       type: "string",
-      optional: false
+      optional: false,
     },
     state: {
       type: "string",
-      optional: false
+      optional: false,
     },
     country: {
-      type: "string"
+      type: "string",
     },
     postcode: {
       type: "number",
 
       min: 4999,
-      max: 6000
-    }
-  }
+      max: 6000,
+    },
+  },
 };
 
 export const customerSchema2: Schema<Customer> = {
@@ -115,21 +115,21 @@ export const customerSchema2: Schema<Customer> = {
     name: {
       type: "string",
       minLength: 3,
-      maxLength: 24
+      maxLength: 24,
     },
     sex: {
       type: "string",
 
-      pattern: /male|female/
+      pattern: /male|female/,
     },
     dob: {
       type: "date",
-      optional: false
+      optional: false,
     },
     age: {
       type: "number",
       min: 0,
-      max: 100
+      max: 100,
     },
     favouriteColors: {
       type: "array",
@@ -138,9 +138,9 @@ export const customerSchema2: Schema<Customer> = {
       optional: false,
       items: {
         type: "string",
-        pattern: /(blue)|(green)/
-      }
+        pattern: /(blue)|(green)/,
+      },
     },
-    address: addressSchema1
-  }
+    address: addressSchema1,
+  },
 };

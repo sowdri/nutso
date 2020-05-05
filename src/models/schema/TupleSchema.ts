@@ -1,5 +1,3 @@
-// import { BaseSchema } from "./BaseSchema";
-
 import { OptionalFlag } from "../OptionalFlag";
 
 export type TupleSchema<T, R> = {

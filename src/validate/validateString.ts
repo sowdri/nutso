@@ -2,7 +2,7 @@ import { StringResult } from "../models/result/StringResult";
 import { StringSchema } from "../models/schema/StringSchema";
 import { isNil, isString } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
-import { optionalFlagValidator } from "../utils/optionalFlagValidator";
+import { optionalFlagValidator, optionalFlagValue } from "../utils/optionalFlagValidator";
 
 export const validateString = <P>(args: { value: any; parent: P; schema: StringSchema<P> }): StringResult => {
   const { value, parent, schema } = args;
@@ -25,12 +25,14 @@ export const validateString = <P>(args: { value: any; parent: P; schema: StringS
   const str = value as string;
 
   // check if empty
-  if (str === "" && !schema.optional) {
-    return {
-      isValid: false,
-      errorMessage: `Should not be empty.`,
-      errorPath: [],
-    };
+  if (str === "") {
+    const optional = optionalFlagValue({ parent, flag: schema.optional });
+    if (!optional)
+      return {
+        isValid: false,
+        errorMessage: `Should not be empty.`,
+        errorPath: [],
+      };
   }
 
   // min length

@@ -1,7 +1,6 @@
 import { StringSchema } from "../models/schema/StringSchema";
-import { validateString } from "../validate/validateString";
 import { validate } from "../validate/validate";
-import { Schema } from "../models/schema/Schema";
+import { validateString } from "../validate/validateString";
 
 test(`Basic`, () => {
   const str = "foo";
@@ -19,6 +18,19 @@ test(`Empty string - invalid`, () => {
   const str = "";
   const schema: StringSchema = {
     type: "string",
+  };
+  const result1 = validateString({ value: str, schema, parent: undefined as any });
+  expect(result1.isValid).toBe(false);
+
+  const result2 = validate(str, schema);
+  expect(result2.isValid).toBe(false);
+});
+
+test(`Empty string - not optional`, () => {
+  const str = "";
+  const schema: StringSchema = {
+    type: "string",
+    optional: () => false,
   };
   const result1 = validateString({ value: str, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);

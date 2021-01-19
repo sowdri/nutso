@@ -16,6 +16,18 @@ test(`Basic`, () => {
   expect(result2.isValid).toBe(true);
 });
 
+test(`Value is NaN - invalid`, () => {
+  const numbr = NaN;
+  const schema: NumberSchema = {
+    type: "number",
+  };
+  const result1 = validateNumber({ value: numbr, schema, parent: undefined as any });
+  expect(result1.isValid).toBe(false);
+
+  const result2 = validate(numbr, schema);
+  expect(result2.isValid).toBe(false);
+});
+
 test(`Empty string - invalid number`, () => {
   const str = "";
   const schema: NumberSchema = {

@@ -12,7 +12,7 @@ export const validateNumber = <P>(args: { value: any; parent: P; schema: NumberS
     return optionalFlagValidator({ parent, flag: schema.optional });
   }
 
-  if (!isNumber(value)) {
+  if (!isNumber(value) || isNaN(value)) {
     return {
       isValid: false,
       errorMessage: `Should be a number.`,

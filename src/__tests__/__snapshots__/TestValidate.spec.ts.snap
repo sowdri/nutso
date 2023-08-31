@@ -1,26 +1,26 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test customer schema 1`] = `
-Object {
+{
   "errorMessage": "",
-  "errorPath": Array [],
+  "errorPath": [],
   "isValid": true,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },
@@ -28,66 +28,66 @@ Object {
 `;
 
 exports[`Test index type - regex - 2 1`] = `
-Object {
+{
   "errorMessage": "Should not be empty.",
-  "errorPath": Array [
+  "errorPath": [
     "cars",
     "ruby",
     "vin",
   ],
   "isValid": false,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "cars": Object {
+    "cars": {
       "errorMessage": "Should not be empty.",
-      "errorPath": Array [
+      "errorPath": [
         "ruby",
         "vin",
       ],
       "isValid": false,
-      "properties": Object {
-        "ruby": Object {
+      "properties": {
+        "ruby": {
           "errorMessage": "Should not be empty.",
-          "errorPath": Array [
+          "errorPath": [
             "vin",
           ],
           "isValid": false,
-          "properties": Object {
-            "vin": Object {
+          "properties": {
+            "vin": {
               "errorMessage": "Should not be empty.",
-              "errorPath": Array [],
+              "errorPath": [],
               "isValid": false,
             },
           },
         },
-        "rugby": Object {
+        "rugby": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
-          "properties": Object {
-            "vin": Object {
+          "properties": {
+            "vin": {
               "errorMessage": "",
-              "errorPath": Array [],
+              "errorPath": [],
               "isValid": true,
             },
           },
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },
@@ -95,22 +95,22 @@ Object {
 `;
 
 exports[`Test index type - regex - index type is undefined 1`] = `
-Object {
+{
   "errorMessage": "Required field.",
-  "errorPath": Array [
+  "errorPath": [
     "cars",
   ],
   "isValid": false,
-  "properties": Object {
-    "cars": Object {
+  "properties": {
+    "cars": {
       "errorMessage": "Required field.",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": false,
-      "properties": Object {},
+      "properties": {},
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },
@@ -118,45 +118,45 @@ Object {
 `;
 
 exports[`Test index type - regex 1`] = `
-Object {
+{
   "errorMessage": "",
-  "errorPath": Array [],
+  "errorPath": [],
   "isValid": true,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "cars": Object {
+    "cars": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "rugby": Object {
+      "properties": {
+        "rugby": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
-          "properties": Object {
-            "vin": Object {
+          "properties": {
+            "vin": {
               "errorMessage": "",
-              "errorPath": Array [],
+              "errorPath": [],
               "isValid": true,
             },
           },
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },
@@ -164,44 +164,44 @@ Object {
 `;
 
 exports[`Test index type - required field - missing 1`] = `
-Object {
+{
   "errorMessage": "Required field.",
-  "errorPath": Array [
+  "errorPath": [
     "cars",
     "ruby",
   ],
   "isValid": false,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "cars": Object {
+    "cars": {
       "errorMessage": "Required field.",
-      "errorPath": Array [
+      "errorPath": [
         "ruby",
       ],
       "isValid": false,
-      "properties": Object {
-        "ruby": Object {
+      "properties": {
+        "ruby": {
           "errorMessage": "Required field.",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": false,
-          "properties": Object {},
+          "properties": {},
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },
@@ -209,45 +209,45 @@ Object {
 `;
 
 exports[`Test index type 1`] = `
-Object {
+{
   "errorMessage": "",
-  "errorPath": Array [],
+  "errorPath": [],
   "isValid": true,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "cars": Object {
+    "cars": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "rugby": Object {
+      "properties": {
+        "rugby": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
-          "properties": Object {
-            "vin": Object {
+          "properties": {
+            "vin": {
               "errorMessage": "",
-              "errorPath": Array [],
+              "errorPath": [],
               "isValid": true,
             },
           },
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },

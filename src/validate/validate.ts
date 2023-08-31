@@ -40,7 +40,7 @@ export const _validate = <T, P>(args: { value: T | null; parent: P; schema: Sche
     case "array":
       return validateArray({ value: args.value as any, parent: args.parent, schema: args.schema as any }) as Result<T>;
     case "object":
-      return validateObject({ ...args, schema: args.schema as ObjectSchema<T, P> }) as Result<T>;
+      return validateObject({ ...args, schema: args.schema }) as Result<T>;
     case "date":
       return validateDate({ ...args, schema: args.schema as DateSchema<P> }) as Result<T>;
   }

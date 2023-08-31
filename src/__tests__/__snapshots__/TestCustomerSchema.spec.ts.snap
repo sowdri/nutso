@@ -1,24 +1,24 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Customer schema 1`] = `
-Object {
+{
   "errorMessage": "",
-  "errorPath": Array [],
+  "errorPath": [],
   "isValid": true,
-  "properties": Object {
-    "dob": Object {
+  "properties": {
+    "dob": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
-    "height": Object {
+    "height": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },

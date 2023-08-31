@@ -1,28 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Custom validation - check errorPath - level 1 1`] = `
-Object {
+{
   "errorMessage": "Custom validation failed",
-  "errorPath": Array [
+  "errorPath": [
     "name",
   ],
   "isValid": false,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "Custom validation failed",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": false,
     },
   },
@@ -30,31 +30,31 @@ Object {
 `;
 
 exports[`Custom validation - check errorPath - level 2 1`] = `
-Object {
+{
   "errorMessage": "Custom validation failed",
-  "errorPath": Array [
+  "errorPath": [
     "address",
     "line1",
   ],
   "isValid": false,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "Custom validation failed",
-      "errorPath": Array [
+      "errorPath": [
         "line1",
       ],
       "isValid": false,
-      "properties": Object {
-        "line1": Object {
+      "properties": {
+        "line1": {
           "errorMessage": "Custom validation failed",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": false,
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },
@@ -62,26 +62,26 @@ Object {
 `;
 
 exports[`Password equality validation 1`] = `
-Object {
+{
   "errorMessage": "Passwords do not match",
-  "errorPath": Array [
+  "errorPath": [
     "repeatPassword",
   ],
   "isValid": false,
-  "properties": Object {
-    "password": Object {
+  "properties": {
+    "password": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
-    "repeatPassword": Object {
+    "repeatPassword": {
       "errorMessage": "Passwords do not match",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": false,
     },
-    "username": Object {
+    "username": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },

@@ -1,14 +1,19 @@
 {
   "name": "nutso",
-  "version": "3.0.3",
+  "version": "4.0.0",
   "description": "a typesafe validation library for typescript",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "source": "src/index.ts",
+  "main": "dist/main.js",
+  "module": "dist/module.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "/dist"
+  ],
   "private": false,
   "scripts": {
     "test": "jest",
     "watch": "jest --watch",
-    "build": "tsc"
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",

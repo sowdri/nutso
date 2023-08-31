@@ -128,13 +128,14 @@ result.properties.height.errorMessage;
 
 # Validators
 
-## Common Validators
+## Common Fields
 
-The following validators are applicable for all data types.
+The following fields are applicable for all data types.
 
-| name     | type      | default | description                      |
-| -------- | --------- | ------- | -------------------------------- |
-| optional | `boolean` | false   | Specify if the field is optional |
+| name     | type      | default | description                                               |
+| -------- | --------- | ------- | --------------------------------------------------------- |
+| type     | `string`  | -       | The value of this has to match the data type of the field |
+| optional | `boolean` | false   | Specify if the field is optional                          |
 
 When an object is marked as optional in the `Schema` and if it's `undefined`, then the object is `valid`, so the `Result` will not have the `properties` field populated for those fields.
 
@@ -206,6 +207,17 @@ The following validators are applicable for `Date` data type.
 | name         | type       | default | description                                 |
 | ------------ | ---------- | ------- | ------------------------------------------- |
 | type         | `string`   | -       | The value of this has to be `date`          |
+| validationFn | `function` | -       | [Validation Function](#validation-function) |
+
+No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.
+
+## Boolean validators
+
+The following validators are applicable for `Boolean` data type.
+
+| name         | type       | default | description                                 |
+| ------------ | ---------- | ------- | ------------------------------------------- |
+| type         | `string`   | -       | The value of this has to be `boolean`       |
 | validationFn | `function` | -       | [Validation Function](#validation-function) |
 
 No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.

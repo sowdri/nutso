@@ -1,36 +1,36 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Test multi-level 1`] = `
-Object {
+{
   "errorMessage": "Should be at least 8 characters.",
-  "errorPath": Array [
+  "errorPath": [
     "address",
     "country",
   ],
   "isValid": false,
-  "properties": Object {
-    "address": Object {
+  "properties": {
+    "address": {
       "errorMessage": "Should be at least 8 characters.",
-      "errorPath": Array [
+      "errorPath": [
         "country",
       ],
       "isValid": false,
-      "properties": Object {
-        "country": Object {
+      "properties": {
+        "country": {
           "errorMessage": "Should be at least 8 characters.",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": false,
         },
-        "line1": Object {
+        "line1": {
           "errorMessage": "",
-          "errorPath": Array [],
+          "errorPath": [],
           "isValid": true,
         },
       },
     },
-    "name": Object {
+    "name": {
       "errorMessage": "",
-      "errorPath": Array [],
+      "errorPath": [],
       "isValid": true,
     },
   },

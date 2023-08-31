@@ -16,9 +16,17 @@ export const validationFnExecutor = <T, P>(args: {
       };
     }
   } catch (e) {
-    if (e.message) {
+    // if (Object.keys(e as any).includes("message")) {
+    if (e instanceof Error) {
       return {
         errorMessage: e.message,
+        isValid: false,
+        errorPath: [],
+      };
+    }
+    if (Object.keys(e as any).includes("message")) {
+      return {
+        errorMessage: (e as any).message,
         isValid: false,
         errorPath: [],
       };

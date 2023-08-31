@@ -7,10 +7,8 @@
   "private": false,
   "scripts": {
     "test": "jest",
-    "jest-html": "jest-html",
-    "build": "tsc",
-    "release": "release-it",
-    "coveralls": "jest --coverage && cat ./tests/coverage/lcov.info | coveralls"
+    "watch": "jest --watch",
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
@@ -27,15 +25,12 @@
   },
   "homepage": "https://github.com/sowdri/nutso#readme",
   "devDependencies": {
-    "@types/jest": "25.1.2",
-    "coveralls": "3.0.9",
-    "jest": "25.1.0",
-    "jest-html": "1.5.0",
-    "release-it": "^12.6.1",
-    "ts-jest": "^25.2.0",
-    "ts-loader": "7.0.2",
-    "typescript": "3.8.3",
-    "webpack": "4.41.6",
-    "webpack-cli": "3.3.11"
+    "@parcel/packager-ts": "^2.9.3",
+    "@parcel/transformer-typescript-types": "^2.9.3",
+    "@types/jest": "^29.5.4",
+    "jest": "^29.6.4",
+    "parcel": "^2.9.3",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
   }
 }

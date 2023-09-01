@@ -2,7 +2,6 @@ import { Result } from "../models/result/Result";
 import { BooleanSchema } from "../models/schema/BooleanSchema";
 import { DateSchema } from "../models/schema/DateSchema";
 import { NumberSchema } from "../models/schema/NumberSchema";
-import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { Schema } from "../models/schema/Schema";
 import { StringSchema } from "../models/schema/StringSchema";
 import { validateArray } from "./validateArray";

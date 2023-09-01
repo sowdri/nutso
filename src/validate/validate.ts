@@ -19,7 +19,7 @@ import { validateString } from "./validateString";
  * @param parent
  * @param schema
  */
-export const _validate = <T, P>(args: { value: T | null; parent: P; schema: Schema<T, P> }): Result<T> => {
+export const _validate = <T, R>(args: { value: T | null; parent: R; schema: Schema<T, R> }): Result<T> => {
   //
 
   if (!args.schema) {
@@ -31,17 +31,17 @@ export const _validate = <T, P>(args: { value: T | null; parent: P; schema: Sche
    */
   switch (args.schema.type) {
     case "number":
-      return validateNumber({ ...args, schema: args.schema as NumberSchema<P> }) as Result<T>;
+      return validateNumber({ ...args, schema: args.schema as NumberSchema<R> }) as Result<T>;
     case "string":
-      return validateString({ ...args, schema: args.schema as StringSchema<P> }) as Result<T>;
+      return validateString({ ...args, schema: args.schema as StringSchema<R> }) as Result<T>;
     case "boolean":
-      return validateBoolean({ ...args, schema: args.schema as BooleanSchema<P> }) as Result<T>;
+      return validateBoolean({ ...args, schema: args.schema as BooleanSchema<R> }) as Result<T>;
     case "array":
       return validateArray({ value: args.value as any, parent: args.parent, schema: args.schema as any }) as Result<T>;
     case "object":
       return validateObject({ ...args, schema: args.schema }) as Result<T>;
     case "date":
-      return validateDate({ ...args, schema: args.schema as DateSchema<P> }) as Result<T>;
+      return validateDate({ ...args, schema: args.schema as DateSchema<R> }) as Result<T>;
   }
   throw new Error(`Unhandled data type`);
 };

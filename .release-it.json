@@ -7,7 +7,11 @@
     "after:bump": "npx auto-changelog -p"
   },
   "github": {
-    "release": true
+    "release": true,
+    "tokenRef": "PERSONAL_GITHUB_TOKEN",
+    "comments": {
+      "submit": true
+    }
   },
   "npm": {
     "publish": false

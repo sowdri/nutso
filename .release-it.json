@@ -8,7 +8,6 @@
   },
   "github": {
     "release": true,
-    "tokenRef": "PERSONAL_GITHUB_TOKEN",
     "comments": {
       "submit": true
     }

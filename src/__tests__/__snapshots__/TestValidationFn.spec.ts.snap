@@ -60,30 +60,3 @@ exports[`Custom validation - check errorPath - level 2 1`] = `
   },
 }
 `;
-
-exports[`Password equality validation 1`] = `
-{
-  "errorMessage": "Passwords do not match",
-  "errorPath": [
-    "repeatPassword",
-  ],
-  "isValid": false,
-  "properties": {
-    "password": {
-      "errorMessage": "",
-      "errorPath": [],
-      "isValid": true,
-    },
-    "repeatPassword": {
-      "errorMessage": "Passwords do not match",
-      "errorPath": [],
-      "isValid": false,
-    },
-    "username": {
-      "errorMessage": "",
-      "errorPath": [],
-      "isValid": true,
-    },
-  },
-}
-`;

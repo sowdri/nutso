@@ -140,7 +140,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
   expect(result).toMatchSnapshot();
 });
 
-test(`Password equality validation`, () => {
+test(`Login form validation`, () => {
   type LoginForm = {
     username: string;
     password: string;
@@ -175,5 +175,30 @@ test(`Password equality validation`, () => {
     repeatPassword: "foofoofoo",
   };
   const result = validate(form1, loginSchema);
-  expect(result).toMatchSnapshot();
+  expect(result).toMatchInlineSnapshot(`
+{
+  "errorMessage": "Passwords do not match",
+  "errorPath": [
+    "repeatPassword",
+  ],
+  "isValid": false,
+  "properties": {
+    "password": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+    "repeatPassword": {
+      "errorMessage": "Passwords do not match",
+      "errorPath": [],
+      "isValid": false,
+    },
+    "username": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+  },
+}
+`);
 });

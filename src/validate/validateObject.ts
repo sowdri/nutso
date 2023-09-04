@@ -2,6 +2,7 @@ import { ObjectResult } from "../models/result/ObjectResult";
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
+import { validationFnExecutor } from "../utils/validationFnExecutor";
 import { _validate } from "./validate";
 
 export const isRegex = (str: string) => {
@@ -81,6 +82,18 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
         result.errorPath = [field, ...property.errorPath];
         break;
       }
+    }
+  }
+
+  // validationFn
+  // validationFn will be called only if the object is valid at this stage
+  if (result.isValid && schema.validationFn) {
+    const validationFnResult = validationFnExecutor({ ...args, value, validationFn: schema.validationFn });
+    if (validationFnResult) {
+      result.isValid = false;
+      result.errorMessage = validationFnResult.errorMessage;
+      // TODO test this error path
+      result.errorPath = [];
     }
   }
 

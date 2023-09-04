@@ -67,3 +67,125 @@ test(`Address is optional in schema and undefined in object`, () => {
   const result = validate(obj, schema);
   expect(result).toMatchSnapshot();
 });
+
+test(`Validate object - validation function`, () => {
+  type Customer = {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  };
+
+  const obj: Customer = { username: "john@example.com", password: "123", confirmPassword: "1234" };
+  const schema: Schema<Customer> = {
+    type: "object",
+    properties: {
+      username: {
+        type: "string",
+        minLength: 3,
+      },
+      password: {
+        type: "string",
+        minLength: 3,
+      },
+      confirmPassword: {
+        type: "string",
+        minLength: 3,
+      },
+    },
+    validationFn: (args) => {
+      // check if passwords match
+      if (args.value.password == args.value.confirmPassword) return;
+      return {
+        errorMessage: "Passwords do not match ",
+      };
+    },
+  };
+
+  const result = validate(obj, schema);
+  expect(result).toMatchInlineSnapshot(`
+{
+  "errorMessage": "Passwords do not match ",
+  "errorPath": [],
+  "isValid": false,
+  "properties": {
+    "confirmPassword": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+    "password": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+    "username": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+  },
+}
+`);
+});
+
+test(`Validate object - validation function only called if other validations pass`, () => {
+  type Customer = {
+    username: string;
+    password: string;
+    confirmPassword: string;
+  };
+
+  const obj: Customer = { username: "john@example.com", password: "12", confirmPassword: "1234" };
+  const schema: Schema<Customer> = {
+    type: "object",
+    properties: {
+      username: {
+        type: "string",
+        minLength: 3,
+      },
+      password: {
+        type: "string",
+        minLength: 3,
+      },
+      confirmPassword: {
+        type: "string",
+        minLength: 3,
+      },
+    },
+    validationFn: (args) => {
+      // check if passwords match
+      if (args.value.password == args.value.confirmPassword) return;
+      return {
+        errorMessage: "Passwords do not match ",
+      };
+    },
+  };
+
+  const result = validate(obj, schema);
+  expect(result).toMatchInlineSnapshot(`
+{
+  "errorMessage": "Should be at least 3 characters.",
+  "errorPath": [
+    "password",
+  ],
+  "isValid": false,
+  "properties": {
+    "confirmPassword": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+    "password": {
+      "errorMessage": "Should be at least 3 characters.",
+      "errorPath": [],
+      "isValid": false,
+    },
+    "username": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+  },
+}
+`);
+});

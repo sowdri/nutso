@@ -135,7 +135,7 @@ The following fields are applicable for all data types.
 | name     | type      | default | description                                               |
 | -------- | --------- | ------- | --------------------------------------------------------- |
 | type     | `string`  | -       | The value of this has to match the data type of the field |
-| optional | `boolean` | false   | Specify if the field is optional                          |
+| optional | `boolean \| function` | false   | Specify if the field is optional                          |
 
 When an object is marked as optional in the `Schema` and if it's `undefined`, then the object is `valid`, so the `Result` will not have the `properties` field populated for those fields.
 
@@ -254,14 +254,20 @@ const colorsSchema: Schema<Colors> = {
 This is arguably the most powerful feature of `nutso`. The could solve any of your validation requirements with ease.
 
 ```typescript
-export type ValidationFn<T, R> = (field: T, root: R) => ValidatorFnResult | void;
+export type ValidationFn<T, R, P> = (args: { value: T; parent: P; root: R }) => ValidatorFnResult | void;
 ```
+- If the valid is valid then `validationFunction` should return `undefined`
+
+Check this [TestUsecaseLoginForm](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestUsecaseLoginForm.spec.ts) test case for an example.
+
 
 Right now validation function is supported only for the following types, but it will be soon supported on all types.
 
 - string
 - number
 - date
+- boolean
+- object
 
 # Applications
 

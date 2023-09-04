@@ -10,7 +10,7 @@ test(`Boolean - undefined - optional`, () => {
     type: "boolean",
     optional: true,
   };
-  const result1 = validateBoolean({ value, schema, parent: undefined as any });
+  const result1 = validateBoolean({ value, root: value as unknown as boolean, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(value as any as Boolean, schema as any);
@@ -22,7 +22,7 @@ test(`Boolean - undefined - required`, () => {
   const schema: BooleanSchema = {
     type: "boolean",
   };
-  const result1 = validateBoolean({ value, schema, parent: undefined as any });
+  const result1 = validateBoolean({ value, root: value as unknown as boolean, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(value as any as Boolean, schema as any);
@@ -34,7 +34,7 @@ test(`Boolean - defined`, () => {
   const schema: BooleanSchema = {
     type: "boolean",
   };
-  const result1 = validateBoolean({ value, schema, parent: undefined as any });
+  const result1 = validateBoolean({ value, root: value, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(value as any as Boolean, schema as any);
@@ -50,7 +50,7 @@ test(`Boolean - validationFn - should be true - success`, () => {
       return { errorMessage: "Value should be true" };
     },
   };
-  const result1 = validateBoolean({ value, schema, parent: undefined as any });
+  const result1 = validateBoolean({ value, root: value, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(value as any as Boolean, schema as any);
@@ -61,12 +61,12 @@ test(`Boolean - validationFn - should be true - failure`, () => {
   const value = false;
   const schema: BooleanSchema = {
     type: "boolean",
-    validationFn: (value) => {
-      if (value) return;
+    validationFn: (args) => {
+      if (args.value) return;
       return { errorMessage: "Value should be true" };
     },
   };
-  const result1 = validateBoolean({ value, schema, parent: undefined as any });
+  const result1 = validateBoolean({ value, root: value, schema, parent: undefined as any });
   expect(result1).toMatchInlineSnapshot(`
 {
   "errorMessage": "Value should be true",

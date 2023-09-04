@@ -1,13 +1,14 @@
 import { ValidationResult } from "..";
 import { ValidationFn } from "../models/ValidationFn";
 
-export const validationFnExecutor = <T, P>(args: {
+export const validationFnExecutor = <T, R, P>(args: {
   value: T;
-  validationFn: ValidationFn<T, P>;
+  root: R;
   parent: P;
+  validationFn: ValidationFn<T, R, P>;
 }): ValidationResult | undefined => {
   try {
-    const result = args.validationFn(args.value, args.parent);
+    const result = args.validationFn(args);
     if (result) {
       return {
         ...result, // created by user, so put that first, such that `isValid` and `errorPath` are not overwritten

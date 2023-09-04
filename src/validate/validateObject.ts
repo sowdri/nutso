@@ -12,13 +12,14 @@ export const getRegex = (str: string) => {
   return new RegExp(`^${str.slice(1, -1)}$`);
 };
 
-export const validateObject = <T extends { [key: string]: any }, P>(args: {
+export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   value: T | null;
+  root: R;
   parent: P;
-  schema: ObjectSchema<T, P>;
+  schema: ObjectSchema<T, R, P>;
 }): ObjectResult<T> => {
   //
-  const { value, parent, schema } = args;
+  const { value, schema } = args;
 
   const result: ObjectResult<T> = {
     isValid: true,
@@ -29,7 +30,7 @@ export const validateObject = <T extends { [key: string]: any }, P>(args: {
 
   // isnil
   if (isNil(value)) {
-    return { ...optionalFlagValidator({ parent, flag: schema.optional }), properties: {} as any };
+    return { ...optionalFlagValidator({ ...args, flag: schema.optional }), properties: {} as any };
   }
 
   const obj = value as T;
@@ -39,6 +40,7 @@ export const validateObject = <T extends { [key: string]: any }, P>(args: {
   for (let field in schema.properties) {
     if (isRegex(field)) continue;
     result.properties[field] = _validate({
+      ...args,
       value: value ? value[field] : null,
       parent: value,
       schema: schema.properties[field],
@@ -59,6 +61,7 @@ export const validateObject = <T extends { [key: string]: any }, P>(args: {
       if (processedFields.includes(key)) continue;
       if (!regex.test(key)) continue;
       result.properties[key] = _validate({
+        ...args,
         value: value ? value[key] : null,
         parent: value,
         schema: schema.properties[field],

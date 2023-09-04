@@ -1,10 +1,10 @@
 import { Schema } from "./Schema";
 import { OptionalFlag } from "../OptionalFlag";
 
-export type ObjectSchema<T, P = unknown> = {
+export type ObjectSchema<T, R = T, P = unknown> = {
   type: "object";
-  optional?: OptionalFlag<P>;
+  optional?: OptionalFlag<R, P>;
   properties: {
-    [K in keyof T]: Schema<T[K], T>;
+    [K in keyof T]: Schema<T[K], R, T>;
   };
 };

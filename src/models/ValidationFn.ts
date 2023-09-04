@@ -2,4 +2,4 @@ export type ValidatorFnResult = {
   errorMessage: string;
 };
 
-export type ValidationFn<T, R> = (field: T, root: R) => ValidatorFnResult | void;
+export type ValidationFn<T, R, P> = (args: { value: T; parent: P; root: R }) => ValidatorFnResult | void;

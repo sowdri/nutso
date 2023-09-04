@@ -7,7 +7,7 @@ test(`Basic`, () => {
   const schema: StringSchema = {
     type: "string",
   };
-  const result1 = validateString({ value: str, schema, parent: undefined as any });
+  const result1 = validateString({ value: str, root: str, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(str, schema);
@@ -19,7 +19,7 @@ test(`Empty string - invalid`, () => {
   const schema: StringSchema = {
     type: "string",
   };
-  const result1 = validateString({ value: str, schema, parent: undefined as any });
+  const result1 = validateString({ value: str, root: str, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str, schema);
@@ -32,7 +32,7 @@ test(`Empty string - not optional`, () => {
     type: "string",
     optional: () => false,
   };
-  const result1 = validateString({ value: str, schema, parent: undefined as any });
+  const result1 = validateString({ value: str, root: str, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str, schema);
@@ -45,7 +45,7 @@ test(`Basic - invalid min-length`, () => {
     type: "string",
     minLength: 3,
   };
-  const result1 = validateString({ value: str, schema, parent: undefined as any });
+  const result1 = validateString({ value: str, root: str, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str, schema);
@@ -58,7 +58,7 @@ test(`Basic - invalid max-length`, () => {
     type: "string",
     maxLength: 3,
   };
-  const result1 = validateString({ value: str, schema, parent: undefined as any });
+  const result1 = validateString({ value: str, root: str, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str, schema);
@@ -73,14 +73,36 @@ test(`Regex match`, () => {
   const valid = "5085";
   const invalid = "508";
 
-  const result1 = validateString({ value: valid, schema, parent: undefined as any });
+  const result1 = validateString({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(invalid, schema);
   expect(result2.isValid).toBe(false);
 });
 
-test(`Validation function`, () => {
+test(`Validation function - check value`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    validationFn: (args) => {
+      if (args.value === "5085") return;
+      return {
+        errorMessage: "Invalid",
+      };
+    },
+  };
+  const valid = "5085";
+
+  const result = validateString({ value: valid, root: valid, schema, parent: undefined as any });
+  expect(result).toMatchInlineSnapshot(`
+{
+  "errorMessage": "",
+  "errorPath": [],
+  "isValid": true,
+}
+`);
+});
+
+test(`Validation function - return validation result`, () => {
   const schema: StringSchema = {
     type: "string",
     validationFn: (value) => {
@@ -91,7 +113,7 @@ test(`Validation function`, () => {
   };
   const valid = "5085";
 
-  const result = validateString({ value: valid, schema, parent: undefined as any });
+  const result = validateString({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -104,7 +126,7 @@ test(`Validation function - throw error`, () => {
   };
   const valid = "5085";
 
-  const result = validateString({ value: valid, schema, parent: undefined as any });
+  const result = validateString({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -117,7 +139,7 @@ test(`Validation function - throw error object - valid`, () => {
   };
   const valid = "5085";
 
-  const result = validateString({ value: valid, schema, parent: undefined as any });
+  const result = validateString({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -130,6 +152,6 @@ test(`Validation function - throw error object - invalid`, () => {
   };
   const valid = "5085";
 
-  const result = validateString({ value: valid, schema, parent: undefined as any });
+  const result = validateString({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });

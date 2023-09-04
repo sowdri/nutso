@@ -4,11 +4,11 @@ import { isDate, isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
-export const validateDate = <P>(args: { value: any; parent: P; schema: DateSchema<P> }): DateResult => {
-  const { value, parent, schema } = args;
+export const validateDate = <R, P>(args: { value: any; root: R; parent: P; schema: DateSchema<R, P> }): DateResult => {
+  const { value, schema } = args;
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ parent, flag: schema.optional });
+    return optionalFlagValidator({ ...args, flag: schema.optional });
   }
 
   // is date object
@@ -24,7 +24,7 @@ export const validateDate = <P>(args: { value: any; parent: P; schema: DateSchem
 
   // custom validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ value: date, validationFn: schema.validationFn, parent: parent });
+    const result = validationFnExecutor({ ...args, value: date, validationFn: schema.validationFn });
     if (result) return result;
   }
 

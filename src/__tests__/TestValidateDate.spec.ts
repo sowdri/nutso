@@ -8,7 +8,7 @@ test(`Basic`, () => {
   const schema: DateSchema = {
     type: "date",
   };
-  const result1 = validateDate({ value: date, schema, parent: undefined as any });
+  const result1 = validateDate({ value: date, root: date, schema, parent: undefined as any });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(date, schema);
@@ -20,7 +20,7 @@ test(`Empty date - invalid`, () => {
   const schema: DateSchema = {
     type: "date",
   };
-  const result1 = validateDate({ value: date, schema, parent: undefined as any });
+  const result1 = validateDate({ value: date, root: date, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(date, schema);
@@ -38,7 +38,7 @@ test(`Validation function`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, schema, parent: undefined as any });
+  const result = validateDate({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -51,7 +51,7 @@ test(`Validation function - throw error`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, schema, parent: undefined as any });
+  const result = validateDate({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });
 
@@ -64,7 +64,7 @@ test(`Validation function - throw error object - valid`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, parent: undefined as any, schema });
+  const result = validateDate({ value: valid, root: valid, parent: undefined as any, schema });
   expect(result).toMatchSnapshot();
 });
 
@@ -77,6 +77,6 @@ test(`Validation function - throw error object - invalid`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, schema, parent: undefined as any });
+  const result = validateDate({ value: valid, root: valid, schema, parent: undefined as any });
   expect(result).toMatchSnapshot();
 });

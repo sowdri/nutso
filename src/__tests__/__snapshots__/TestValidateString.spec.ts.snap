@@ -1,5 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Validation function - return validation result 1`] = `
+{
+  "errorMessage": "Custom validation failed",
+  "errorPath": [],
+  "isValid": false,
+}
+`;
+
 exports[`Validation function - throw error 1`] = `
 {
   "errorMessage": "Validation fn threw!",
@@ -19,14 +27,6 @@ exports[`Validation function - throw error object - invalid 1`] = `
 exports[`Validation function - throw error object - valid 1`] = `
 {
   "errorMessage": "Custom error object, with message field",
-  "errorPath": [],
-  "isValid": false,
-}
-`;
-
-exports[`Validation function 1`] = `
-{
-  "errorMessage": "Custom validation failed",
   "errorPath": [],
   "isValid": false,
 }

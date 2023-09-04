@@ -4,11 +4,16 @@ import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isBoolean, isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 
-export const validateBoolean = <P>(args: { value: any; parent: P; schema: BooleanSchema<P> }): BooleanResult => {
-  const { value, parent, schema } = args;
+export const validateBoolean = <R, P>(args: {
+  value: any;
+  root: R;
+  parent: P;
+  schema: BooleanSchema<R, P>;
+}): BooleanResult => {
+  const { value, schema } = args;
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ parent, flag: schema.optional });
+    return optionalFlagValidator({ ...args, flag: schema.optional });
   }
 
   if (!isBoolean(value)) {
@@ -21,7 +26,7 @@ export const validateBoolean = <P>(args: { value: any; parent: P; schema: Boolea
 
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ value, validationFn: schema.validationFn, parent });
+    const result = validationFnExecutor({ ...args, value, validationFn: schema.validationFn });
     if (result) return result;
   }
 

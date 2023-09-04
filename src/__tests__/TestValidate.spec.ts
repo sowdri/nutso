@@ -349,8 +349,8 @@ test(`Test optional flag - array - valid`, () => {
       },
       colors: {
         type: "array",
-        optional: (person: Person) => {
-          return person.colorBlind;
+        optional: (args) => {
+          return args.root.colorBlind;
         },
         items: {
           type: "string",
@@ -385,7 +385,7 @@ test(`Test optional flag - boolean`, () => {
       },
       hasFavColor: {
         type: "boolean",
-        optional: (person: Person) => person.colorBlind,
+        optional: (args) => args.root.colorBlind, // TODO check why parent is unknown
       },
     },
   };
@@ -418,7 +418,7 @@ test(`Test optional flag - string`, () => {
       },
       favColor: {
         type: "string",
-        optional: (person: Person) => person.colorBlind,
+        optional: (args) => args.root.colorBlind,
       },
     },
   };
@@ -451,7 +451,7 @@ test(`Test optional flag - string`, () => {
       },
       favColor: {
         type: "string",
-        optional: (person: Person) => person.colorBlind,
+        optional: (args) => args.root.colorBlind,
       },
     },
   };
@@ -484,7 +484,7 @@ test(`Test optional flag - date`, () => {
       },
       dob: {
         type: "date",
-        optional: (person: Person) => person.isBorn,
+        optional: (args) => args.root.isBorn,
       },
     },
   };
@@ -517,7 +517,7 @@ test(`Test optional flag - number`, () => {
       },
       weight: {
         type: "number",
-        optional: (person) => person.isBorn,
+        optional: (args) => args.root.isBorn,
       },
     },
   };
@@ -553,7 +553,7 @@ test(`Test optional flag - object`, () => {
       },
       info: {
         type: "object",
-        optional: (person: Person) => person.isBorn,
+        optional: (args) => args.root.isBorn,
         properties: {
           name: {
             type: "string",

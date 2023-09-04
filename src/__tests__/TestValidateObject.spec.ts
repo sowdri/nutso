@@ -29,7 +29,7 @@ test(`Basic`, () => {
     },
   };
 
-  const result1 = validateObject({ value: obj, schema, parent: undefined as any });
+  const result1 = validateObject({ value: obj, root: obj, schema, parent: undefined as any });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(obj, schema);

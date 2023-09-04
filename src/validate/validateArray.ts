@@ -4,15 +4,16 @@ import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
 import { _validate } from "./validate";
 
-export const validateArray = <E, T extends E[], P>(args: {
+export const validateArray = <E, T extends E[], R, P>(args: {
   value: T | null;
+  root: R;
   parent: P;
-  schema: ArraySchema<E, T, P>;
+  schema: ArraySchema<E, T, R, P>;
 }): ArrayResult<E> => {
-  const { value: arr, parent, schema } = args;
+  const { value: arr, schema } = args;
   // isnil
   if (isNil(arr)) {
-    return { ...optionalFlagValidator({ parent, flag: schema.optional }), items: [] };
+    return { ...optionalFlagValidator({ ...args, flag: schema.optional }), items: [] };
   }
 
   const result: ArrayResult<E> = {
@@ -36,7 +37,7 @@ export const validateArray = <E, T extends E[], P>(args: {
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = _validate({ value: arr[i], parent: arr as any, schema: schema.items });
+    result.items[i] = _validate({ ...args, value: arr[i], parent: arr as any, schema: schema.items });
   }
 
   // if this node is valid, then check if all of it's children are valid

@@ -10,13 +10,13 @@ test(`Compose schema with different roots - typesafety`, () => {
     address: Address;
   };
 
-  const addressSchema: Schema<Address> = {
+  const addressSchema: Schema<Address, Customer> = {
     type: "object",
     properties: {
       line1: {
         type: "string",
-        validationFn: (value, address) => {
-          address.line1;
+        validationFn: (args) => {
+          args.parent.line1;
           return {
             isValid: true,
             errorMessage: "",
@@ -31,7 +31,7 @@ test(`Compose schema with different roots - typesafety`, () => {
     properties: {
       name: {
         type: "string",
-        validationFn: (value, root) => {
+        validationFn: (args) => {
           return {
             isValid: false,
             errorMessage: "Custom validation failed",
@@ -61,8 +61,8 @@ test(`Custom validation - check errorPath - level 1`, () => {
     properties: {
       line1: {
         type: "string",
-        validationFn: (value, address) => {
-          address.line1;
+        validationFn: (args) => {
+          args.parent.line1;
         },
       },
     },
@@ -73,7 +73,7 @@ test(`Custom validation - check errorPath - level 1`, () => {
     properties: {
       name: {
         type: "string",
-        validationFn: (value, root) => {
+        validationFn: (args) => {
           return {
             isValid: false,
             errorMessage: "Custom validation failed",
@@ -109,7 +109,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     properties: {
       line1: {
         type: "string",
-        validationFn: (value, root) => {
+        validationFn: (args) => {
           return {
             errorMessage: "Custom validation failed",
           };
@@ -123,7 +123,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     properties: {
       name: {
         type: "string",
-        validationFn: (value, root) => {},
+        validationFn: (args) => {},
       },
       address: addressSchema,
     },
@@ -159,8 +159,8 @@ test(`Password equality validation`, () => {
       },
       repeatPassword: {
         type: "string",
-        validationFn: (field, root) => {
-          if (field !== root.password)
+        validationFn: (args) => {
+          if (args.value !== args.parent.password)
             return {
               errorMessage: "Passwords do not match",
             };

@@ -2,15 +2,20 @@ import { StringResult } from "../models/result/StringResult";
 import { StringSchema } from "../models/schema/StringSchema";
 import { isNil, isString } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
-import { optionalFlagValidator, optionalFlagValue } from "../utils/optionalFlagValidator";
+import { optionalFlagValidator, isOptional } from "../utils/optionalFlagValidator";
 
-export const validateString = <P>(args: { value: any; parent: P; schema: StringSchema<P> }): StringResult => {
-  const { value, parent, schema } = args;
+export const validateString = <R, P>(args: {
+  value: any;
+  root: R;
+  parent: P;
+  schema: StringSchema<R, P>;
+}): StringResult => {
+  const { value, schema } = args;
   //
 
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ parent, flag: schema.optional });
+    return optionalFlagValidator({ ...args, flag: schema.optional });
   }
 
   // check if type is string
@@ -26,7 +31,7 @@ export const validateString = <P>(args: { value: any; parent: P; schema: StringS
 
   // check if empty
   if (str === "") {
-    const optional = optionalFlagValue({ parent, flag: schema.optional });
+    const optional = isOptional({ ...args, flag: schema.optional });
     if (!optional)
       return {
         isValid: false,
@@ -67,7 +72,7 @@ export const validateString = <P>(args: { value: any; parent: P; schema: StringS
 
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ value: str, validationFn: schema.validationFn, parent: parent });
+    const result = validationFnExecutor({ ...args, value: str, validationFn: schema.validationFn });
     if (result) return result;
   }
 

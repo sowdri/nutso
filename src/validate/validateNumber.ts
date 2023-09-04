@@ -4,12 +4,17 @@ import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil, isNumber } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 
-export const validateNumber = <P>(args: { value: any; parent: P; schema: NumberSchema<P> }): NumberResult => {
+export const validateNumber = <R, P>(args: {
+  value: any;
+  root: R;
+  parent: P;
+  schema: NumberSchema<R, P>;
+}): NumberResult => {
   //
-  const { value, parent, schema } = args;
+  const { value, schema } = args;
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ parent, flag: schema.optional });
+    return optionalFlagValidator({ ...args, flag: schema.optional });
   }
 
   if (!isNumber(value) || isNaN(value)) {
@@ -54,7 +59,7 @@ export const validateNumber = <P>(args: { value: any; parent: P; schema: NumberS
 
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ value: numbr, validationFn: schema.validationFn, parent });
+    const result = validationFnExecutor({ ...args, value: numbr, validationFn: schema.validationFn });
     if (result) return result;
   }
 

@@ -10,7 +10,7 @@ test(`Compose schema - 1`, () => {
     address: Address;
   };
 
-  const addressSchema: Schema<Address> = {
+  const addressSchema: Schema<Address, Customer> = {
     type: "object",
     properties: {
       city: {
@@ -34,5 +34,31 @@ test(`Compose schema - 1`, () => {
       city: "NY",
     },
   };
-  validate(customer, customerSchema);
+  const result = validate(customer, customerSchema);
+  expect(result).toMatchInlineSnapshot(`
+{
+  "errorMessage": "",
+  "errorPath": [],
+  "isValid": true,
+  "properties": {
+    "address": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+      "properties": {
+        "city": {
+          "errorMessage": "",
+          "errorPath": [],
+          "isValid": true,
+        },
+      },
+    },
+    "name": {
+      "errorMessage": "",
+      "errorPath": [],
+      "isValid": true,
+    },
+  },
+}
+`);
 });

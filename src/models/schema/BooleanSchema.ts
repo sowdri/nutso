@@ -1,8 +1,8 @@
 import { OptionalFlag } from "../OptionalFlag";
 import { ValidationFn } from "../ValidationFn";
 
-export type BooleanSchema<P = unknown> = {
+export type BooleanSchema<R = boolean, P = unknown> = {
   type: "boolean";
-  optional?: OptionalFlag<P>;
-  validationFn?: ValidationFn<boolean, P>;
+  optional?: OptionalFlag<R, P>;
+  validationFn?: ValidationFn<boolean, R, P>;
 };

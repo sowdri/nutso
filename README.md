@@ -176,40 +176,6 @@ result.properties.address.isValid === true;
 result.properties.address.properties === {}; // is empty
 ```
 
-# Optional Flag
-
-The optional flag is supported for all data types and it could either be a `boolean` or a `function`. Let's take the following example, in which the `endIsoMonth` is required, if the tenure is not current. 
-
-```
-export type Tenure = {
-  startIsoMonth: string;
-  endIsoMonth?: string;
-  isCurrent: boolean;
-};
-
-export const tenureSchema: Schema<Tenure> = {
-  type: "object",
-  properties: {
-    startIsoMonth: {
-      type: "string",
-      optional: false
-    },
-    endIsoMonth: {
-      type: "string",
-      optional: (args) => {
-        // this is typesafe too!
-        if (args.parent?.isCurrent) return true;
-        return false;
-      },
-    },
-    isCurrent: {
-      type: "boolean",
-    },
-  },
-};
-```
-
-
 ## String validators
 
 The following validators are applicable for `string` data type.
@@ -279,6 +245,39 @@ const colorsSchema: Schema<Colors> = {
   items: {
     type: "string",
     minLength: 5, // blue will fail
+  },
+};
+```
+
+# Optional Flag (as a function)
+
+The optional flag is supported for all data types and it could either be a `boolean` or a `function`. Let's take the following example, in which the `endIsoMonth` is required, if the tenure is not current. 
+
+```
+export type Tenure = {
+  startIsoMonth: string;
+  endIsoMonth?: string;
+  isCurrent: boolean;
+};
+
+export const tenureSchema: Schema<Tenure> = {
+  type: "object",
+  properties: {
+    startIsoMonth: {
+      type: "string",
+      optional: false
+    },
+    endIsoMonth: {
+      type: "string",
+      optional: (args) => {
+        // this is typesafe too!
+        if (args.parent?.isCurrent) return true;
+        return false;
+      },
+    },
+    isCurrent: {
+      type: "boolean",
+    },
   },
 };
 ```

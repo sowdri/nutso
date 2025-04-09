@@ -16,47 +16,6 @@ export type StringSchema<R = string, P = unknown> = {
   minLength?: number;
   maxLength?: number;
   pattern?: RegExp;
+  values?: string[];
   validationFn?: ValidationFn<string, R, P>;
-};
-
-const nakedSchema: Schema<string> = {
-  type: "string",
-  validationFn: (args) => {},
-};
-
-type Customer = {
-  name: string;
-};
-
-const schema: Schema<Customer> = {
-  type: "object",
-  properties: {
-    name: {
-      type: "string",
-      validationFn: (args) => {},
-    },
-  },
-};
-
-type Bar = {
-  bar: string;
-};
-
-type Foo = {
-  bar: Bar;
-};
-
-const fooSchema: Schema<Foo> = {
-  type: "object",
-  properties: {
-    bar: {
-      type: "object",
-      properties: {
-        bar: {
-          type: "string",
-          validationFn: (args) => {},
-        },
-      },
-    },
-  },
 };

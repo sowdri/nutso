@@ -2,6 +2,7 @@ import { ArrayResult } from "../models/result/ArrayResult";
 import { ArraySchema } from "../models/schema/ArraySchema";
 import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
+import { validationFnExecutor } from "../utils/validationFnExecutor";
 import { _validate } from "./validate";
 
 export const validateArray = <E, T extends E[], R, P>(args: {
@@ -75,6 +76,20 @@ export const validateArray = <E, T extends E[], R, P>(args: {
         result.errorPath = [i, ...item.errorPath];
         break;
       }
+    }
+  }
+
+  // validationFn
+  if (result.isValid && schema.validationFn) {
+    const validationFnResult = validationFnExecutor({
+      ...args,
+      value: arr,
+      validationFn: schema.validationFn,
+    });
+    if (validationFnResult) {
+      result.isValid = false;
+      result.errorMessage = validationFnResult.errorMessage;
+      result.errorPath = validationFnResult.errorPath || [];
     }
   }
 

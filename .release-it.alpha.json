@@ -2,19 +2,16 @@
   "git": {
     "requireBranch": "alpha/v6.0.0",
     "commitMessage": "chore: release v${version}",
-    "tagName": "v${version}"
+    "tagName": "v${version}",
+    "push": false
   },
   "hooks": {
-    "before:init": ["npm run test"],
-    "after:bump": "npx auto-changelog -p"
+    "before:init": ["npm run test"]
   },
   "github": {
-    "release": true,
-    "preRelease": true,
-    "releaseName": "Alpha v${version}",
-    "tokenRef": "PERSONAL_GITHUB_TOKEN"
+    "release": false
   },
   "npm": {
-    "publish": false
+    "publish": true
   }
 } 

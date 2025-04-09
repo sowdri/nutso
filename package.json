@@ -40,6 +40,6 @@
     "jest": "^29.6.4",
     "parcel": "^2.9.3",
     "release-it": "^16.1.5",
-    "typescript": "^5.2.2"
+    "typescript": "^5.8.3"
   }
 }

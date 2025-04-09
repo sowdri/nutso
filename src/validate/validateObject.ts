@@ -4,6 +4,8 @@ import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 import { _validate } from "./validate";
+import { Result } from "../models/result/Result";
+import { Schema } from "../models/schema/Schema";
 
 export const isRegex = (str: string) => {
   return str.startsWith("/") && str.endsWith("/");
@@ -31,7 +33,10 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
 
   // isnil
   if (isNil(value)) {
-    return { ...optionalFlagValidator({ ...args, flag: schema.optional }), properties: {} as any };
+    return {
+      ...optionalFlagValidator({ ...args, flag: schema.optional }),
+      properties: {} as any,
+    };
   }
 
   const obj = value as T;
@@ -40,11 +45,12 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   // for each static key, validate
   for (let field in schema.properties) {
     if (isRegex(field)) continue;
-    result.properties[field] = _validate({
+    const fieldKey = field as Extract<keyof T, string>;
+    (result.properties as any)[fieldKey] = _validate<any, R, T>({
       ...args,
-      value: value ? value[field] : null,
+      value: value ? value[fieldKey] : null,
       parent: value,
-      schema: schema.properties[field],
+      schema: schema.properties[field] as Schema<any, R, T>,
     });
     processedFields.push(field);
   }
@@ -61,11 +67,12 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
        */
       if (processedFields.includes(key)) continue;
       if (!regex.test(key)) continue;
-      result.properties[key] = _validate({
+      const keyAsT = key as Extract<keyof T, string>;
+      (result.properties as any)[keyAsT] = _validate<any, R, T>({
         ...args,
-        value: value ? value[key] : null,
+        value: value ? value[keyAsT] : null,
         parent: value,
-        schema: schema.properties[field],
+        schema: schema.properties[field] as Schema<any, R, T>,
       });
       processedFields.push(key);
     }
@@ -75,7 +82,8 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   // because the node is invalid, if any of it's children are invalid
   if (result.isValid) {
     for (let field of processedFields) {
-      const property = result.properties[field];
+      const fieldKey = field as Extract<keyof T, string>;
+      const property = result.properties[fieldKey as keyof T];
       if (!property.isValid) {
         result.isValid = false;
         result.errorMessage = property.errorMessage;
@@ -88,7 +96,11 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   // validationFn
   // validationFn will be called only if the object is valid at this stage
   if (result.isValid && schema.validationFn) {
-    const validationFnResult = validationFnExecutor({ ...args, value, validationFn: schema.validationFn });
+    const validationFnResult = validationFnExecutor({
+      ...args,
+      value,
+      validationFn: schema.validationFn,
+    });
     if (validationFnResult) {
       result.isValid = false;
       result.errorMessage = validationFnResult.errorMessage;

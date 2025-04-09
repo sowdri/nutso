@@ -1,0 +1,7 @@
+---
+description: 
+globs: *.spec.ts
+alwaysApply: false
+---
+- add unit tests to src/__tests__ folder of each module
+- follow PascalCase that starts with Test<PascalCase of file under test> for file names

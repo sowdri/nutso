@@ -1,3 +1,26 @@
+# Changelog
+
+## 6.0.0-alpha.1 (2024-04-09)
+
+### Breaking Changes
+
+- **Validation Result Objects**: Removed `errorMessage` and `errorPath` properties from successful validation results to make types more accurate
+- **ValidationFn**: Updated type signatures for validation functions to consistently use `args` object pattern
+
+### Bug Fixes
+
+- **StringSchema**: Fixed exact value validation to properly take precedence over other validations
+- **ObjectSchema**: Fixed regex pattern validation for property keys
+- **Type Safety**: Fixed TypeScript errors throughout codebase
+
+### Code Improvements
+
+- Added better typing support for all validation functions
+- Improved error handling in optionalFlagValidator
+- Enhanced validation logic for array and object types
+
+## 5.0.2 (2022-03-17)
+
 ### Changelog
 
 All notable changes to this project will be documented in this file. Dates are displayed in UTC.

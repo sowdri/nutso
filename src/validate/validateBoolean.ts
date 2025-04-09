@@ -10,7 +10,20 @@ export const validateBoolean = <R, P>(args: {
   parent: P;
   schema: BooleanSchema<R, P>;
 }): BooleanResult => {
-  const { value, schema } = args;
+  const { value, schema, root, parent } = args;
+
+  // Check if field is applicable
+  if (
+    schema.isApplicableFn &&
+    !schema.isApplicableFn({ value, parent, root })
+  ) {
+    return {
+      isValid: true,
+      errorMessage: ``,
+      errorPath: [],
+    };
+  }
+
   // isnil
   if (isNil(value)) {
     return optionalFlagValidator({ ...args, flag: schema.optional });
@@ -26,7 +39,11 @@ export const validateBoolean = <R, P>(args: {
 
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ ...args, value, validationFn: schema.validationFn });
+    const result = validationFnExecutor({
+      ...args,
+      value,
+      validationFn: schema.validationFn,
+    });
     if (result) return result;
   }
 

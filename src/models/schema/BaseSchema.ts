@@ -1,5 +1,6 @@
 import { OptionalFlag } from "../OptionalFlag";
 import { ValidationFn } from "../ValidationFn";
+import { IsApplicableFn } from "../IsApplicableFn";
 
 /**
  * Base schema type containing common properties shared across all schema types
@@ -16,4 +17,16 @@ export type BaseSchema<T, R = T, P = unknown> = {
 
   /** Custom validation function */
   validationFn?: ValidationFn<T, R, P>;
+
+  /**
+   * Function to determine if a field is applicable in the current context
+   *
+   * This is specifically designed to allow users to specify if a field is applicable or not based on runtime conditions.
+   * Unlike the optional flag (which marks a field as always optional), the isApplicableFn allows for dynamic determination
+   * of applicability based on the values of the parent or root object.
+   *
+   * This is especially useful in discriminated union types where certain fields should only be present
+   * for specific variants of the union, allowing for more precise schema validation.
+   */
+  isApplicableFn?: IsApplicableFn<T, R, P>;
 };

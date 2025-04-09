@@ -55,6 +55,17 @@ export const validateString = <R, P>(args: {
       };
   }
 
+  // exact value match - check this before min/max length
+  if (!isNil(schema.value)) {
+    if (str !== schema.value) {
+      return {
+        isValid: false,
+        errorMessage: `Should be exactly: "${schema.value}".`,
+        errorPath: [],
+      };
+    }
+  }
+
   // min length
   if (!isNil(schema.minLength) && str.length < schema.minLength!) {
     return {

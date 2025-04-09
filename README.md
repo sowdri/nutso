@@ -343,6 +343,8 @@ The following validators are applicable for `string` data type.
 | minLength    | `number`   | -       | Minimum length of the string                 |
 | maxLength    | `number`   | -       | Maximum length of the string                 |
 | pattern      | `regex`    | -       | A valid js regex to match against the string |
+| values       | `string[]` | -       | List of possible values the string can take  |
+| value        | `string`   | -       | Exact value the string must match            |
 | validationFn | `function` | -       | [Validation Function](#validation-function)  |
 
 ## Number validators

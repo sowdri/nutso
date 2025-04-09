@@ -14,7 +14,8 @@
     "test": "jest",
     "watch": "jest --watch",
     "build": "parcel build",
-    "release": "release-it"
+    "release": "release-it",
+    "type-check": "tsc --noEmit"
   },
   "repository": {
     "type": "git",

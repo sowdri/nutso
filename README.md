@@ -487,3 +487,58 @@ The validation function is supported for all data types:
 - Tuple support
 - Object valiation with circular reference
 - Error path
+
+# Object Validators
+
+The following validators are applicable for `object` data type.
+
+| name         | type        | default | description                                      |
+| ------------ | ----------- | ------- | ------------------------------------------------ |
+| type         | `string`    | -       | The value of this has to be `object`             |
+| properties   | `SchemaMap` | -       | A map of object properties with their own schema |
+| validationFn | `function`  | -       | [Validation Function](#validation-function)      |
+
+For object schemas, all properties of your type must be explicitly defined in the schema. This ensures type safety and prevents missing validations. If a type property is optional in TypeScript, you should still define it in the schema and mark it as optional.
+
+Example:
+
+```typescript
+type User = {
+  name: string;
+  age: number;
+  address?: {
+    // Optional in TypeScript
+    street: string;
+    city: string;
+  };
+};
+
+const userSchema: Schema<User> = {
+  type: "object",
+  properties: {
+    name: {
+      type: "string",
+      minLength: 3,
+    },
+    age: {
+      type: "number",
+      min: 18,
+    },
+    address: {
+      // Must be defined even though it's optional in the type
+      type: "object",
+      optional: true, // Mark as optional in the schema
+      properties: {
+        street: {
+          type: "string",
+        },
+        city: {
+          type: "string",
+        },
+      },
+    },
+  },
+};
+```
+
+Even if a property is optional in your TypeScript type (marked with `?`), you still need to include it in your schema and use the `optional` flag if needed.

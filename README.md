@@ -383,12 +383,13 @@ No other validators are present for date at the moment, it is WIP. Please create
 
 The following validators are applicable for `Array` data type.
 
-| name     | type          | default | description                                       |
-| -------- | ------------- | ------- | ------------------------------------------------- |
-| type     | `string`      | -       | The value of this has to be `array`               |
-| minItems | `number`      | -       | The minimun number of items required in the array |
-| maxItems | `number`      | -       | The maximum number of items allowed in the array  |
-| items    | `Schema<T,R>` | -       | The schema of the item present in the array       |
+| name         | type          | default | description                                       |
+| ------------ | ------------- | ------- | ------------------------------------------------- |
+| type         | `string`      | -       | The value of this has to be `array`               |
+| minItems     | `number`      | -       | The minimun number of items required in the array |
+| maxItems     | `number`      | -       | The maximum number of items allowed in the array  |
+| items        | `Schema<T,R>` | -       | The schema of the item present in the array       |
+| validationFn | `function`    | -       | [Validation Function](#validation-function)       |
 
 Example:
 
@@ -402,6 +403,12 @@ const colorsSchema: Schema<Colors> = {
   items: {
     type: "string",
     minLength: 5, // blue will fail
+  },
+  // Custom validation for the entire array
+  validationFn: ({ value }) => {
+    if (value.includes("red")) {
+      return { errorMessage: "The color red is not allowed" };
+    }
   },
 };
 ```
@@ -455,13 +462,14 @@ export type ValidationFn<T, R, P> = (args: {
 
 Check this [TestUsecaseLoginForm](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestUsecaseLoginForm.spec.ts) test case for an example.
 
-Right now validation function is supported only for the following types, but it will be soon supported on all types.
+The validation function is supported for all data types:
 
 - string
 - number
 - date
 - boolean
 - object
+- array
 
 # Applications
 
@@ -478,4 +486,4 @@ Right now validation function is supported only for the following types, but it 
 
 - Tuple support
 - Object valiation with circular reference
-- Custom validation function for other data types
+- Error path

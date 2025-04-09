@@ -1,0 +1,26 @@
+{
+  "git": {
+    "requireBranch": "alpha/v6.0.0",
+    "commitMessage": "chore: release v${version}",
+    "tagName": "v${version}"
+  },
+  "hooks": {
+    "before:init": ["npm run test"],
+    "after:bump": "npx auto-changelog -p"
+  },
+  "github": {
+    "release": true,
+    "preRelease": true,
+    "releaseName": "Alpha v${version}",
+    "tokenRef": "PERSONAL_GITHUB_TOKEN"
+  },
+  "npm": {
+    "publish": false
+  },
+  "plugins": {
+    "@release-it/conventional-changelog": {
+      "preset": "angular",
+      "infile": "CHANGELOG.md"
+    }
+  }
+} 

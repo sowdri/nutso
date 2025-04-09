@@ -1,6 +1,6 @@
 {
   "name": "nutso",
-  "version": "5.0.2",
+  "version": "6.0.0-alpha.1",
   "description": "a typesafe validation library for typescript",
   "source": "src/index.ts",
   "main": "dist/main.js",
@@ -15,6 +15,7 @@
     "watch": "jest --watch",
     "build": "parcel build",
     "release": "release-it",
+    "release:alpha": "release-it --config=.release-it.alpha.json",
     "type-check": "tsc --noEmit"
   },
   "repository": {

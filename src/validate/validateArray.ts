@@ -10,10 +10,27 @@ export const validateArray = <E, T extends E[], R, P>(args: {
   parent: P;
   schema: ArraySchema<E, T, R, P>;
 }): ArrayResult<E> => {
-  const { value: arr, schema } = args;
+  const { value: arr, schema, root, parent } = args;
+
+  // Check if field is applicable
+  if (
+    schema.isApplicableFn &&
+    !schema.isApplicableFn({ value: arr as any, parent, root })
+  ) {
+    return {
+      isValid: true,
+      errorMessage: ``,
+      errorPath: [],
+      items: [],
+    };
+  }
+
   // isnil
   if (isNil(arr)) {
-    return { ...optionalFlagValidator({ ...args, flag: schema.optional }), items: [] };
+    return {
+      ...optionalFlagValidator({ ...args, flag: schema.optional }),
+      items: [],
+    };
   }
 
   const result: ArrayResult<E> = {
@@ -32,12 +49,19 @@ export const validateArray = <E, T extends E[], R, P>(args: {
   // array max-items
   if (!isNil(schema.maxItems) && arr.length >= schema.maxItems!) {
     result.isValid = false;
-    result.errorMessage = `Should not have more than ${schema.maxItems! - 1} items.`;
+    result.errorMessage = `Should not have more than ${
+      schema.maxItems! - 1
+    } items.`;
   }
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = _validate({ ...args, value: arr[i], parent: arr as any, schema: schema.items });
+    result.items[i] = _validate({
+      ...args,
+      value: arr[i],
+      parent: arr as any,
+      schema: schema.items,
+    });
   }
 
   // if this node is valid, then check if all of it's children are valid

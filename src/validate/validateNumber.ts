@@ -11,7 +11,20 @@ export const validateNumber = <R, P>(args: {
   schema: NumberSchema<R, P>;
 }): NumberResult => {
   //
-  const { value, schema } = args;
+  const { value, schema, root, parent } = args;
+
+  // Check if field is applicable
+  if (
+    schema.isApplicableFn &&
+    !schema.isApplicableFn({ value, parent, root })
+  ) {
+    return {
+      isValid: true,
+      errorMessage: ``,
+      errorPath: [],
+    };
+  }
+
   // isnil
   if (isNil(value)) {
     return optionalFlagValidator({ ...args, flag: schema.optional });
@@ -59,7 +72,11 @@ export const validateNumber = <R, P>(args: {
 
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ ...args, value: numbr, validationFn: schema.validationFn });
+    const result = validationFnExecutor({
+      ...args,
+      value: numbr,
+      validationFn: schema.validationFn,
+    });
     if (result) return result;
   }
 

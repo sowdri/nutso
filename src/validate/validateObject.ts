@@ -22,7 +22,20 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   schema: ObjectSchema<T, R, P>;
 }): ObjectResult<T> => {
   //
-  const { value, schema } = args;
+  const { value, schema, root, parent } = args;
+
+  // Check if field is applicable
+  if (
+    schema.isApplicableFn &&
+    !schema.isApplicableFn({ value: value as any, parent, root })
+  ) {
+    return {
+      isValid: true,
+      errorMessage: ``,
+      errorPath: [],
+      properties: {} as any,
+    };
+  }
 
   const result: ObjectResult<T> = {
     isValid: true,

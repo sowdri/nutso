@@ -13,8 +13,20 @@ export const validateString = <R, P>(args: {
   parent: P;
   schema: StringSchema<R, P>;
 }): StringResult => {
-  const { value, schema } = args;
+  const { value, schema, root, parent } = args;
   //
+
+  // Check if field is applicable
+  if (
+    schema.isApplicableFn &&
+    !schema.isApplicableFn({ value, parent, root })
+  ) {
+    return {
+      isValid: true,
+      errorMessage: ``,
+      errorPath: [],
+    };
+  }
 
   // isnil
   if (isNil(value)) {

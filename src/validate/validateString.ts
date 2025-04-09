@@ -2,7 +2,10 @@ import { StringResult } from "../models/result/StringResult";
 import { StringSchema } from "../models/schema/StringSchema";
 import { isNil, isString } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
-import { optionalFlagValidator, isOptional } from "../utils/optionalFlagValidator";
+import {
+  optionalFlagValidator,
+  isOptional,
+} from "../utils/optionalFlagValidator";
 
 export const validateString = <R, P>(args: {
   value: any;
@@ -70,9 +73,24 @@ export const validateString = <R, P>(args: {
     }
   }
 
+  // values
+  if (!isNil(schema.values) && schema.values!.length > 0) {
+    if (!schema.values!.includes(str)) {
+      return {
+        isValid: false,
+        errorMessage: `Should be one of: ${schema.values!.join(", ")}.`,
+        errorPath: [],
+      };
+    }
+  }
+
   // validationFn
   if (schema.validationFn) {
-    const result = validationFnExecutor({ ...args, value: str, validationFn: schema.validationFn });
+    const result = validationFnExecutor({
+      ...args,
+      value: str,
+      validationFn: schema.validationFn,
+    });
     if (result) return result;
   }
 

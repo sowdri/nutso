@@ -3,7 +3,7 @@
     "requireBranch": "alpha/v6.0.0",
     "commitMessage": "chore: release v${version}",
     "tagName": "v${version}",
-    "push": false
+    "push": true
   },
   "hooks": {
     "before:init": ["npm run test"]

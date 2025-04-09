@@ -80,7 +80,7 @@ export const customerSchema1: Schema<Customer> = {
   },
 };
 
-export const addressSchema1: Schema<Address> = {
+export const addressSchema1: Schema<Address, Customer, Customer> = {
   optional: false,
   type: "object",
   properties: {

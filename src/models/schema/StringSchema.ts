@@ -17,4 +17,5 @@ export type StringSchema<R = string, P = unknown> = BaseSchema<string, R, P> & {
   maxLength?: number;
   pattern?: RegExp;
   values?: string[];
+  value?: string;
 };

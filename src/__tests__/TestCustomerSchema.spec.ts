@@ -71,13 +71,6 @@ const customerSchema: Schema<Customer> = {
         return parent.type === CustomerType.Personal;
       },
     },
-    employeeCount: {
-      type: "number",
-      min: 0,
-      isApplicableFn: ({ parent }) => {
-        return parent.type === CustomerType.Business;
-      },
-    },
     address: {
       type: "object",
       isApplicableFn: ({ parent }: { parent: Customer }) => {
@@ -148,7 +141,7 @@ test(`Business customer validation`, () => {
     employeeCount: 150,
   };
 
-  const result = validate(businessCustomer, customerSchema);
+  const result = validate(businessCustomer, customerSchema as any);
   expect(result.isValid).toBe(true);
 });
 

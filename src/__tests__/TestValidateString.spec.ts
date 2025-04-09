@@ -266,3 +266,69 @@ test(`Values - empty array`, () => {
   });
   expect(result.isValid).toBe(true);
 });
+
+test(`Exact Value - valid match`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    value: "exact-match",
+  };
+  const valid = "exact-match";
+
+  const result1 = validateString({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+  });
+  expect(result1.isValid).toBe(true);
+
+  const result2 = validate(valid, schema);
+  expect(result2.isValid).toBe(true);
+});
+
+test(`Exact Value - invalid match`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    value: "exact-match",
+  };
+  const invalid = "not-exact-match";
+
+  const result1 = validateString({
+    value: invalid,
+    root: invalid,
+    schema,
+    parent: undefined as any,
+  });
+  expect(result1.isValid).toBe(false);
+  expect(result1.errorMessage).toContain('Should be exactly: "exact-match"');
+
+  const result2 = validate(invalid, schema);
+  expect(result2.isValid).toBe(false);
+});
+
+test(`Exact Value takes precedence over values array`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    value: "exact-match",
+    values: ["one", "two", "three", "exact-match"],
+  };
+  const valid = "exact-match";
+  const invalid = "one"; // This is in the values array but not the exact value
+
+  const result1 = validateString({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+  });
+  expect(result1.isValid).toBe(true);
+
+  const result2 = validateString({
+    value: invalid,
+    root: invalid,
+    schema,
+    parent: undefined as any,
+  });
+  expect(result2.isValid).toBe(false);
+  expect(result2.errorMessage).toContain('Should be exactly: "exact-match"');
+});

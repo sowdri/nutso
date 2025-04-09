@@ -511,6 +511,46 @@ The validation function is supported for all data types:
 - object
 - array
 
+# Standard Validation Functions
+
+Nutso provides a set of standard validation functions that you can use out of the box:
+
+## Email Validation
+
+`emailValidationFn` provides comprehensive email validation that follows standard email format rules:
+
+```typescript
+import { Schema, emailValidationFn } from "nutso";
+
+const userSchema: Schema<User> = {
+  type: "object",
+  properties: {
+    email: {
+      type: "string",
+      validationFn: emailValidationFn,
+    },
+  },
+};
+```
+
+This validator checks:
+
+- Basic structure (presence of @ symbol)
+- Local part (username) validation:
+  - No empty username
+  - No consecutive dots
+  - No spaces
+  - Valid characters only (a-zA-Z0-9.\_%+-)
+- Domain part validation:
+  - No empty domain
+  - No leading or trailing dots
+  - No consecutive dots
+  - Domain must include at least one dot
+  - TLD must be at least 2 characters
+  - Valid domain format
+
+See [TestEmailValidation.spec.ts](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestEmailValidation.spec.ts) for detailed usage examples.
+
 # Applications
 
 - Nutso can be used in the UI for form validation and the error messages could be displayed to the users using static typesafe access to the error message.

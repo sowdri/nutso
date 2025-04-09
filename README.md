@@ -15,6 +15,7 @@ A typesafe validation library for typescript!
 - Zero dependencies
 - Super Fast
 - Run everywhere (browser & nodejs)
+- Flexible validation rules including conditional validation
 
 # Concept
 
@@ -22,6 +23,7 @@ The idea behind this library is to create a schema from a typescript type. The s
 
 - Writing the `Schema` is super simple and there is just one 1 mandatory `type` information for each field.
 - By default each field in the schema is `required`, if you want to make a field optional, then use the `optional: true` flag to mark it as optional.
+- For conditional validation where fields should only be validated in certain contexts (like discriminated union types or multi-step forms), use the `isApplicableFn` to dynamically determine if a field should be validated.
 
 ```typescript
 {
@@ -132,10 +134,165 @@ result.properties.height.errorMessage;
 
 The following fields are applicable for all data types.
 
-| name     | type      | default | description                                               |
-| -------- | --------- | ------- | --------------------------------------------------------- |
-| type     | `string`  | -       | The value of this has to match the data type of the field |
-| optional | `boolean \| function` | false   | Specify if the field is optional                          |
+| name           | type                  | default | description                                               |
+| -------------- | --------------------- | ------- | --------------------------------------------------------- |
+| type           | `string`              | -       | The value of this has to match the data type of the field |
+| optional       | `boolean \| function` | false   | Specify if the field is optional                          |
+| isApplicableFn | `function`            | -       | Dynamic function to determine if a field is applicable    |
+
+When an object is marked as optional in the `Schema` and if it's `undefined`, then the object is `valid`, so the `Result` will not have the `properties` field populated for those fields.
+
+### isApplicableFn
+
+The `isApplicableFn` takes a function that determines at runtime whether a field should be validated or not. This is different from `optional` which marks a field as always optional. The `isApplicableFn` allows for dynamic determination based on the values of the parent or root object.
+
+```typescript
+isApplicableFn: ({ value, parent, root }) => boolean;
+```
+
+- `value`: The current value being validated
+- `parent`: The parent object containing this value
+- `root`: The root object of the schema
+
+If the function returns `false`, the field is considered valid regardless of its actual value and no further validation is performed.
+
+#### Basic Example
+
+```typescript
+type User = {
+  type: "user" | "admin";
+  username: string;
+  adminCode?: string;
+};
+
+const userSchema: Schema<User> = {
+  type: "object",
+  properties: {
+    type: {
+      type: "string",
+      values: ["user", "admin"],
+    },
+    username: {
+      type: "string",
+      minLength: 3,
+    },
+    adminCode: {
+      type: "string",
+      minLength: 8,
+      // Only validate adminCode if the user type is 'admin'
+      isApplicableFn: ({ parent }) => parent.type === "admin",
+    },
+  },
+};
+
+// For admin users, adminCode will be validated
+const adminUser = { type: "admin", username: "admin1", adminCode: "12345" };
+const adminResult = validate(adminUser, userSchema);
+// adminResult.isValid will be false if adminCode is less than 8 chars
+
+// For regular users, adminCode won't be validated even if present
+const regularUser = { type: "user", username: "user1", adminCode: "12345" };
+const userResult = validate(regularUser, userSchema);
+// userResult.isValid will be true regardless of adminCode's value
+```
+
+### Discriminated Union Types
+
+The `isApplicableFn` is particularly useful for validating discriminated union types, where certain fields should only be present for specific variants of the union.
+
+```typescript
+type Payment =
+  | { method: "credit"; cardNumber: string; expiryDate: string }
+  | { method: "paypal"; email: string };
+
+const paymentSchema: Schema<Payment> = {
+  type: "object",
+  properties: {
+    method: {
+      type: "string",
+      values: ["credit", "paypal"],
+    },
+    cardNumber: {
+      type: "string",
+      pattern: /^\d{16}$/,
+      // Only applicable for credit card payments
+      isApplicableFn: ({ parent }) => parent.method === "credit",
+    },
+    expiryDate: {
+      type: "string",
+      pattern: /^\d{2}\/\d{2}$/,
+      // Only applicable for credit card payments
+      isApplicableFn: ({ parent }) => parent.method === "credit",
+    },
+    email: {
+      type: "string",
+      pattern: /^[\w\.-]+@[\w\.-]+\.\w+$/,
+      // Only applicable for PayPal payments
+      isApplicableFn: ({ parent }) => parent.method === "paypal",
+    },
+  },
+};
+
+// Credit card payment
+const creditPayment = {
+  method: "credit",
+  cardNumber: "1234567890123456",
+  expiryDate: "12/25",
+  email: "invalid-email", // This will be ignored during validation
+};
+
+// PayPal payment
+const paypalPayment = {
+  method: "paypal",
+  email: "valid@example.com",
+  cardNumber: "invalid", // This will be ignored during validation
+};
+```
+
+### Multi-Step Forms
+
+Another practical use case is validating multi-step forms where certain fields should only be validated at specific stages:
+
+```typescript
+type Form = {
+  stage: number;
+  personalInfo: {
+    name: string;
+    email: string;
+  };
+  paymentInfo: {
+    cardNumber: string;
+    billingAddress: string;
+  };
+};
+
+const formSchema: Schema<Form> = {
+  type: "object",
+  properties: {
+    stage: {
+      type: "number",
+      min: 1,
+      max: 2,
+    },
+    personalInfo: {
+      type: "object",
+      properties: {
+        name: { type: "string" },
+        email: { type: "string" },
+      },
+    },
+    paymentInfo: {
+      type: "object",
+      // Only validate payment info at stage 2
+      isApplicableFn: ({ root }) => root.stage === 2,
+      properties: {
+        cardNumber: { type: "string" },
+        billingAddress: { type: "string" },
+      },
+    },
+  },
+};
+```
 
 When an object is marked as optional in the `Schema` and if it's `undefined`, then the object is `valid`, so the `Result` will not have the `properties` field populated for those fields.
 
@@ -251,7 +408,7 @@ const colorsSchema: Schema<Colors> = {
 
 # Optional Flag (as a function)
 
-The optional flag is supported for all data types and it could either be a `boolean` or a `function`. Let's take the following example, in which the `endIsoMonth` is required, if the tenure is not current. 
+The optional flag is supported for all data types and it could either be a `boolean` or a `function`. Let's take the following example, in which the `endIsoMonth` is required, if the tenure is not current.
 
 ```
 export type Tenure = {
@@ -287,12 +444,16 @@ export const tenureSchema: Schema<Tenure> = {
 This is arguably the most powerful feature of `nutso`. The could solve any of your validation requirements with ease.
 
 ```typescript
-export type ValidationFn<T, R, P> = (args: { value: T; parent: P; root: R }) => ValidatorFnResult | void;
+export type ValidationFn<T, R, P> = (args: {
+  value: T;
+  parent: P;
+  root: R;
+}) => ValidatorFnResult | void;
 ```
+
 - If the valid is valid then `validationFunction` should return `undefined`
 
 Check this [TestUsecaseLoginForm](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestUsecaseLoginForm.spec.ts) test case for an example.
-
 
 Right now validation function is supported only for the following types, but it will be soon supported on all types.
 

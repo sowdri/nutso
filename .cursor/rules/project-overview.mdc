@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Project Overview
+
+This is a schema validation library.
+
+# Schema Structure:
+The library uses TypeScript to define type-safe schema models for different data types
+Each schema type (Number, String, Boolean, Array, Object, Date) extends a BaseSchema
+Schemas can include validation rules specific to their type
+
+# Validation Process:
+The main entry point is the validate function which starts the validation process
+Internally, it uses _validate to recursively validate data against schemas
+Type-specific validation functions handle the validation logic for each type
+
+# Key Features:
+Type Validation: Ensures values match their expected types
+Conditional Validation: isApplicableFn determines if validation should be applied
+Optional Fields: Handled through the optional flag which can be boolean or function
+Nested Validation: For objects and arrays, validates nested properties recursively
+Custom Validation: validationFn allows custom validation logic
+Path Tracking: Keeps track of validation paths for precise error location
+
+# Object Validation:
+Validates object properties against their schemas
+Supports regex patterns for property names
+Tracks processed fields to avoid duplicate validation
+
+# Array Validation:
+Validates each array item against its schema
+Supports min/max item constraints
+Returns detailed validation results per item
+
+# Result Objects:
+Each validation returns type-specific result objects
+All results include isValid flag
+Failed validations include error messages and paths
+
+# Utility Functions:
+Type checking utilities (isNil, isString, isNumber, etc.)
+Optional flag validation
+Validation function execution with error handling
+
+This library provides a robust and flexible way to validate complex data structures with strong TypeScript typing support.

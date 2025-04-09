@@ -9,8 +9,9 @@ export const validateDate = <R, P>(args: {
   root: R;
   parent: P;
   schema: DateSchema<R, P>;
+  path: string[];
 }): DateResult => {
-  const { value, schema, root, parent } = args;
+  const { value, schema, root, parent, path } = args;
 
   // Check if field is applicable
   if (
@@ -19,14 +20,27 @@ export const validateDate = <R, P>(args: {
   ) {
     return {
       isValid: true,
-      errorMessage: ``,
-      errorPath: [],
     };
   }
 
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ ...args, flag: schema.optional });
+    const validationResult = optionalFlagValidator({
+      ...args,
+      flag: schema.optional,
+    });
+
+    if (validationResult.isValid) {
+      return {
+        isValid: true,
+      };
+    } else {
+      return {
+        isValid: false,
+        errorMessage: validationResult.errorMessage,
+        errorPath: validationResult.errorPath,
+      };
+    }
   }
 
   // is date object
@@ -34,7 +48,7 @@ export const validateDate = <R, P>(args: {
     return {
       isValid: false,
       errorMessage: `Should be a valid date.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -44,7 +58,7 @@ export const validateDate = <R, P>(args: {
   if (schema.validationFn) {
     const result = validationFnExecutor({
       ...args,
-      value: date,
+      value,
       validationFn: schema.validationFn,
     });
     if (result) return result;
@@ -52,7 +66,5 @@ export const validateDate = <R, P>(args: {
 
   return {
     isValid: true,
-    errorMessage: ``,
-    errorPath: [],
   };
 };

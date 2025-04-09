@@ -9,20 +9,18 @@ exports[`Custom validation - check errorPath - level 1 1`] = `
   "isValid": false,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "line1": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
     },
     "name": {
       "errorMessage": "Custom validation failed",
-      "errorPath": [],
+      "errorPath": [
+        "name",
+      ],
       "isValid": false,
     },
   },
@@ -41,20 +39,22 @@ exports[`Custom validation - check errorPath - level 2 1`] = `
     "address": {
       "errorMessage": "Custom validation failed",
       "errorPath": [
+        "address",
         "line1",
       ],
       "isValid": false,
       "properties": {
         "line1": {
           "errorMessage": "Custom validation failed",
-          "errorPath": [],
+          "errorPath": [
+            "address",
+            "line1",
+          ],
           "isValid": false,
         },
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

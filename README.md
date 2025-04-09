@@ -98,20 +98,20 @@ The above validation will produce the following output:
     "name": {
       "isValid": true,
       "errorMessage": "",
-      "errorPath": []
+      "errorPath": ["name"]
     },
     "dob": {
       "isValid": true,
       "errorMessage": "",
-      "errorPath": []
+      "errorPath": ["dob"]
     },
     "height": {
       "isValid": true,
       "errorMessage": "",
-      "errorPath": []
+      "errorPath": ["height"]
     }
   },
-  "fieldPath": []
+  "errorPath": []
 }
 ```
 
@@ -127,6 +127,44 @@ result.properties.name.isValid;
 result.properties.age.isValid;
 result.properties.height.errorMessage;
 ```
+
+## Error Paths
+
+When validation errors occur, `nutso` provides precise error paths that indicate exactly where in the object structure the error occurred. The `errorPath` property is an array of strings that represents the path to the error:
+
+```typescript
+// For a nested object structure
+const user = {
+  name: "John",
+  address: {
+    street: "123 Main St",
+    city: "", // Invalid - empty string
+  },
+};
+
+const result = validate(user, userSchema);
+console.log(result.errorPath); // ["address", "city"]
+```
+
+For arrays, the index is included in the path as a string:
+
+```typescript
+const todoList = {
+  tasks: [
+    { title: "Task 1", completed: false },
+    { title: "", completed: false }, // Invalid - empty title
+  ],
+};
+
+const result = validate(todoList, todoListSchema);
+console.log(result.errorPath); // ["tasks", "1", "title"]
+```
+
+This feature is particularly useful for:
+
+- Form validation in UIs - direct users to the specific field that needs attention
+- API validation - provide precise error locations in responses
+- Complex validation scenarios - easily identify which part of a deeply nested structure failed validation
 
 # Validators
 

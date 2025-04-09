@@ -1,5 +1,8 @@
 import { Schema } from "..";
 import { validate } from "../validate/validate";
+import { ValidationFailure } from "../models/result/ValidationResult";
+import { ArrayResult } from "../models/result/ArrayResult";
+import { ObjectResult } from "../models/result/ObjectResult";
 
 describe("Array ValidationFn Tests", () => {
   test("Array with valid validationFn", () => {
@@ -22,8 +25,8 @@ describe("Array ValidationFn Tests", () => {
     const result = validate(validColors, colorsSchema);
 
     expect(result.isValid).toBe(true);
-    expect(result.items.length).toBe(3);
-    expect(result.items[0].isValid).toBe(true);
+    expect((result as ArrayResult<string>).items.length).toBe(3);
+    expect((result as ArrayResult<string>).items[0].isValid).toBe(true);
   });
 
   test("Array with failing validationFn", () => {
@@ -48,10 +51,12 @@ describe("Array ValidationFn Tests", () => {
     const result = validate(invalidColors, colorsSchema);
 
     expect(result.isValid).toBe(false);
-    expect(result.errorMessage).toBe("The color red is not allowed");
+    expect((result as ValidationFailure).errorMessage).toBe(
+      "The color red is not allowed"
+    );
     // Individual items should still be valid
-    expect(result.items[0].isValid).toBe(true);
-    expect(result.items[1].isValid).toBe(true);
+    expect((result as ArrayResult<string>).items[0].isValid).toBe(true);
+    expect((result as ArrayResult<string>).items[1].isValid).toBe(true);
   });
 
   test("Array with validationFn using root and parent context", () => {
@@ -90,12 +95,16 @@ describe("Array ValidationFn Tests", () => {
       dislikedColors: ["red", "blue", "green"],
     };
 
-    const invalidResult = validate(invalidPreference, colorPreferenceSchema);
+    const invalidResult = validate(
+      invalidPreference,
+      colorPreferenceSchema
+    ) as ObjectResult<ColorPreference>;
     expect(invalidResult.isValid).toBe(false);
     expect(invalidResult.properties.dislikedColors.isValid).toBe(false);
-    expect(invalidResult.properties.dislikedColors.errorMessage).toBe(
-      "Disliked colors cannot include the favorite color"
-    );
+    expect(
+      (invalidResult.properties.dislikedColors as ValidationFailure)
+        .errorMessage
+    ).toBe("Disliked colors cannot include the favorite color");
 
     // Valid case: favorite color is not in disliked colors
     const validPreference: ColorPreference = {
@@ -103,7 +112,10 @@ describe("Array ValidationFn Tests", () => {
       dislikedColors: ["red", "green", "yellow"],
     };
 
-    const validResult = validate(validPreference, colorPreferenceSchema);
+    const validResult = validate(
+      validPreference,
+      colorPreferenceSchema
+    ) as ObjectResult<ColorPreference>;
     expect(validResult.isValid).toBe(true);
     expect(validResult.properties.dislikedColors.isValid).toBe(true);
   });
@@ -133,8 +145,10 @@ describe("Array ValidationFn Tests", () => {
 
     expect(result.isValid).toBe(false);
     // The error should be about the negative number, not the array length
-    expect(result.errorMessage).not.toBe("Array cannot have more than 5 items");
-    expect(result.items[2].isValid).toBe(false);
+    expect((result as ValidationFailure).errorMessage).not.toBe(
+      "Array cannot have more than 5 items"
+    );
+    expect((result as ArrayResult<number>).items[2].isValid).toBe(false);
   });
 
   test("Empty array with validationFn", () => {
@@ -160,7 +174,9 @@ describe("Array ValidationFn Tests", () => {
     const result = validate(emptyArray, emptyArraySchema);
 
     expect(result.isValid).toBe(false);
-    expect(result.errorMessage).toBe("Array cannot be empty");
+    expect((result as ValidationFailure).errorMessage).toBe(
+      "Array cannot be empty"
+    );
   });
 
   test("Array validationFn with simple error message", () => {
@@ -196,12 +212,15 @@ describe("Array ValidationFn Tests", () => {
       members: ["member1", "member2", "member3"],
     };
 
-    const result = validate(teamWithoutLeader, teamSchema);
+    const result = validate(
+      teamWithoutLeader,
+      teamSchema
+    ) as ObjectResult<Team>;
     expect(result.isValid).toBe(false);
-    expect(result.properties.members.errorMessage).toBe(
+    expect((result.properties.members as ValidationFailure).errorMessage).toBe(
       "Team must include a leader"
     );
     // Error path should be path to the property with the validation error
-    expect(result.errorPath).toEqual(["members"]);
+    expect((result as ValidationFailure).errorPath).toEqual(["members"]);
   });
 });

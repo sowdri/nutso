@@ -1,4 +1,7 @@
-import { ObjectResult } from "../models/result/ObjectResult";
+import {
+  ObjectResult,
+  ObjectSuccessResult,
+} from "../models/result/ObjectResult";
 import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil } from "../utils/typeChecker";
@@ -7,12 +10,27 @@ import { _validate } from "./validate";
 import { Result } from "../models/result/Result";
 import { Schema } from "../models/schema/Schema";
 
-export const isRegex = (str: string) => {
-  return str.startsWith("/") && str.endsWith("/");
+/**
+ * A field is represented by a regex when it starts with ^ and ends with $
+ * For example: "^.*$" means match any string
+ * @param field string
+ * @returns boolean
+ */
+export const isRegex = (field: string): boolean => {
+  return field.startsWith("^") && field.endsWith("$");
 };
 
-export const getRegex = (str: string) => {
-  return new RegExp(`^${str.slice(1, -1)}$`);
+// convert string to regex
+export const getRegex = (field: string): RegExp => {
+  try {
+    if (!isRegex(field)) {
+      throw new Error("Not a regex");
+    }
+    return new RegExp(field);
+  } catch (e) {
+    console.error(`Error parsing regex: ${field}`);
+    return /./; // match all
+  }
 };
 
 export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
@@ -20,9 +38,10 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   root: R;
   parent: P;
   schema: ObjectSchema<T, R, P>;
+  path: string[];
 }): ObjectResult<T> => {
   //
-  const { value, schema, root, parent } = args;
+  const { value, schema, root, parent, path = [] } = args;
 
   // Check if field is applicable
   if (
@@ -31,39 +50,52 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
   ) {
     return {
       isValid: true,
-      errorMessage: ``,
-      errorPath: [],
       properties: {} as any,
     };
   }
 
   const result: ObjectResult<T> = {
     isValid: true,
-    errorMessage: "",
     properties: {} as any,
-    errorPath: [],
   };
 
   // isnil
   if (isNil(value)) {
-    return {
-      ...optionalFlagValidator({ ...args, flag: schema.optional }),
-      properties: {} as any,
-    };
+    const validationResult = optionalFlagValidator({
+      ...args,
+      flag: schema.optional,
+    });
+
+    if (validationResult.isValid) {
+      return {
+        ...result,
+        properties: {} as any,
+      };
+    } else {
+      return {
+        isValid: false,
+        errorMessage: validationResult.errorMessage,
+        errorPath: validationResult.errorPath,
+        properties: {} as any,
+      };
+    }
   }
 
   const obj = value as T;
   const processedFields: string[] = [];
+  const properties: Record<string, Result<any>> = {} as any;
 
   // for each static key, validate
   for (let field in schema.properties) {
     if (isRegex(field)) continue;
     const fieldKey = field as Extract<keyof T, string>;
-    (result.properties as any)[fieldKey] = _validate<any, R, T>({
+    const fieldPath = [...path, field];
+    properties[fieldKey] = _validate<any, R, T>({
       ...args,
       value: value ? value[fieldKey] : null,
       parent: value,
       schema: schema.properties[field] as Schema<any, R, T>,
+      path: fieldPath,
     });
     processedFields.push(field);
   }
@@ -81,46 +113,51 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
       if (processedFields.includes(key)) continue;
       if (!regex.test(key)) continue;
       const keyAsT = key as Extract<keyof T, string>;
-      (result.properties as any)[keyAsT] = _validate<any, R, T>({
+      const keyPath = [...path, key];
+      properties[keyAsT] = _validate<any, R, T>({
         ...args,
         value: value ? value[keyAsT] : null,
         parent: value,
         schema: schema.properties[field] as Schema<any, R, T>,
+        path: keyPath,
       });
       processedFields.push(key);
     }
   }
 
-  // if this node is valid, then check if all of it's children are valid
-  // because the node is invalid, if any of it's children are invalid
-  if (result.isValid) {
-    for (let field of processedFields) {
-      const fieldKey = field as Extract<keyof T, string>;
-      const property = result.properties[fieldKey as keyof T];
-      if (!property.isValid) {
-        result.isValid = false;
-        result.errorMessage = property.errorMessage;
-        result.errorPath = [field, ...property.errorPath];
-        break;
-      }
+  // Check if all children are valid
+  for (let field of processedFields) {
+    const fieldKey = field as Extract<keyof T, string>;
+    const property = properties[fieldKey];
+    if (!property.isValid) {
+      return {
+        isValid: false,
+        errorMessage: property.errorMessage,
+        errorPath: property.errorPath,
+        properties: properties as any,
+      };
     }
   }
 
   // validationFn
-  // validationFn will be called only if the object is valid at this stage
-  if (result.isValid && schema.validationFn) {
+  if (schema.validationFn) {
     const validationFnResult = validationFnExecutor({
       ...args,
       value,
       validationFn: schema.validationFn,
     });
-    if (validationFnResult) {
-      result.isValid = false;
-      result.errorMessage = validationFnResult.errorMessage;
-      // TODO test this error path
-      result.errorPath = [];
+    if (validationFnResult && !validationFnResult.isValid) {
+      return {
+        isValid: false,
+        errorMessage: validationFnResult.errorMessage,
+        errorPath: path,
+        properties: properties as any,
+      };
     }
   }
 
-  return result;
+  return {
+    isValid: true,
+    properties: properties as any,
+  };
 };

@@ -2,19 +2,13 @@
 
 exports[`Address is optional in schema and undefined in object 1`] = `
 {
-  "errorMessage": "",
-  "errorPath": [],
   "isValid": true,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {},
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

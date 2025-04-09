@@ -1,5 +1,7 @@
 import { Schema } from "..";
 import { validate } from "../validate/validate";
+import { ValidationFailure } from "../models/result/ValidationResult";
+import { ObjectResult } from "../models/result/ObjectResult";
 
 /**
  * Tests for the isApplicableFn functionality across different data types
@@ -8,11 +10,13 @@ import { validate } from "../validate/validate";
 
 test(`isApplicableFn with primitive types`, () => {
   // Define a schema with conditional field applicability
-  const schema: Schema<{
+  type UserSchema = {
     type: "user" | "admin";
     username: string;
     adminCode?: string;
-  }> = {
+  };
+
+  const schema: Schema<UserSchema> = {
     type: "object",
     properties: {
       type: {
@@ -39,13 +43,13 @@ test(`isApplicableFn with primitive types`, () => {
     adminCode: "1234", // This is too short but should fail validation
   };
 
-  const adminResult = validate(adminUser, schema);
+  const adminResult = validate(adminUser, schema) as ObjectResult<UserSchema>;
   expect(adminResult.isValid).toBe(false);
   // Check if adminCode property exists and is invalid
   expect(adminResult.properties.adminCode?.isValid).toBe(false);
-  expect(adminResult.properties.adminCode?.errorMessage).toContain(
-    "at least 8"
-  );
+  expect(
+    (adminResult.properties.adminCode as ValidationFailure)?.errorMessage
+  ).toContain("at least 8");
 
   // Test case 2: adminCode is not required for regular users
   const regularUser = {
@@ -54,7 +58,7 @@ test(`isApplicableFn with primitive types`, () => {
     adminCode: "1234", // This is invalid but should be ignored
   };
 
-  const userResult = validate(regularUser, schema);
+  const userResult = validate(regularUser, schema) as ObjectResult<UserSchema>;
   expect(userResult.isValid).toBe(true);
   // Even though the adminCode is invalid, it should be considered valid
   // because it's not applicable for regular users

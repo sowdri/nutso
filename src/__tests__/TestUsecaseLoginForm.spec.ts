@@ -44,18 +44,16 @@ test(`Login form validation - at password level`, () => {
   "isValid": false,
   "properties": {
     "password": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "repeatPassword": {
       "errorMessage": "Passwords do not match",
-      "errorPath": [],
+      "errorPath": [
+        "repeatPassword",
+      ],
       "isValid": false,
     },
     "username": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -110,18 +108,12 @@ test(`Login form validation - at parent level`, () => {
   "isValid": false,
   "properties": {
     "password": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "repeatPassword": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "username": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

@@ -1,3 +1,5 @@
-import { ValidationResult } from "./ValidationResult";
+import { ValidationFailure, ValidationSuccess } from "./ValidationResult";
 
-export type TupleSchema<T> = ValidationResult & {};
+export type TupleSuccessResult<T> = ValidationSuccess;
+export type TupleFailureResult<T> = ValidationFailure;
+export type TupleSchema<T> = TupleSuccessResult<T> | TupleFailureResult<T>;

@@ -1,6 +1,8 @@
 import { StringSchema } from "../models/schema/StringSchema";
 import { validate } from "../validate/validate";
 import { validateString } from "../validate/validateString";
+import { ValidationFailure } from "../models/result/ValidationResult";
+import { StringResult } from "../models/result/StringResult";
 
 test(`Basic`, () => {
   const str = "foo";
@@ -12,6 +14,7 @@ test(`Basic`, () => {
     root: str,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(true);
 
@@ -29,6 +32,7 @@ test(`Empty string - invalid`, () => {
     root: str,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(false);
 
@@ -47,6 +51,7 @@ test(`Empty string - not optional`, () => {
     root: str,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(false);
 
@@ -65,6 +70,7 @@ test(`Basic - invalid min-length`, () => {
     root: str,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(false);
 
@@ -83,6 +89,7 @@ test(`Basic - invalid max-length`, () => {
     root: str,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(false);
 
@@ -103,6 +110,7 @@ test(`Regex match`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(true);
 
@@ -127,11 +135,10 @@ test(`Validation function - check value`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result).toMatchInlineSnapshot(`
 {
-  "errorMessage": "",
-  "errorPath": [],
   "isValid": true,
 }
 `);
@@ -140,7 +147,7 @@ test(`Validation function - check value`, () => {
 test(`Validation function - return validation result`, () => {
   const schema: StringSchema = {
     type: "string",
-    validationFn: (value) => {
+    validationFn: (args) => {
       return {
         errorMessage: "Custom validation failed",
       };
@@ -153,6 +160,7 @@ test(`Validation function - return validation result`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result).toMatchSnapshot();
 });
@@ -160,7 +168,7 @@ test(`Validation function - return validation result`, () => {
 test(`Validation function - throw error`, () => {
   const schema: StringSchema = {
     type: "string",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw new Error(`Validation fn threw!`);
     },
   };
@@ -171,6 +179,7 @@ test(`Validation function - throw error`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result).toMatchSnapshot();
 });
@@ -178,7 +187,7 @@ test(`Validation function - throw error`, () => {
 test(`Validation function - throw error object - valid`, () => {
   const schema: StringSchema = {
     type: "string",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw { message: "Custom error object, with message field" };
     },
   };
@@ -189,6 +198,7 @@ test(`Validation function - throw error object - valid`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result).toMatchSnapshot();
 });
@@ -196,7 +206,7 @@ test(`Validation function - throw error object - valid`, () => {
 test(`Validation function - throw error object - invalid`, () => {
   const schema: StringSchema = {
     type: "string",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw { foo: "Custom error object, with message field" };
     },
   };
@@ -207,6 +217,7 @@ test(`Validation function - throw error object - invalid`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result).toMatchSnapshot();
 });
@@ -223,6 +234,7 @@ test(`Values - valid option`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(true);
 
@@ -242,13 +254,18 @@ test(`Values - invalid option`, () => {
     root: invalid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(false);
-  expect(result1.errorMessage).toContain("Should be one of: red, green, blue");
+  expect((result1 as ValidationFailure).errorMessage).toContain(
+    "Should be one of: red, green, blue"
+  );
 
   const result2 = validate(invalid, schema);
   expect(result2.isValid).toBe(false);
-  expect(result2.errorMessage).toContain("Should be one of: red, green, blue");
+  expect((result2 as ValidationFailure).errorMessage).toContain(
+    "Should be one of: red, green, blue"
+  );
 });
 
 test(`Values - empty array`, () => {
@@ -263,6 +280,7 @@ test(`Values - empty array`, () => {
     root: value,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result.isValid).toBe(true);
 });
@@ -279,6 +297,7 @@ test(`Exact Value - valid match`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(true);
 
@@ -298,9 +317,12 @@ test(`Exact Value - invalid match`, () => {
     root: invalid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(false);
-  expect(result1.errorMessage).toContain('Should be exactly: "exact-match"');
+  expect((result1 as ValidationFailure).errorMessage).toContain(
+    'Should be exactly: "exact-match"'
+  );
 
   const result2 = validate(invalid, schema);
   expect(result2.isValid).toBe(false);
@@ -320,6 +342,7 @@ test(`Exact Value takes precedence over values array`, () => {
     root: valid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result1.isValid).toBe(true);
 
@@ -328,7 +351,68 @@ test(`Exact Value takes precedence over values array`, () => {
     root: invalid,
     schema,
     parent: undefined as any,
+    path: [],
   });
   expect(result2.isValid).toBe(false);
-  expect(result2.errorMessage).toContain('Should be exactly: "exact-match"');
+  expect((result2 as ValidationFailure).errorMessage).toContain(
+    'Should be exactly: "exact-match"'
+  );
+});
+
+test(`Allowable values fail`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    values: ["red", "green", "blue"],
+  };
+  const valid = "red";
+  const invalid = "purple";
+
+  const result1 = validateString({
+    value: invalid,
+    root: invalid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
+  expect(result1.isValid).toBe(false);
+  expect((result1 as ValidationFailure).errorMessage).toContain(
+    "Should be one of: red, green, blue"
+  );
+
+  const result2 = validate(invalid, schema);
+  expect(result2.isValid).toBe(false);
+  expect((result2 as ValidationFailure).errorMessage).toContain(
+    "Should be one of: red, green, blue"
+  );
+});
+
+test(`Exact value - takes precedence over minLength`, () => {
+  const schema: StringSchema = {
+    type: "string",
+    value: "exact-match",
+    minLength: 20, // Longer than the exact value
+  };
+  const valid = "exact-match";
+  const invalid = "not-exact-match";
+
+  const result1 = validateString({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
+  expect(result1.isValid).toBe(true);
+
+  const result2 = validateString({
+    value: invalid,
+    root: invalid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
+  expect(result2.isValid).toBe(false);
+  expect((result2 as ValidationFailure).errorMessage).toContain(
+    'Should be exactly: "exact-match"'
+  );
 });

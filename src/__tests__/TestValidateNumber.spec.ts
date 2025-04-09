@@ -9,7 +9,13 @@ test(`Basic`, () => {
   const schema: NumberSchema = {
     type: "number",
   };
-  const result1 = validateNumber({ value: numbr, root: numbr, schema, parent: undefined as any });
+  const result1 = validateNumber({
+    value: numbr,
+    root: numbr,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(numbr, schema);
@@ -21,7 +27,13 @@ test(`Value is NaN - invalid`, () => {
   const schema: NumberSchema = {
     type: "number",
   };
-  const result1 = validateNumber({ value: numbr, root: numbr, schema, parent: undefined as any });
+  const result1 = validateNumber({
+    value: numbr,
+    root: numbr,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(numbr, schema);
@@ -33,7 +45,13 @@ test(`Empty string - invalid number`, () => {
   const schema: NumberSchema = {
     type: "number",
   };
-  const result1 = validateNumber({ value: str, root: str as unknown as number, schema, parent: undefined as any });
+  const result1 = validateNumber({
+    value: str,
+    root: str as unknown as number,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(str as unknown as number, schema);
@@ -46,7 +64,13 @@ test(`Basic - invalid min`, () => {
     type: "number",
     min: 3,
   };
-  const result1 = validateNumber({ value: num, root: num, schema, parent: undefined as any });
+  const result1 = validateNumber({
+    value: num,
+    root: num,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(num, schema);
@@ -59,7 +83,13 @@ test(`Basic - invalid max`, () => {
     type: "number",
     max: 10,
   };
-  const result1 = validateNumber({ value: num, root: num, schema, parent: undefined as any });
+  const result1 = validateNumber({
+    value: num,
+    root: num,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(num, schema);
@@ -74,7 +104,13 @@ test(`Regex match`, () => {
   const valid = 5085;
   const invalid = 508;
 
-  const result1 = validateNumber({ value: valid, root: valid, schema, parent: undefined as any });
+  const result1 = validateNumber({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(invalid, schema);
@@ -93,7 +129,13 @@ test(`Validation function - pass`, () => {
   };
   const value = 5086;
 
-  const result = validateNumber({ value, root: value, schema, parent: undefined as any });
+  const result = validateNumber({
+    value,
+    root: value,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result.isValid).toBe(true);
 });
 
@@ -109,43 +151,67 @@ test(`Validation function - fail`, () => {
   };
   const value = 5085;
 
-  const result = validateNumber({ value, root: value, schema, parent: undefined as any });
+  const result = validateNumber({
+    value,
+    root: value,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });
 
 test(`Validation function - throw error`, () => {
   const schema: NumberSchema = {
     type: "number",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw new Error(`Validation fn threw!`);
     },
   };
   const value = 5085;
-  const result = validateNumber({ value, root: value, schema, parent: undefined as any });
+  const result = validateNumber({
+    value,
+    root: value,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });
 
 test(`Validation function - throw error object - valid`, () => {
   const schema: NumberSchema = {
     type: "number",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw { message: "Custom error object, with message field" };
     },
   };
   const value = 5085;
 
-  const result = validateNumber({ value, root: value, schema, parent: undefined as any });
+  const result = validateNumber({
+    value,
+    root: value,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });
 
 test(`Validation function - throw error object - invalid`, () => {
   const schema: NumberSchema = {
     type: "number",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw { foo: "Custom error object, with message field" };
     },
   };
   const value = 5085;
-  const result = validateNumber({ value, root: value, schema, parent: undefined as any });
+  const result = validateNumber({
+    value,
+    root: value,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });

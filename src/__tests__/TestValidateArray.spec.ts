@@ -1,5 +1,6 @@
 import { Schema } from "../models/schema/Schema";
 import { validate } from "../validate/validate";
+import { ValidationFailure } from "../models/result/ValidationResult";
 
 test(`Test simple array`, () => {
   type Colors = string[];
@@ -20,7 +21,6 @@ test(`Test simple array values`, () => {
   const favColors: Colors = ["blue", "green"];
   const colorsSchema: Schema<Colors> = {
     type: "array",
-
     minItems: 3,
     maxItems: 10,
     items: {
@@ -30,7 +30,11 @@ test(`Test simple array values`, () => {
   };
   const result = validate(favColors, colorsSchema);
   expect(result).toMatchSnapshot();
-  expect(result.items[0].isValid).toBe(false);
+  // When minItems fails, items aren't validated
+  expect(result.isValid).toBe(false);
+  expect((result as ValidationFailure).errorMessage).toContain(
+    "Should have at least 3 items"
+  );
 });
 
 test(`Test array is valid, but one item is not`, () => {

@@ -12,8 +12,9 @@ export const validateString = <R, P>(args: {
   root: R;
   parent: P;
   schema: StringSchema<R, P>;
+  path: string[];
 }): StringResult => {
-  const { value, schema, root, parent } = args;
+  const { value, schema, root, parent, path } = args;
   //
 
   // Check if field is applicable
@@ -23,14 +24,27 @@ export const validateString = <R, P>(args: {
   ) {
     return {
       isValid: true,
-      errorMessage: ``,
-      errorPath: [],
     };
   }
 
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ ...args, flag: schema.optional });
+    const validationResult = optionalFlagValidator({
+      ...args,
+      flag: schema.optional,
+    });
+
+    if (validationResult.isValid) {
+      return {
+        isValid: true,
+      };
+    } else {
+      return {
+        isValid: false,
+        errorMessage: validationResult.errorMessage,
+        errorPath: validationResult.errorPath,
+      };
+    }
   }
 
   // check if type is string
@@ -38,7 +52,7 @@ export const validateString = <R, P>(args: {
     return {
       isValid: false,
       errorMessage: `Should be a string.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -51,19 +65,23 @@ export const validateString = <R, P>(args: {
       return {
         isValid: false,
         errorMessage: `Should not be empty.`,
-        errorPath: [],
+        errorPath: path,
       };
   }
 
-  // exact value match - check this before min/max length
+  // Exact value check - takes precedence over other validations
   if (!isNil(schema.value)) {
     if (str !== schema.value) {
       return {
         isValid: false,
-        errorMessage: `Should be exactly: "${schema.value}".`,
-        errorPath: [],
+        errorMessage: `Should be exactly: "${schema.value}"`,
+        errorPath: path,
       };
     }
+    // If exact value matches, skip other validations like minLength, maxLength, etc.
+    return {
+      isValid: true,
+    };
   }
 
   // min length
@@ -71,7 +89,7 @@ export const validateString = <R, P>(args: {
     return {
       isValid: false,
       errorMessage: `Should be at least ${schema.minLength} characters.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -80,7 +98,7 @@ export const validateString = <R, P>(args: {
     return {
       isValid: false,
       errorMessage: `Should not be longer than ${schema.maxLength} characters.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -91,7 +109,7 @@ export const validateString = <R, P>(args: {
       return {
         isValid: false,
         errorMessage: `Should match the pattern ${schema.pattern} .`,
-        errorPath: [],
+        errorPath: path,
       };
     }
   }
@@ -102,7 +120,7 @@ export const validateString = <R, P>(args: {
       return {
         isValid: false,
         errorMessage: `Should be one of: ${schema.values!.join(", ")}.`,
-        errorPath: [],
+        errorPath: path,
       };
     }
   }
@@ -111,7 +129,7 @@ export const validateString = <R, P>(args: {
   if (schema.validationFn) {
     const result = validationFnExecutor({
       ...args,
-      value: str,
+      value,
       validationFn: schema.validationFn,
     });
     if (result) return result;
@@ -119,7 +137,5 @@ export const validateString = <R, P>(args: {
 
   return {
     isValid: true,
-    errorMessage: ``,
-    errorPath: [],
   };
 };

@@ -1,3 +1,5 @@
-import { ValidationResult } from "./ValidationResult";
+import { ValidationFailure, ValidationSuccess } from "./ValidationResult";
 
-export type BooleanResult = ValidationResult & {};
+export type BooleanSuccessResult = ValidationSuccess;
+export type BooleanFailureResult = ValidationFailure;
+export type BooleanResult = BooleanSuccessResult | BooleanFailureResult;

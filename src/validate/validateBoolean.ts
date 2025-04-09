@@ -9,8 +9,9 @@ export const validateBoolean = <R, P>(args: {
   root: R;
   parent: P;
   schema: BooleanSchema<R, P>;
+  path: string[];
 }): BooleanResult => {
-  const { value, schema, root, parent } = args;
+  const { value, schema, root, parent, path } = args;
 
   // Check if field is applicable
   if (
@@ -19,21 +20,34 @@ export const validateBoolean = <R, P>(args: {
   ) {
     return {
       isValid: true,
-      errorMessage: ``,
-      errorPath: [],
     };
   }
 
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ ...args, flag: schema.optional });
+    const validationResult = optionalFlagValidator({
+      ...args,
+      flag: schema.optional,
+    });
+
+    if (validationResult.isValid) {
+      return {
+        isValid: true,
+      };
+    } else {
+      return {
+        isValid: false,
+        errorMessage: validationResult.errorMessage,
+        errorPath: validationResult.errorPath,
+      };
+    }
   }
 
   if (!isBoolean(value)) {
     return {
       isValid: false,
       errorMessage: `Should be true or false.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -49,7 +63,5 @@ export const validateBoolean = <R, P>(args: {
 
   return {
     isValid: true,
-    errorMessage: ``,
-    errorPath: [],
   };
 };

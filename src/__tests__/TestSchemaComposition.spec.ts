@@ -37,25 +37,17 @@ test(`Compose schema - 1`, () => {
   const result = validate(customer, customerSchema);
   expect(result).toMatchInlineSnapshot(`
 {
-  "errorMessage": "",
-  "errorPath": [],
   "isValid": true,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "city": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

@@ -1,3 +1,5 @@
-import { ValidationResult } from "./ValidationResult";
+import { ValidationFailure, ValidationSuccess } from "./ValidationResult";
 
-export type StringResult = ValidationResult & {};
+export type StringSuccessResult = ValidationSuccess;
+export type StringFailureResult = ValidationFailure;
+export type StringResult = StringSuccessResult | StringFailureResult;

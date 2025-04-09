@@ -1,97 +1,121 @@
-import { ArrayResult } from "../models/result/ArrayResult";
+import { Schema } from "../models/schema/Schema";
 import { ArraySchema } from "../models/schema/ArraySchema";
-import { optionalFlagValidator } from "../utils/optionalFlagValidator";
+import { ArrayResult } from "../models/result/ArrayResult";
+import { Result } from "../models/result/Result";
+import { _validate } from "./validate";
 import { isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
-import { _validate } from "./validate";
+import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
 export const validateArray = <E, T extends E[], R, P>(args: {
   value: T | null;
   root: R;
   parent: P;
   schema: ArraySchema<E, T, R, P>;
+  path: string[];
 }): ArrayResult<E> => {
-  const { value: arr, schema, root, parent } = args;
+  const { value: arr, schema, root, parent, path } = args;
 
-  // Check if field is applicable
+  // isApplicableFn
   if (
     schema.isApplicableFn &&
     !schema.isApplicableFn({ value: arr as any, parent, root })
   ) {
     return {
       isValid: true,
-      errorMessage: ``,
-      errorPath: [],
       items: [],
     };
   }
 
   // isnil
   if (isNil(arr)) {
+    const validationResult = optionalFlagValidator({
+      ...args,
+      flag: schema.optional,
+    });
+
+    if (validationResult.isValid) {
+      return {
+        isValid: true,
+        items: [],
+      };
+    } else {
+      return {
+        isValid: false,
+        errorMessage: validationResult.errorMessage,
+        errorPath: validationResult.errorPath,
+        items: [],
+      };
+    }
+  }
+
+  // array min-items
+  if (!isNil(schema.minItems) && arr.length < schema.minItems!) {
     return {
-      ...optionalFlagValidator({ ...args, flag: schema.optional }),
+      isValid: false,
+      errorMessage: `Should have at least ${schema.minItems} items.`,
+      errorPath: path,
       items: [],
     };
   }
 
-  const result: ArrayResult<E> = {
-    isValid: true,
-    errorMessage: "",
-    items: [],
-    errorPath: [],
-  };
-
-  // array min-items
-  if (!isNil(schema.minItems) && arr.length < schema.minItems!) {
-    result.isValid = false;
-    result.errorMessage = `Should have at least ${schema.minItems} items.`;
-  }
-
   // array max-items
   if (!isNil(schema.maxItems) && arr.length >= schema.maxItems!) {
-    result.isValid = false;
-    result.errorMessage = `Should not have more than ${
-      schema.maxItems! - 1
-    } items.`;
+    return {
+      isValid: false,
+      errorMessage: `Should not have more than ${schema.maxItems! - 1} items.`,
+      errorPath: path,
+      items: [],
+    };
   }
+
+  const items: Result<E>[] = [];
 
   // for each key, validate
   for (let i = 0; i < arr.length; i++) {
-    result.items[i] = _validate({
+    // Convert index to string for path
+    const itemPath = [...path, i.toString()];
+    items[i] = _validate({
       ...args,
       value: arr[i],
       parent: arr as any,
       schema: schema.items,
+      path: itemPath,
     });
   }
 
-  // if this node is valid, then check if all of it's children are valid
-  // because the node is invalid, if any of it's children are invalid
-  if (result.isValid) {
-    for (let i = 0; i < arr.length; i++) {
-      const item = result.items[i];
-      if (!item.isValid) {
-        result.isValid = false;
-        result.errorMessage = item.errorMessage;
-        result.errorPath = [i, ...item.errorPath];
-        break;
-      }
+  // Check if all children are valid
+  for (let i = 0; i < arr.length; i++) {
+    const item = items[i];
+    if (!item.isValid) {
+      return {
+        isValid: false,
+        errorMessage: item.errorMessage,
+        errorPath: item.errorPath,
+        items,
+      };
     }
   }
 
   // validationFn
-  if (result.isValid && schema.validationFn) {
+  if (schema.validationFn) {
     const validationFnResult = validationFnExecutor({
       ...args,
       value: arr,
       validationFn: schema.validationFn,
     });
-    if (validationFnResult) {
-      result.isValid = false;
-      result.errorMessage = validationFnResult.errorMessage;
-      result.errorPath = validationFnResult.errorPath || [];
+    if (validationFnResult && !validationFnResult.isValid) {
+      return {
+        isValid: false,
+        errorMessage: validationFnResult.errorMessage,
+        errorPath: path,
+        items,
+      };
     }
   }
 
-  return result;
+  return {
+    isValid: true,
+    items,
+  };
 };

@@ -2,25 +2,17 @@
 
 exports[`Test customer schema 1`] = `
 {
-  "errorMessage": "",
-  "errorPath": [],
   "isValid": true,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "line1": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -29,65 +21,41 @@ exports[`Test customer schema 1`] = `
 
 exports[`Test index type - regex - 2 1`] = `
 {
-  "errorMessage": "Should not be empty.",
+  "errorMessage": "Required field.",
   "errorPath": [
     "cars",
-    "ruby",
-    "vin",
+    "/ru.*/",
   ],
   "isValid": false,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "line1": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
     },
     "cars": {
-      "errorMessage": "Should not be empty.",
+      "errorMessage": "Required field.",
       "errorPath": [
-        "ruby",
-        "vin",
+        "cars",
+        "/ru.*/",
       ],
       "isValid": false,
       "properties": {
-        "ruby": {
-          "errorMessage": "Should not be empty.",
+        "/ru.*/": {
+          "errorMessage": "Required field.",
           "errorPath": [
-            "vin",
+            "cars",
+            "/ru.*/",
           ],
           "isValid": false,
-          "properties": {
-            "vin": {
-              "errorMessage": "Should not be empty.",
-              "errorPath": [],
-              "isValid": false,
-            },
-          },
-        },
-        "rugby": {
-          "errorMessage": "",
-          "errorPath": [],
-          "isValid": true,
-          "properties": {
-            "vin": {
-              "errorMessage": "",
-              "errorPath": [],
-              "isValid": true,
-            },
-          },
+          "properties": {},
         },
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -104,13 +72,13 @@ exports[`Test index type - regex - index type is undefined 1`] = `
   "properties": {
     "cars": {
       "errorMessage": "Required field.",
-      "errorPath": [],
+      "errorPath": [
+        "cars",
+      ],
       "isValid": false,
       "properties": {},
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -119,44 +87,41 @@ exports[`Test index type - regex - index type is undefined 1`] = `
 
 exports[`Test index type - regex 1`] = `
 {
-  "errorMessage": "",
-  "errorPath": [],
-  "isValid": true,
+  "errorMessage": "Required field.",
+  "errorPath": [
+    "cars",
+    "/.*/",
+  ],
+  "isValid": false,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "line1": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
     },
     "cars": {
-      "errorMessage": "",
-      "errorPath": [],
-      "isValid": true,
+      "errorMessage": "Required field.",
+      "errorPath": [
+        "cars",
+        "/.*/",
+      ],
+      "isValid": false,
       "properties": {
-        "rugby": {
-          "errorMessage": "",
-          "errorPath": [],
-          "isValid": true,
-          "properties": {
-            "vin": {
-              "errorMessage": "",
-              "errorPath": [],
-              "isValid": true,
-            },
-          },
+        "/.*/": {
+          "errorMessage": "Required field.",
+          "errorPath": [
+            "cars",
+            "/.*/",
+          ],
+          "isValid": false,
+          "properties": {},
         },
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -173,13 +138,9 @@ exports[`Test index type - required field - missing 1`] = `
   "isValid": false,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "line1": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
@@ -187,21 +148,23 @@ exports[`Test index type - required field - missing 1`] = `
     "cars": {
       "errorMessage": "Required field.",
       "errorPath": [
+        "cars",
         "ruby",
       ],
       "isValid": false,
       "properties": {
         "ruby": {
           "errorMessage": "Required field.",
-          "errorPath": [],
+          "errorPath": [
+            "cars",
+            "ruby",
+          ],
           "isValid": false,
           "properties": {},
         },
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -210,35 +173,23 @@ exports[`Test index type - required field - missing 1`] = `
 
 exports[`Test index type 1`] = `
 {
-  "errorMessage": "",
-  "errorPath": [],
   "isValid": true,
   "properties": {
     "address": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "line1": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
         },
       },
     },
     "cars": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
       "properties": {
         "rugby": {
-          "errorMessage": "",
-          "errorPath": [],
           "isValid": true,
           "properties": {
             "vin": {
-              "errorMessage": "",
-              "errorPath": [],
               "isValid": true,
             },
           },
@@ -246,8 +197,6 @@ exports[`Test index type 1`] = `
       },
     },
     "name": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

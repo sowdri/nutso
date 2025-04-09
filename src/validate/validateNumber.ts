@@ -9,9 +9,10 @@ export const validateNumber = <R, P>(args: {
   root: R;
   parent: P;
   schema: NumberSchema<R, P>;
+  path: string[];
 }): NumberResult => {
   //
-  const { value, schema, root, parent } = args;
+  const { value, schema, root, parent, path } = args;
 
   // Check if field is applicable
   if (
@@ -20,21 +21,34 @@ export const validateNumber = <R, P>(args: {
   ) {
     return {
       isValid: true,
-      errorMessage: ``,
-      errorPath: [],
     };
   }
 
   // isnil
   if (isNil(value)) {
-    return optionalFlagValidator({ ...args, flag: schema.optional });
+    const validationResult = optionalFlagValidator({
+      ...args,
+      flag: schema.optional,
+    });
+
+    if (validationResult.isValid) {
+      return {
+        isValid: true,
+      };
+    } else {
+      return {
+        isValid: false,
+        errorMessage: validationResult.errorMessage,
+        errorPath: validationResult.errorPath,
+      };
+    }
   }
 
   if (!isNumber(value) || isNaN(value)) {
     return {
       isValid: false,
       errorMessage: `Should be a number.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -45,7 +59,7 @@ export const validateNumber = <R, P>(args: {
     return {
       isValid: false,
       errorMessage: `Should not be less than ${schema.min}.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -54,7 +68,7 @@ export const validateNumber = <R, P>(args: {
     return {
       isValid: false,
       errorMessage: `Should not be larger than ${schema.max}.`,
-      errorPath: [],
+      errorPath: path,
     };
   }
 
@@ -65,7 +79,7 @@ export const validateNumber = <R, P>(args: {
       return {
         isValid: false,
         errorMessage: `Should match the pattern ${schema.pattern} .`,
-        errorPath: [],
+        errorPath: path,
       };
     }
   }
@@ -74,7 +88,7 @@ export const validateNumber = <R, P>(args: {
   if (schema.validationFn) {
     const result = validationFnExecutor({
       ...args,
-      value: numbr,
+      value,
       validationFn: schema.validationFn,
     });
     if (result) return result;
@@ -82,7 +96,5 @@ export const validateNumber = <R, P>(args: {
 
   return {
     isValid: true,
-    errorMessage: ``,
-    errorPath: [],
   };
 };

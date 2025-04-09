@@ -1,4 +1,4 @@
-import { ValidationResult } from "..";
+import { ValidationFailure, ValidationResult } from "..";
 import { ValidationFn } from "../models/ValidationFn";
 
 export const validationFnExecutor = <T, R, P>(args: {
@@ -6,6 +6,7 @@ export const validationFnExecutor = <T, R, P>(args: {
   root: R;
   parent: P;
   validationFn: ValidationFn<T, R, P>;
+  path: string[];
 }): ValidationResult | undefined => {
   try {
     const result = args.validationFn(args);
@@ -13,7 +14,7 @@ export const validationFnExecutor = <T, R, P>(args: {
       return {
         ...result, // created by user, so put that first, such that `isValid` and `errorPath` are not overwritten
         isValid: false,
-        errorPath: [],
+        errorPath: args.path,
       };
     }
   } catch (e) {
@@ -22,21 +23,21 @@ export const validationFnExecutor = <T, R, P>(args: {
       return {
         errorMessage: e.message,
         isValid: false,
-        errorPath: [],
+        errorPath: args.path,
       };
     }
     if (Object.keys(e as any).includes("message")) {
       return {
         errorMessage: (e as any).message,
         isValid: false,
-        errorPath: [],
+        errorPath: args.path,
       };
     }
     console.error(`Exception executing executor function`, e);
     return {
       errorMessage: `Exception in validationFn`,
       isValid: false,
-      errorPath: [],
+      errorPath: args.path,
     };
   }
 };

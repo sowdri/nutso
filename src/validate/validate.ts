@@ -18,12 +18,14 @@ import { validateString } from "./validateString";
  * @param value
  * @param parent
  * @param schema
+ * @param path - Array containing the path to the current field being validated
  */
 export const _validate = <T, R, P>(args: {
   value: T | null;
   root: R;
   parent: P;
   schema: Schema<T, R, P>;
+  path: string[];
 }): Result<T> => {
   //
 
@@ -78,5 +80,6 @@ export const validate = <T, R = T>(
     root: value as unknown as R,
     parent: null,
     schema,
+    path: [], // Initialize with empty path at the top level
   });
 };

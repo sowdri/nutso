@@ -1,6 +1,12 @@
 import { Result } from "./Result";
-import { ValidationResult } from "./ValidationResult";
+import { ValidationFailure, ValidationSuccess } from "./ValidationResult";
 
-export type ArrayResult<T> = ValidationResult & {
+export type ArraySuccessResult<T> = ValidationSuccess & {
   items: Result<T>[];
 };
+
+export type ArrayFailureResult<T> = ValidationFailure & {
+  items: Result<T>[];
+};
+
+export type ArrayResult<T> = ArraySuccessResult<T> | ArrayFailureResult<T>;

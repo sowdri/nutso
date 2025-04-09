@@ -2,14 +2,15 @@ import { ObjectSchema } from "../models/schema/ObjectSchema";
 import { Schema } from "../models/schema/Schema";
 import { validate } from "../validate/validate";
 import { validateObject, isRegex, getRegex } from "../validate/validateObject";
+import { ValidationFailure } from "../models/result/ValidationResult";
 
 test(`isRegex`, () => {
-  const test = isRegex("/.*/");
+  const test = isRegex("^.*$");
   expect(test).toBe(true);
 });
 
 test(`getRegex`, () => {
-  const regex = getRegex("/.*/");
+  const regex = getRegex("^.*$");
   expect(regex.test("foo")).toBe(true);
 });
 
@@ -29,7 +30,13 @@ test(`Basic`, () => {
     },
   };
 
-  const result1 = validateObject({ value: obj, root: obj, schema, parent: undefined as any });
+  const result1 = validateObject({
+    value: obj,
+    root: obj,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(obj, schema);
@@ -75,7 +82,11 @@ test(`Validate object - validation function`, () => {
     confirmPassword: string;
   };
 
-  const obj: Customer = { username: "john@example.com", password: "123", confirmPassword: "1234" };
+  const obj: Customer = {
+    username: "john@example.com",
+    password: "123",
+    confirmPassword: "1234",
+  };
   const schema: Schema<Customer> = {
     type: "object",
     properties: {
@@ -109,18 +120,12 @@ test(`Validate object - validation function`, () => {
   "isValid": false,
   "properties": {
     "confirmPassword": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "password": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "username": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },
@@ -135,7 +140,11 @@ test(`Validate object - validation function only called if other validations pas
     confirmPassword: string;
   };
 
-  const obj: Customer = { username: "john@example.com", password: "12", confirmPassword: "1234" };
+  const obj: Customer = {
+    username: "john@example.com",
+    password: "12",
+    confirmPassword: "1234",
+  };
   const schema: Schema<Customer> = {
     type: "object",
     properties: {
@@ -171,18 +180,16 @@ test(`Validate object - validation function only called if other validations pas
   "isValid": false,
   "properties": {
     "confirmPassword": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "password": {
       "errorMessage": "Should be at least 3 characters.",
-      "errorPath": [],
+      "errorPath": [
+        "password",
+      ],
       "isValid": false,
     },
     "username": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

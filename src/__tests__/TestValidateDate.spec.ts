@@ -8,7 +8,13 @@ test(`Basic`, () => {
   const schema: DateSchema = {
     type: "date",
   };
-  const result1 = validateDate({ value: date, root: date, schema, parent: undefined as any });
+  const result1 = validateDate({
+    value: date,
+    root: date,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(true);
 
   const result2 = validate(date, schema);
@@ -20,7 +26,13 @@ test(`Empty date - invalid`, () => {
   const schema: DateSchema = {
     type: "date",
   };
-  const result1 = validateDate({ value: date, root: date, schema, parent: undefined as any });
+  const result1 = validateDate({
+    value: date,
+    root: date,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result1.isValid).toBe(false);
 
   const result2 = validate(date, schema);
@@ -30,7 +42,7 @@ test(`Empty date - invalid`, () => {
 test(`Validation function`, () => {
   const schema: DateSchema<Date> = {
     type: "date",
-    validationFn: (value) => {
+    validationFn: (args) => {
       return {
         errorMessage: "Custom validation failed",
       };
@@ -38,45 +50,69 @@ test(`Validation function`, () => {
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, root: valid, schema, parent: undefined as any });
+  const result = validateDate({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });
 
 test(`Validation function - throw error`, () => {
   const schema: DateSchema<Date> = {
     type: "date",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw new Error(`Validation fn threw!`);
     },
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, root: valid, schema, parent: undefined as any });
+  const result = validateDate({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });
 
 test(`Validation function - throw error object - valid`, () => {
   const schema: DateSchema<Date> = {
     type: "date",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw { message: "Custom error object, with message field" };
     },
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, root: valid, parent: undefined as any, schema });
+  const result = validateDate({
+    value: valid,
+    root: valid,
+    parent: undefined as any,
+    schema,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });
 
 test(`Validation function - throw error object - invalid`, () => {
   const schema: DateSchema<Date> = {
     type: "date",
-    validationFn: (value) => {
+    validationFn: (args) => {
       throw { foo: "Custom error object, with message field" };
     },
   };
   const valid = new Date();
 
-  const result = validateDate({ value: valid, root: valid, schema, parent: undefined as any });
+  const result = validateDate({
+    value: valid,
+    root: valid,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
   expect(result).toMatchSnapshot();
 });

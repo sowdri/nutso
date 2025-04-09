@@ -4,23 +4,21 @@ exports[`Test array is valid, but one item is not 1`] = `
 {
   "errorMessage": "Should be at least 5 characters.",
   "errorPath": [
-    0,
+    "0",
   ],
   "isValid": false,
   "items": [
     {
       "errorMessage": "Should be at least 5 characters.",
-      "errorPath": [],
+      "errorPath": [
+        "0",
+      ],
       "isValid": false,
     },
     {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   ],
@@ -32,18 +30,7 @@ exports[`Test simple array 1`] = `
   "errorMessage": "Should have at least 3 items.",
   "errorPath": [],
   "isValid": false,
-  "items": [
-    {
-      "errorMessage": "",
-      "errorPath": [],
-      "isValid": true,
-    },
-    {
-      "errorMessage": "",
-      "errorPath": [],
-      "isValid": true,
-    },
-  ],
+  "items": [],
 }
 `;
 
@@ -52,17 +39,6 @@ exports[`Test simple array values 1`] = `
   "errorMessage": "Should have at least 3 items.",
   "errorPath": [],
   "isValid": false,
-  "items": [
-    {
-      "errorMessage": "Should be at least 5 characters.",
-      "errorPath": [],
-      "isValid": false,
-    },
-    {
-      "errorMessage": "",
-      "errorPath": [],
-      "isValid": true,
-    },
-  ],
+  "items": [],
 }
 `;

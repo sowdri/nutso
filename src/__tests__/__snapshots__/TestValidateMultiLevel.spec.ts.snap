@@ -10,12 +10,16 @@ exports[`Test multi-level 1`] = `
   "properties": {
     "name": {
       "errorMessage": "Required field.",
-      "errorPath": [],
+      "errorPath": [
+        "name",
+      ],
       "isValid": false,
     },
     "next": {
       "errorMessage": "Required field.",
-      "errorPath": [],
+      "errorPath": [
+        "next",
+      ],
       "isValid": false,
       "properties": {},
     },

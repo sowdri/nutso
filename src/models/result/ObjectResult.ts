@@ -1,8 +1,16 @@
 import { Result } from "./Result";
-import { ValidationResult } from "./ValidationResult";
+import { ValidationFailure, ValidationSuccess } from "./ValidationResult";
 
-export type ObjectResult<T> = ValidationResult & {
+export type ObjectSuccessResult<T> = ValidationSuccess & {
   properties: {
     [P in keyof T]: Result<T[P]>;
   };
 };
+
+export type ObjectFailureResult<T> = ValidationFailure & {
+  properties: {
+    [P in keyof T]: Result<T[P]>;
+  };
+};
+
+export type ObjectResult<T> = ObjectSuccessResult<T> | ObjectFailureResult<T>;

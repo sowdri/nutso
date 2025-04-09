@@ -184,18 +184,16 @@ test(`Login form validation`, () => {
   "isValid": false,
   "properties": {
     "password": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
     "repeatPassword": {
       "errorMessage": "Passwords do not match",
-      "errorPath": [],
+      "errorPath": [
+        "repeatPassword",
+      ],
       "isValid": false,
     },
     "username": {
-      "errorMessage": "",
-      "errorPath": [],
       "isValid": true,
     },
   },

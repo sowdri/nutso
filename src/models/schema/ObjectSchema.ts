@@ -1,12 +1,11 @@
 import { Schema } from "./Schema";
 import { OptionalFlag } from "../OptionalFlag";
 import { ValidationFn } from "../ValidationFn";
+import { BaseSchema } from "./BaseSchema";
 
-export type ObjectSchema<T, R = T, P = unknown> = {
+export type ObjectSchema<T, R = T, P = unknown> = BaseSchema<T, R, P> & {
   type: "object";
-  optional?: OptionalFlag<R, P>;
   properties: {
     [K in keyof T]: Schema<T[K], R, T>;
   };
-  validationFn?: ValidationFn<T, R, P>;
 };

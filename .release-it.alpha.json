@@ -6,7 +6,8 @@
     "push": true
   },
   "hooks": {
-    "before:init": ["npm run test"]
+    "before:init": ["npm run test"],
+    "before:release": ["npm run build"]
   },
   "github": {
     "release": false

@@ -1,0 +1,16 @@
+{
+  "compilationOptions": {
+    "followSymlinks": false
+  },
+  "entries": [
+    {
+      "filePath": "src/index.ts",
+      "outFile": "dist/index.d.ts",
+      "noCheck": true,
+      "output": {
+        "exportReferencedTypes": false,
+        "sortNodes": true
+      }
+    }
+  ]
+}

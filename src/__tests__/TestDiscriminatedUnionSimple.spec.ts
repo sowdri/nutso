@@ -1,6 +1,6 @@
 import { Schema } from "..";
 import { Union } from "../models/Union";
-import { validate, validateUnion } from "../validate/validate";
+import { validate } from "../validate/validate";
 
 /**
  * Test file for simple discriminated unions using shapes
@@ -70,26 +70,26 @@ describe("Discriminated Union Tests", () => {
 
   test("validates a valid circle correctly", () => {
     const circle: Shape = { type: "circle", radius: 5 };
-    const result = validateUnion(circle, shapeSchema);
+    const result = validate(circle, shapeSchema);
     expect(result.isValid).toBe(true);
   });
 
   test("validates a valid rectangle correctly", () => {
     const rectangle: Shape = { type: "rectangle", width: 10, height: 5 };
-    const result = validateUnion(rectangle, shapeSchema);
+    const result = validate(rectangle, shapeSchema);
     expect(result.isValid).toBe(true);
   });
 
   test("validates a valid triangle correctly", () => {
     const triangle: Shape = { type: "triangle", base: 10, height: 5 };
-    const result = validateUnion(triangle, shapeSchema);
+    const result = validate(triangle, shapeSchema);
     expect(result.isValid).toBe(true);
   });
 
   test("fails for a circle with missing radius", () => {
     // Use 'any' type to workaround TypeScript checking for validation tests
     const invalidCircle: any = { type: "circle" };
-    const result = validateUnion(invalidCircle, shapeSchema);
+    const result = validate(invalidCircle, shapeSchema);
     expect(result.isValid).toBe(false);
   });
 
@@ -99,14 +99,14 @@ describe("Discriminated Union Tests", () => {
       width: -10,
       height: 5,
     };
-    const result = validateUnion(invalidRectangle, shapeSchema);
+    const result = validate(invalidRectangle, shapeSchema);
     expect(result.isValid).toBe(false);
   });
 
   test("fails when mixing shape properties", () => {
     // A circle shouldn't have width/height properties
     const mixedShape: any = { type: "circle", radius: 5, width: 10, height: 5 };
-    const result = validateUnion(mixedShape, shapeSchema);
+    const result = validate(mixedShape, shapeSchema);
 
     // This should still validate because the extra fields are not applicable to circles
     // The isApplicable function prevents validation of width/height for circles

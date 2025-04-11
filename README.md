@@ -190,7 +190,7 @@ isApplicableFn: ({ value, parent, root }) => boolean;
 
 - `value`: The current value being validated
 - `parent`: The parent object containing this value
-- `root`: The root object of the schema
+- `root`: The root object of the schema (the entire object being validated). By default, it's set to `unknown` for better composability. When you need type safety for root access, explicitly provide the root type when defining your schema.
 
 If the function returns `false`, the field is considered valid regardless of its actual value and no further validation is performed.
 
@@ -209,6 +209,7 @@ const userSchema: Schema<User> = {
     type: {
       type: "string",
       values: ["user", "admin"],
+      w,
     },
     username: {
       type: "string",
@@ -584,7 +585,10 @@ export type ValidationFn<T, R, P> = (args: {
 }) => ValidatorFnResult | void;
 ```
 
-- If the valid is valid then `validationFunction` should return `undefined`
+- `T` is the type of the value being validated
+- `R` is the root type of the schema (the entire object being validated). By default, it's set to `unknown` for better composability. When you need type safety in your validation function, explicitly provide the root type.
+- `P` is the parent type (the immediate containing object)
+- If the value is valid then `validationFunction` should return `undefined`
 
 Check this [TestUsecaseLoginForm](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestUsecaseLoginForm.spec.ts) test case for an example.
 

@@ -73,20 +73,7 @@ export const _validate = <T, R, P>(args: {
 
 export const validate = <T, R = T>(
   value: T,
-  schema: Schema<T, R>
-): Result<T> => {
-  return _validate({
-    value,
-    root: value as unknown as R,
-    parent: null,
-    schema,
-    path: [], // Initialize with empty path at the top level
-  });
-};
-
-export const validateUnion = <T, R = T>(
-  value: T,
-  schema: Schema<Union<T>>
+  schema: Schema<T | Union<T>, R>
 ): Result<T> => {
   return _validate({
     value,

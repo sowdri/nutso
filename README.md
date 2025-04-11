@@ -302,7 +302,7 @@ const result = validate(circle, shapeSchema);
 
 ## Enhanced Type Safety with Union<T>
 
-While discriminated unions can be validated using `Schema<T>` as shown above, Nutso provides a more type-safe approach using `Union<T>` and the `validateUnion` function.
+While discriminated unions can be validated using `Schema<T>`, Nutso provides a more type-safe approach using `Union<T>` type.
 
 ### Schema<T> vs Schema<Union<T>>
 
@@ -312,7 +312,7 @@ When using plain `Schema<T>` with discriminated unions:
 - You might accidentally forget to define schema rules for some union variant properties
 - No compile-time safety that ensures all properties are defined
 
-Using `Schema<Union<T>>` with `validateUnion`:
+Using `Schema<Union<T>>`:
 
 - Forces you to define schema properties for all possible properties in the union
 - Provides better type safety during schema definition
@@ -323,7 +323,7 @@ Using `Schema<Union<T>>` with `validateUnion`:
 ```typescript
 // Using the same Shape type as above
 
-// Using Schema<Union<T>> with validateUnion (recommended approach)
+// Using Schema<Union<T>>
 const shapeSchema: Schema<Union<Shape>> = {
   type: "object",
   properties: {
@@ -357,22 +357,21 @@ const shapeSchema: Schema<Union<Shape>> = {
   },
 };
 
-// Use validateUnion instead of validate
 const circle: Shape = { type: "circle", radius: 5 };
-const result = validateUnion(circle, shapeSchema);
+const result = validate(circle, shapeSchema);
 ```
 
 For a complete working example with test cases, see [TestDiscriminatedUnionSimple.spec.ts](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestDiscriminatedUnionSimple.spec.ts).
 
-### Why Two Different APIs?
+### Type Safety with Union<T>
 
-We provide both `validate` and `validateUnion` functions because:
+The `Union<T>` type provides enhanced type safety by:
 
-1. **Type inference limitations**: TypeScript's type system doesn't always properly handle discriminated union types when creating schemas.
-2. **Explicit intent**: Using `validateUnion` clearly communicates that you're working with a union type.
-3. **Type safety**: `Schema<Union<T>>` ensures you define schema rules for all properties in the union.
+1. **Type inference**: TypeScript's type system properly handles discriminated union types when creating schemas
+2. **Type safety**: `Schema<Union<T>>` ensures you define schema rules for all properties in the union
+3. **Clear intent**: Using `Union<T>` clearly communicates that you're working with a union type
 
-Both approaches use the same validation logic internally, but `validateUnion` with `Union<T>` provides better compile-time safety. For simpler unions or when you don't need the additional type safety, the standard `validate` function works perfectly well.
+The validation logic handles both regular types and union types seamlessly through the `validate` function.
 
 # Multi-Step Forms
 

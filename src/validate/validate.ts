@@ -4,6 +4,7 @@ import { DateSchema } from "../models/schema/DateSchema";
 import { NumberSchema } from "../models/schema/NumberSchema";
 import { Schema } from "../models/schema/Schema";
 import { StringSchema } from "../models/schema/StringSchema";
+import { Union } from "../models/Union";
 import { validateArray } from "./validateArray";
 import { validateBoolean } from "./validateBoolean";
 import { validateDate } from "./validateDate";
@@ -70,7 +71,6 @@ export const _validate = <T, R, P>(args: {
   throw new Error(`Unhandled data type`);
 };
 
-// public api
 export const validate = <T, R = T>(
   value: T,
   schema: Schema<T, R>
@@ -80,6 +80,19 @@ export const validate = <T, R = T>(
     root: value as unknown as R,
     parent: null,
     schema,
+    path: [], // Initialize with empty path at the top level
+  });
+};
+
+export const validateUnion = <T, R = T>(
+  value: T,
+  schema: Schema<Union<T>>
+): Result<T> => {
+  return _validate({
+    value,
+    root: value as unknown as R,
+    parent: null,
+    schema: schema as any,
     path: [], // Initialize with empty path at the top level
   });
 };

@@ -3,3 +3,4 @@ export * from "./models/schema/Schema";
 export * from "./models/result/Result";
 export * from "./models/result/ValidationResult";
 export * from "./validation_functions";
+export * from "./models/Union";

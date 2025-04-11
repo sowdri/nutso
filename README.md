@@ -239,55 +239,142 @@ const userResult = validate(regularUser, userSchema);
 The `isApplicableFn` is particularly useful for validating discriminated union types, where certain fields should only be present for specific variants of the union.
 
 ```typescript
-type Payment =
-  | { method: "credit"; cardNumber: string; expiryDate: string }
-  | { method: "paypal"; email: string };
+// Define shape types - our discriminated union example
+type Circle = {
+  type: "circle";
+  radius: number;
+};
 
-const paymentSchema: Schema<Payment> = {
+type Rectangle = {
+  type: "rectangle";
+  width: number;
+  height: number;
+};
+
+type Triangle = {
+  type: "triangle";
+  base: number;
+  height: number;
+};
+
+type Shape = Circle | Rectangle | Triangle;
+
+// Using Schema<T> for validation
+const shapeSchema: Schema<Shape> = {
   type: "object",
   properties: {
-    method: {
-      type: "string",
-      values: ["credit", "paypal"],
+    // Common discriminator field
+    type: { type: "string", values: ["circle", "rectangle", "triangle"] },
+
+    // Circle-specific property
+    radius: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) => parent.type === "circle",
     },
-    cardNumber: {
-      type: "string",
-      pattern: /^\d{16}$/,
-      // Only applicable for credit card payments
-      isApplicableFn: ({ parent }) => parent.method === "credit",
+
+    // Rectangle-specific properties
+    width: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) => parent.type === "rectangle",
     },
-    expiryDate: {
-      type: "string",
-      pattern: /^\d{2}\/\d{2}$/,
-      // Only applicable for credit card payments
-      isApplicableFn: ({ parent }) => parent.method === "credit",
+    height: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) =>
+        parent.type === "rectangle" || parent.type === "triangle",
     },
-    email: {
-      type: "string",
-      pattern: /^[\w\.-]+@[\w\.-]+\.\w+$/,
-      // Only applicable for PayPal payments
-      isApplicableFn: ({ parent }) => parent.method === "paypal",
+
+    // Triangle-specific property
+    base: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) => parent.type === "triangle",
     },
   },
 };
 
-// Credit card payment
-const creditPayment = {
-  method: "credit",
-  cardNumber: "1234567890123456",
-  expiryDate: "12/25",
-  email: "invalid-email", // This will be ignored during validation
-};
-
-// PayPal payment
-const paypalPayment = {
-  method: "paypal",
-  email: "valid@example.com",
-  cardNumber: "invalid", // This will be ignored during validation
-};
+// Example usage
+const circle: Shape = { type: "circle", radius: 5 };
+const result = validate(circle, shapeSchema);
 ```
 
-### Multi-Step Forms
+## Enhanced Type Safety with Union<T>
+
+While discriminated unions can be validated using `Schema<T>` as shown above, Nutso provides a more type-safe approach using `Union<T>` and the `validateUnion` function.
+
+### Schema<T> vs Schema<Union<T>>
+
+When using plain `Schema<T>` with discriminated unions:
+
+- Works for validation but TypeScript won't enforce schema completeness
+- You might accidentally forget to define schema rules for some union variant properties
+- No compile-time safety that ensures all properties are defined
+
+Using `Schema<Union<T>>` with `validateUnion`:
+
+- Forces you to define schema properties for all possible properties in the union
+- Provides better type safety during schema definition
+- Makes your intention clear that you're working with a discriminated union
+
+### Example: Using Union<T> for the Shapes Example
+
+```typescript
+// Using the same Shape type as above
+
+// Using Schema<Union<T>> with validateUnion (recommended approach)
+const shapeSchema: Schema<Union<Shape>> = {
+  type: "object",
+  properties: {
+    // Same properties as the previous example
+    type: { type: "string", values: ["circle", "rectangle", "triangle"] },
+
+    radius: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) => parent.type === "circle",
+    },
+
+    width: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) => parent.type === "rectangle",
+    },
+
+    height: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) =>
+        parent.type === "rectangle" || parent.type === "triangle",
+    },
+
+    base: {
+      type: "number",
+      min: 0,
+      isApplicableFn: ({ parent }) => parent.type === "triangle",
+    },
+  },
+};
+
+// Use validateUnion instead of validate
+const circle: Shape = { type: "circle", radius: 5 };
+const result = validateUnion(circle, shapeSchema);
+```
+
+For a complete working example with test cases, see [TestDiscriminatedUnionSimple.spec.ts](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestDiscriminatedUnionSimple.spec.ts).
+
+### Why Two Different APIs?
+
+We provide both `validate` and `validateUnion` functions because:
+
+1. **Type inference limitations**: TypeScript's type system doesn't always properly handle discriminated union types when creating schemas.
+2. **Explicit intent**: Using `validateUnion` clearly communicates that you're working with a union type.
+3. **Type safety**: `Schema<Union<T>>` ensures you define schema rules for all properties in the union.
+
+Both approaches use the same validation logic internally, but `validateUnion` with `Union<T>` provides better compile-time safety. For simpler unions or when you don't need the additional type safety, the standard `validate` function works perfectly well.
+
+# Multi-Step Forms
 
 Another practical use case is validating multi-step forms where certain fields should only be validated at specific stages:
 

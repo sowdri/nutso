@@ -10,11 +10,13 @@ import { TupleSchema } from "./TupleSchema";
  * # Terminology (Only required to refer the code)
  * T => Type of the value currently being validated
  * K => key => Type of Key
- * R => root => The root of the object that is being validated
+ * R => root => The root of the object that is being validated. Default is 'unknown' for better composability.
+ *      When using validationFn or isApplicableFn that need type safety for the root object,
+ *      explicitly specify R as the root type.
  * P => parent => The parent of the object being validated. If for [K in keyof T],
  */
 
-export type Schema<T, R = T, P = unknown> = T extends string
+export type Schema<T, R = unknown, P = unknown> = T extends string
   ? StringSchema<R, P>
   : T extends number
   ? NumberSchema<R, P>

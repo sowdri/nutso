@@ -5,10 +5,12 @@ import { IsApplicableFn } from "../IsApplicableFn";
 /**
  * Base schema type containing common properties shared across all schema types
  * T => Type of the value being validated
- * R => Root type of the schema
+ * R => Root type of the schema. Default is 'unknown' for better composability.
+ *      When using validationFn or isApplicableFn that need type safety for the root object,
+ *      explicitly specify R as the root type.
  * P => Parent type
  */
-export type BaseSchema<T, R = T, P = unknown> = {
+export type BaseSchema<T, R = unknown, P = unknown> = {
   /** Identifies the schema type */
   type: string;
 

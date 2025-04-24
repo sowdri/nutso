@@ -8,41 +8,125 @@ alwaysApply: true
 This is a schema validation library.
 
 # Schema Structure:
-The library uses TypeScript to define type-safe schema models for different data types
-Each schema type (Number, String, Boolean, Array, Object, Date) extends a BaseSchema
-Schemas can include validation rules specific to their type
+- The library uses TypeScript to define type-safe schema models for different data types
+- Each schema type (Number, String, Boolean, Array, Object, Date) extends a BaseSchema
+- Schemas can include validation rules specific to their type
+- Schema types are simplified to Schema<T> where T is the type being validated
 
 # Validation Process:
-The main entry point is the validate function which starts the validation process
-Internally, it uses _validate to recursively validate data against schemas
-Type-specific validation functions handle the validation logic for each type
+- The main entry point is the validate function which starts the validation process
+- Internally, it uses _validate to recursively validate data against schemas
+- Type-specific validation functions handle the validation logic for each type
 
 # Key Features:
-Type Validation: Ensures values match their expected types
-Conditional Validation: isApplicableFn determines if validation should be applied
-Optional Fields: Handled through the optional flag which can be boolean or function
-Nested Validation: For objects and arrays, validates nested properties recursively
-Custom Validation: validationFn allows custom validation logic
-Path Tracking: Keeps track of validation paths for precise error location
+- Type Validation: Ensures values match their expected types
+- Conditional Validation: isApplicableFn determines if validation should be applied
+- Optional Fields: Handled through the optional flag which can be boolean or function
+- Nested Validation: For objects and arrays, validates nested properties recursively
+- Custom Validation: validationFn allows custom validation logic
+- Path Tracking: Keeps track of validation paths for precise error location
+
+# Type Safety with Unknown Parameters:
+- validationFn, optionalFlagValidator and isApplicableFn all use `unknown` type for parent and root parameters
+- The `parent` parameter is optional in these functions but has specific behavior:
+  - `parent` is only undefined for the root object being validated
+  - For all nested fields (properties within objects or items in arrays), `parent` will be defined
+- The `unknown` type is used intentionally for better composability
+- When implementing these functions, developers should properly type cast these parameters
+- This design choice ensures type safety while providing flexibility
+- Developers defining these methods should have a clear understanding of expected types and perform appropriate type casting
+
+# ValidationFn:
+- Function signature: `(args: { value: T; parent?: unknown; root: unknown }) => ValidatorFnResult | void`
+- Developers must cast `parent` and `root` to their expected types before use
+- Used for custom validation logic beyond the built-in validators
+- The `parent` parameter will be undefined only for the root object; for all nested fields it will reference their containing object
+
+Example:
+```typescript
+type Customer = {
+  name: string;
+  address: {
+    street: string;
+    city: string;
+  };
+};
+
+const customerSchema = {
+  type: "object",
+  // At the Customer level, parent will be undefined since it's the root object
+  validationFn: ({ value, parent, root }) => {
+    // parent is undefined here
+    // root is the Customer object (same as value in this case)
+    const customer = value as Customer;
+    // Custom validation logic
+  },
+  properties: {
+    name: {
+      type: "string",
+      validationFn: ({ value, parent, root }) => {
+        // parent is the Customer object, should be cast to Customer type
+        const customerParent = parent as Customer;
+        // root is still the Customer object (the top level object being validated)
+        const customerRoot = root as Customer;
+        // Custom validation for name field
+      }
+    },
+    address: {
+      type: "object",
+      properties: {
+        street: {
+          type: "string",
+          validationFn: ({ value, parent, root }) => {
+            // parent is the address object, should be cast to Customer['address']
+            const addressParent = parent as Customer['address'];
+            // root is still the Customer object
+            const customerRoot = root as Customer;
+            // Custom validation for street field
+          }
+        }
+      }
+    }
+  }
+};
+```
+
+# IsApplicableFn:
+- Function signature: `(args: { value: T; parent?: unknown; root: unknown }) => boolean`
+- Determines if a field is applicable in the current context
+- Useful for discriminated union types where certain fields should only be present for specific variants
+- Requires explicit type casting of `parent` and `root` when implementing
+- Like validationFn, `parent` will be undefined only for the root object
+
+# OptionalFlag:
+- Can be a boolean or a function: `boolean | ((args: { root: unknown; parent?: unknown }) => boolean)`
+- When using as a function, developers must cast `parent` and `root` to expected types
+- Used to determine if a field can be undefined or null
+- Similar to other functions, `parent` will be undefined only at the root level
 
 # Object Validation:
-Validates object properties against their schemas
-Supports regex patterns for property names
-Tracks processed fields to avoid duplicate validation
+- Validates object properties against their schemas
+- Supports regex patterns for property names
+- Tracks processed fields to avoid duplicate validation
 
 # Array Validation:
-Validates each array item against its schema
-Supports min/max item constraints
-Returns detailed validation results per item
+- Validates each array item against its schema
+- Supports min/max item constraints
+- Returns detailed validation results per item
 
 # Result Objects:
-Each validation returns type-specific result objects
-All results include isValid flag
-Failed validations include error messages and paths
+- Each validation returns type-specific result objects
+- All results include isValid flag
+- Failed validations include error messages and paths
 
 # Utility Functions:
-Type checking utilities (isNil, isString, isNumber, etc.)
-Optional flag validation
-Validation function execution with error handling
+- Type checking utilities (isNil, isString, isNumber, etc.)
+- Optional flag validation
+- Validation function execution with error handling
 
-This library provides a robust and flexible way to validate complex data structures with strong TypeScript typing support.
+This library provides a robust and flexible way to validate complex data structures with strong TypeScript typing support. 
+description: 
+globs: 
+alwaysApply: false
+---
+ 

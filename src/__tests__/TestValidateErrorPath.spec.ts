@@ -186,4 +186,62 @@ describe("Error Path Tests", () => {
       "value",
     ]);
   });
+
+  // Test date time range validation
+  test("Date time range error path", () => {
+    // Define the type for a date time range
+    type DateTimeRange = {
+      startIsoDateTimeUtc: string;
+      endIsoDateTimeUtc: string;
+    };
+
+    // Create a schema with a custom validation function
+    const dateTimeRangeSchema: Schema<DateTimeRange> = {
+      type: "object",
+      properties: {
+        startIsoDateTimeUtc: {
+          type: "string",
+        },
+        endIsoDateTimeUtc: {
+          type: "string",
+          validationFn: (args) => {
+            const { value, parent } = args;
+            const startTime = new Date(parent.startIsoDateTimeUtc).getTime();
+            const endTime = new Date(value).getTime();
+
+            if (endTime <= startTime) {
+              return {
+                errorMessage: "End time must be after start time",
+              };
+            }
+
+            return;
+          },
+        },
+      },
+    };
+
+    // Test case for same start and end time
+    const sameTimeRange = {
+      startIsoDateTimeUtc: "2023-01-01T10:00:00Z",
+      endIsoDateTimeUtc: "2023-01-01T10:00:00Z", // Same time
+    };
+
+    const result1 = validate(sameTimeRange, dateTimeRangeSchema);
+    expect(result1.isValid).toBe(false);
+
+    // For error details, assert on the validation failure structure
+    const failure1 = result1 as ValidationFailure;
+    expect(failure1.errorMessage).toBe("End time must be after start time");
+    expect(failure1.errorPath).toEqual(["endIsoDateTimeUtc"]);
+
+    // Test with a valid date time range
+    const validTimeRange = {
+      startIsoDateTimeUtc: "2023-01-01T10:00:00Z",
+      endIsoDateTimeUtc: "2023-01-01T11:00:00Z", // One hour later
+    };
+
+    const result2 = validate(validTimeRange, dateTimeRangeSchema);
+    expect(result2.isValid).toBe(true);
+  });
 });

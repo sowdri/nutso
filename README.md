@@ -235,12 +235,12 @@ const userResult = validate(regularUser, userSchema);
 // userResult.isValid will be true regardless of adminCode's value
 ```
 
-### Discriminated Union Types
+### Discriminated Unions
 
-The `isApplicableFn` is particularly useful for validating discriminated union types, where certain fields should only be present for specific variants of the union.
+When working with discriminated unions in TypeScript, Nutso allows you to validate them effectively:
 
 ```typescript
-// Define shape types - our discriminated union example
+// Define the types for our shape union
 type Circle = {
   type: "circle";
   radius: number;
@@ -258,9 +258,10 @@ type Triangle = {
   height: number;
 };
 
+// Define our Shape union type
 type Shape = Circle | Rectangle | Triangle;
 
-// Using Schema<T> for validation
+// Define the schema for our Shape union
 const shapeSchema: Schema<Shape> = {
   type: "object",
   properties: {
@@ -287,69 +288,7 @@ const shapeSchema: Schema<Shape> = {
         parent.type === "rectangle" || parent.type === "triangle",
     },
 
-    // Triangle-specific property
-    base: {
-      type: "number",
-      min: 0,
-      isApplicableFn: ({ parent }) => parent.type === "triangle",
-    },
-  },
-};
-
-// Example usage
-const circle: Shape = { type: "circle", radius: 5 };
-const result = validate(circle, shapeSchema);
-```
-
-## Enhanced Type Safety with Union<T>
-
-While discriminated unions can be validated using `Schema<T>`, Nutso provides a more type-safe approach using `Union<T>` type.
-
-### Schema<T> vs Schema<Union<T>>
-
-When using plain `Schema<T>` with discriminated unions:
-
-- Works for validation but TypeScript won't enforce schema completeness
-- You might accidentally forget to define schema rules for some union variant properties
-- No compile-time safety that ensures all properties are defined
-
-Using `Schema<Union<T>>`:
-
-- Forces you to define schema properties for all possible properties in the union
-- Provides better type safety during schema definition
-- Makes your intention clear that you're working with a discriminated union
-
-### Example: Using Union<T> for the Shapes Example
-
-```typescript
-// Using the same Shape type as above
-
-// Using Schema<Union<T>>
-const shapeSchema: Schema<Union<Shape>> = {
-  type: "object",
-  properties: {
-    // Same properties as the previous example
-    type: { type: "string", values: ["circle", "rectangle", "triangle"] },
-
-    radius: {
-      type: "number",
-      min: 0,
-      isApplicableFn: ({ parent }) => parent.type === "circle",
-    },
-
-    width: {
-      type: "number",
-      min: 0,
-      isApplicableFn: ({ parent }) => parent.type === "rectangle",
-    },
-
-    height: {
-      type: "number",
-      min: 0,
-      isApplicableFn: ({ parent }) =>
-        parent.type === "rectangle" || parent.type === "triangle",
-    },
-
+    // Triangle-specific properties
     base: {
       type: "number",
       min: 0,
@@ -363,16 +302,6 @@ const result = validate(circle, shapeSchema);
 ```
 
 For a complete working example with test cases, see [TestDiscriminatedUnionSimple.spec.ts](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestDiscriminatedUnionSimple.spec.ts).
-
-### Type Safety with Union<T>
-
-The `Union<T>` type provides enhanced type safety by:
-
-1. **Type inference**: TypeScript's type system properly handles discriminated union types when creating schemas
-2. **Type safety**: `Schema<Union<T>>` ensures you define schema rules for all properties in the union
-3. **Clear intent**: Using `Union<T>` clearly communicates that you're working with a union type
-
-The validation logic handles both regular types and union types seamlessly through the `validate` function.
 
 # Multi-Step Forms
 
@@ -504,211 +433,8 @@ The following validators are applicable for `Boolean` data type.
 | type         | `string`   | -       | The value of this has to be `boolean`       |
 | validationFn | `function` | -       | [Validation Function](#validation-function) |
 
-No other validators are present for date at the moment, it is WIP. Please create an issue if you need specific validators for `date`.
+No other validators are present for boolean at the moment, it is WIP. Please create an issue if you need specific validators for `boolean`.
 
 ## Array validators
 
-The following validators are applicable for `Array` data type.
-
-| name         | type          | default | description                                       |
-| ------------ | ------------- | ------- | ------------------------------------------------- |
-| type         | `string`      | -       | The value of this has to be `array`               |
-| minItems     | `number`      | -       | The minimun number of items required in the array |
-| maxItems     | `number`      | -       | The maximum number of items allowed in the array  |
-| items        | `Schema<T,R>` | -       | The schema of the item present in the array       |
-| validationFn | `function`    | -       | [Validation Function](#validation-function)       |
-
-Example:
-
-```typescript
-type Colors = string[];
-const favColors: Colors = ["blue", "green", "black"];
-const colorsSchema: Schema<Colors> = {
-  type: "array",
-  minItems: 3,
-  maxItems: 10,
-  items: {
-    type: "string",
-    minLength: 5, // blue will fail
-  },
-  // Custom validation for the entire array
-  validationFn: ({ value }) => {
-    if (value.includes("red")) {
-      return { errorMessage: "The color red is not allowed" };
-    }
-  },
-};
-```
-
-# Optional Flag (as a function)
-
-The optional flag is supported for all data types and it could either be a `boolean` or a `function`. Let's take the following example, in which the `endIsoMonth` is required, if the tenure is not current.
-
-```
-export type Tenure = {
-  startIsoMonth: string;
-  endIsoMonth?: string;
-  isCurrent: boolean;
-};
-
-export const tenureSchema: Schema<Tenure> = {
-  type: "object",
-  properties: {
-    startIsoMonth: {
-      type: "string",
-      optional: false
-    },
-    endIsoMonth: {
-      type: "string",
-      optional: (args) => {
-        // this is typesafe too!
-        if (args.parent?.isCurrent) return true;
-        return false;
-      },
-    },
-    isCurrent: {
-      type: "boolean",
-    },
-  },
-};
-```
-
-# Validation Function
-
-This is arguably the most powerful feature of `nutso`. The could solve any of your validation requirements with ease.
-
-```typescript
-export type ValidationFn<T, R, P> = (args: {
-  value: T;
-  parent: P;
-  root: R;
-}) => ValidatorFnResult | void;
-```
-
-- `T` is the type of the value being validated
-- `R` is the root type of the schema (the entire object being validated). By default, it's set to `unknown` for better composability. When you need type safety in your validation function, explicitly provide the root type.
-- `P` is the parent type (the immediate containing object)
-- If the value is valid then `validationFunction` should return `undefined`
-
-Check this [TestUsecaseLoginForm](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestUsecaseLoginForm.spec.ts) test case for an example.
-
-The validation function is supported for all data types:
-
-- string
-- number
-- date
-- boolean
-- object
-- array
-
-# Standard Validation Functions
-
-Nutso provides a set of standard validation functions that you can use out of the box:
-
-## Email Validation
-
-`emailValidationFn` provides comprehensive email validation that follows standard email format rules:
-
-```typescript
-import { Schema, emailValidationFn } from "nutso";
-
-const userSchema: Schema<User> = {
-  type: "object",
-  properties: {
-    email: {
-      type: "string",
-      validationFn: emailValidationFn,
-    },
-  },
-};
-```
-
-This validator checks:
-
-- Basic structure (presence of @ symbol)
-- Local part (username) validation:
-  - No empty username
-  - No consecutive dots
-  - No spaces
-  - Valid characters only (a-zA-Z0-9.\_%+-)
-- Domain part validation:
-  - No empty domain
-  - No leading or trailing dots
-  - No consecutive dots
-  - Domain must include at least one dot
-  - TLD must be at least 2 characters
-  - Valid domain format
-
-See [TestEmailValidation.spec.ts](https://github.com/sowdri/nutso/blob/master/src/__tests__/TestEmailValidation.spec.ts) for detailed usage examples.
-
-# Applications
-
-- Nutso can be used in the UI for form validation and the error messages could be displayed to the users using static typesafe access to the error message.
-- Can aso be used on the server to validate incoming objects against the schema.
-
-> You can defind the schema along side your models and use it both on the client and server.
-
-# Notes
-
-- Follows JSON Schema terminology whereever possible [https://json-schema.org/specification.html]
-
-# TODO
-
-- Tuple support
-- Object valiation with circular reference
-- Error path
-
-# Object Validators
-
-The following validators are applicable for `object` data type.
-
-| name         | type        | default | description                                      |
-| ------------ | ----------- | ------- | ------------------------------------------------ |
-| type         | `string`    | -       | The value of this has to be `object`             |
-| properties   | `SchemaMap` | -       | A map of object properties with their own schema |
-| validationFn | `function`  | -       | [Validation Function](#validation-function)      |
-
-For object schemas, all properties of your type must be explicitly defined in the schema. This ensures type safety and prevents missing validations. If a type property is optional in TypeScript, you should still define it in the schema and mark it as optional.
-
-Example:
-
-```typescript
-type User = {
-  name: string;
-  age: number;
-  address?: {
-    // Optional in TypeScript
-    street: string;
-    city: string;
-  };
-};
-
-const userSchema: Schema<User> = {
-  type: "object",
-  properties: {
-    name: {
-      type: "string",
-      minLength: 3,
-    },
-    age: {
-      type: "number",
-      min: 18,
-    },
-    address: {
-      // Must be defined even though it's optional in the type
-      type: "object",
-      optional: true, // Mark as optional in the schema
-      properties: {
-        street: {
-          type: "string",
-        },
-        city: {
-          type: "string",
-        },
-      },
-    },
-  },
-};
-```
-
-Even if a property is optional in your TypeScript type (marked with `?`), you still need to include it in your schema and use the `optional` flag if needed.
+// ... existing code ...

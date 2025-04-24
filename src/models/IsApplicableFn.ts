@@ -11,8 +11,8 @@
  * R => Root type of the schema
  * P => Parent type
  */
-export type IsApplicableFn<T, R, P> = (args: {
+export type IsApplicableFn<T> = (args: {
   value: T;
-  parent: P;
-  root: R;
+  parent?: unknown;
+  root: unknown;
 }) => boolean;

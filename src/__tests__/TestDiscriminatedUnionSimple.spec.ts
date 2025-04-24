@@ -42,27 +42,28 @@ describe("Discriminated Union Tests", () => {
       radius: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }) => parent.type === "circle",
+        isApplicableFn: ({ parent }) => (parent as Shape).type === "circle",
       },
 
       // Rectangle-specific properties
       width: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }) => parent.type === "rectangle",
+        isApplicableFn: ({ parent }) => (parent as Shape).type === "rectangle",
       },
       height: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }: { parent: Shape }) =>
-          parent.type === "rectangle" || parent.type === "triangle",
+        isApplicableFn: ({ parent }) =>
+          (parent as Shape).type === "rectangle" ||
+          (parent as Shape).type === "triangle",
       },
 
       // Triangle-specific properties
       base: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }) => parent.type === "triangle",
+        isApplicableFn: ({ parent }) => (parent as Shape).type === "triangle",
       },
     },
   };

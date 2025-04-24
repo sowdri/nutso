@@ -1,6 +1,7 @@
-import { Schema, validate } from "..";
+import { Schema } from "..";
+import { validate } from "../validate/validate";
 
-test(`Login form validation - at password level`, () => {
+test(`Login form validation`, () => {
   type LoginForm = {
     username: string;
     password: string;
@@ -20,7 +21,7 @@ test(`Login form validation - at password level`, () => {
       repeatPassword: {
         type: "string",
         validationFn: (args) => {
-          if (args.value !== args.parent.password)
+          if (args.value !== (args.parent as LoginForm).password)
             return {
               errorMessage: "Passwords do not match",
             };

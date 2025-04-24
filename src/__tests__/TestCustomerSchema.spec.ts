@@ -68,13 +68,17 @@ const customerSchema: Schema<Customer> = {
       min: 0.1,
       max: 7.5,
       isApplicableFn: ({ parent }) => {
-        return parent.type === CustomerType.Personal;
+        return (parent as Customer).type === CustomerType.Personal;
       },
     },
     address: {
       type: "object",
-      isApplicableFn: ({ parent }: { parent: Customer }) => {
-        return parent.type === CustomerType.Personal;
+      isApplicableFn: (args: {
+        value: any;
+        parent?: unknown;
+        root: unknown;
+      }) => {
+        return (args.parent as Customer).type === CustomerType.Personal;
       },
       properties: {
         type: {
@@ -84,31 +88,31 @@ const customerSchema: Schema<Customer> = {
         poBox: {
           type: "string",
           isApplicableFn: ({ parent }) => {
-            return parent.type === AddressType.PoBox;
+            return (parent as Address).type === AddressType.PoBox;
           },
         },
         street: {
           type: "string",
           isApplicableFn: ({ parent }) => {
-            return parent.type === AddressType.Street;
+            return (parent as Address).type === AddressType.Street;
           },
         },
         city: {
           type: "string",
           isApplicableFn: ({ parent }) => {
-            return parent.type === AddressType.Street;
+            return (parent as Address).type === AddressType.Street;
           },
         },
         state: {
           type: "string",
           isApplicableFn: ({ parent }) => {
-            return parent.type === AddressType.Street;
+            return (parent as Address).type === AddressType.Street;
           },
         },
         zip: {
           type: "string",
           isApplicableFn: ({ parent }) => {
-            return parent.type === AddressType.Street;
+            return (parent as Address).type === AddressType.Street;
           },
         },
       },

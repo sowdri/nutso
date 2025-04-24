@@ -33,7 +33,7 @@ import { ValidationFn } from "../models/ValidationFn";
  *
  * See src/__tests__/TestEmailValidation.spec.ts for more usage examples.
  */
-export const emailValidationFn: ValidationFn<string, any, any> = (args) => {
+export const emailValidationFn: ValidationFn<string> = (args) => {
   const { value } = args;
   if (typeof value !== "string") {
     return { errorMessage: "Email must be a string" };

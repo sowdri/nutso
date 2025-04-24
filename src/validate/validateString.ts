@@ -7,11 +7,11 @@ import {
   isOptional,
 } from "../utils/optionalFlagValidator";
 
-export const validateString = <R, P>(args: {
+export const validateString = (args: {
   value: any;
-  root: R;
-  parent: P;
-  schema: StringSchema<R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: StringSchema;
   path: string[];
 }): StringResult => {
   const { value, schema, root, parent, path } = args;

@@ -11,7 +11,7 @@ type ValidatorFnResult1 = {
 type ValidationFn1<T, R, P> = (args: { value: T; parent: P; root: R }) => ValidatorFnResult1 | void;
 
 */
-export type StringSchema<R = string, P = unknown> = BaseSchema<string, R, P> & {
+export type StringSchema = BaseSchema<string> & {
   type: "string";
   minLength?: number;
   maxLength?: number;

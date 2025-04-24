@@ -206,7 +206,9 @@ describe("Error Path Tests", () => {
           type: "string",
           validationFn: (args) => {
             const { value, parent } = args;
-            const startTime = new Date(parent.startIsoDateTimeUtc).getTime();
+            const startTime = new Date(
+              (parent as DateTimeRange).startIsoDateTimeUtc
+            ).getTime();
             const endTime = new Date(value).getTime();
 
             if (endTime <= startTime) {

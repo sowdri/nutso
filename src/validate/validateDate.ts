@@ -4,11 +4,11 @@ import { isDate, isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
-export const validateDate = <R, P>(args: {
+export const validateDate = (args: {
   value: any;
-  root: R;
-  parent: P;
-  schema: DateSchema<R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: DateSchema;
   path: string[];
 }): DateResult => {
   const { value, schema, root, parent, path } = args;

@@ -40,9 +40,9 @@ test(`Empty date - invalid`, () => {
 });
 
 test(`Validation function`, () => {
-  const schema: DateSchema<Date> = {
+  const schema: DateSchema = {
     type: "date",
-    validationFn: (args) => {
+    validationFn: (args: { value: Date; parent?: unknown; root: unknown }) => {
       return {
         errorMessage: "Custom validation failed",
       };
@@ -61,9 +61,9 @@ test(`Validation function`, () => {
 });
 
 test(`Validation function - throw error`, () => {
-  const schema: DateSchema<Date> = {
+  const schema: DateSchema = {
     type: "date",
-    validationFn: (args) => {
+    validationFn: (args: { value: Date; parent?: unknown; root: unknown }) => {
       throw new Error(`Validation fn threw!`);
     },
   };
@@ -80,9 +80,9 @@ test(`Validation function - throw error`, () => {
 });
 
 test(`Validation function - throw error object - valid`, () => {
-  const schema: DateSchema<Date> = {
+  const schema: DateSchema = {
     type: "date",
-    validationFn: (args) => {
+    validationFn: (args: { value: Date; parent?: unknown; root: unknown }) => {
       throw { message: "Custom error object, with message field" };
     },
   };
@@ -99,9 +99,9 @@ test(`Validation function - throw error object - valid`, () => {
 });
 
 test(`Validation function - throw error object - invalid`, () => {
-  const schema: DateSchema<Date> = {
+  const schema: DateSchema = {
     type: "date",
-    validationFn: (args) => {
+    validationFn: (args: { value: Date; parent?: unknown; root: unknown }) => {
       throw { foo: "Custom error object, with message field" };
     },
   };

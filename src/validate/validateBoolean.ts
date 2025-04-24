@@ -4,11 +4,11 @@ import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isBoolean, isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 
-export const validateBoolean = <R, P>(args: {
+export const validateBoolean = (args: {
   value: any;
-  root: R;
-  parent: P;
-  schema: BooleanSchema<R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: BooleanSchema;
   path: string[];
 }): BooleanResult => {
   const { value, schema, root, parent, path } = args;

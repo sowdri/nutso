@@ -4,11 +4,11 @@ import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 import { isNil, isNumber } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 
-export const validateNumber = <R, P>(args: {
+export const validateNumber = (args: {
   value: any;
-  root: R;
-  parent: P;
-  schema: NumberSchema<R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: NumberSchema;
   path: string[];
 }): NumberResult => {
   //

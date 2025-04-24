@@ -1,52 +1,6 @@
 import { Schema } from "..";
 import { validate } from "../validate/validate";
 
-test(`Compose schema with different roots - typesafety`, () => {
-  type Address = {
-    line1: string;
-  };
-  type Customer = {
-    name: string;
-    address: Address;
-  };
-
-  const addressSchema: Schema<Address, Customer> = {
-    type: "object",
-    properties: {
-      line1: {
-        type: "string",
-        validationFn: (args) => {
-          args.parent.line1;
-          return {
-            isValid: true,
-            errorMessage: "",
-          };
-        },
-      },
-    },
-  };
-
-  const customerSchema: Schema<Customer> = {
-    type: "object",
-    properties: {
-      name: {
-        type: "string",
-        validationFn: (args) => {
-          return {
-            isValid: false,
-            errorMessage: "Custom validation failed",
-          };
-        },
-      },
-      address: addressSchema,
-    },
-  };
-
-  // this test is just to ensure typescript is not complaining!
-  // so no assertion required
-  expect(true).toBeTruthy();
-});
-
 test(`Custom validation - check errorPath - level 1`, () => {
   type Address = {
     line1: string;
@@ -56,13 +10,13 @@ test(`Custom validation - check errorPath - level 1`, () => {
     address: Address;
   };
 
-  const addressSchema: Schema<Address, Customer> = {
+  const addressSchema: Schema<Address> = {
     type: "object",
     properties: {
       line1: {
         type: "string",
         validationFn: (args) => {
-          args.parent.line1;
+          (args.parent as Address).line1;
         },
       },
     },
@@ -75,7 +29,6 @@ test(`Custom validation - check errorPath - level 1`, () => {
         type: "string",
         validationFn: (args) => {
           return {
-            isValid: false,
             errorMessage: "Custom validation failed",
           };
         },
@@ -104,7 +57,7 @@ test(`Custom validation - check errorPath - level 2`, () => {
     address: Address;
   };
 
-  const addressSchema: Schema<Address, Customer> = {
+  const addressSchema: Schema<Address> = {
     type: "object",
     properties: {
       line1: {
@@ -160,7 +113,7 @@ test(`Login form validation`, () => {
       repeatPassword: {
         type: "string",
         validationFn: (args) => {
-          if (args.value !== args.parent.password)
+          if (args.value !== (args.parent as LoginForm).password)
             return {
               errorMessage: "Passwords do not match",
             };

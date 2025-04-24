@@ -25,8 +25,8 @@ describe("Array ValidationFn Tests", () => {
     const result = validate(validColors, colorsSchema);
 
     expect(result.isValid).toBe(true);
-    expect((result as ArrayResult<string>).items.length).toBe(3);
-    expect((result as ArrayResult<string>).items[0].isValid).toBe(true);
+    expect((result as ArrayResult<string, Colors>).items.length).toBe(3);
+    expect((result as ArrayResult<string, Colors>).items[0].isValid).toBe(true);
   });
 
   test("Array with failing validationFn", () => {
@@ -55,8 +55,8 @@ describe("Array ValidationFn Tests", () => {
       "The color red is not allowed"
     );
     // Individual items should still be valid
-    expect((result as ArrayResult<string>).items[0].isValid).toBe(true);
-    expect((result as ArrayResult<string>).items[1].isValid).toBe(true);
+    expect((result as ArrayResult<string, Colors>).items[0].isValid).toBe(true);
+    expect((result as ArrayResult<string, Colors>).items[1].isValid).toBe(true);
   });
 
   test("Array with validationFn using root and parent context", () => {
@@ -78,7 +78,7 @@ describe("Array ValidationFn Tests", () => {
           },
           validationFn: ({ value, root }) => {
             // Check that favorite color is not in disliked colors
-            if (value.includes(root.favoriteColor)) {
+            if (value.includes((root as ColorPreference).favoriteColor)) {
               return {
                 errorMessage:
                   "Disliked colors cannot include the favorite color",
@@ -148,7 +148,9 @@ describe("Array ValidationFn Tests", () => {
     expect((result as ValidationFailure).errorMessage).not.toBe(
       "Array cannot have more than 5 items"
     );
-    expect((result as ArrayResult<number>).items[2].isValid).toBe(false);
+    expect((result as ArrayResult<number, Numbers>).items[2].isValid).toBe(
+      false
+    );
   });
 
   test("Empty array with validationFn", () => {

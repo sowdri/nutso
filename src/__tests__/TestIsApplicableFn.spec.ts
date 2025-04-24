@@ -31,7 +31,7 @@ test(`isApplicableFn with primitive types`, () => {
         type: "string",
         minLength: 8,
         // Only applicable if type is 'admin'
-        isApplicableFn: ({ parent }) => parent.type === "admin",
+        isApplicableFn: ({ parent }) => (parent as UserSchema).type === "admin",
       },
     },
   };
@@ -87,7 +87,8 @@ test(`isApplicableFn with nested objects`, () => {
       creditCard: {
         type: "object",
         // Only applicable if payment method is 'credit'
-        isApplicableFn: ({ parent }) => parent.method === "credit",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentInfo).method === "credit",
         properties: {
           number: {
             type: "string",
@@ -106,7 +107,8 @@ test(`isApplicableFn with nested objects`, () => {
       paypalEmail: {
         type: "string",
         // Only applicable if payment method is 'paypal'
-        isApplicableFn: ({ parent }) => parent.method === "paypal",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentInfo).method === "paypal",
         pattern: /^[\w\.-]+@[\w\.-]+\.\w+$/, // Email pattern
       },
     },
@@ -185,7 +187,8 @@ test(`isApplicableFn with arrays`, () => {
       comments: {
         type: "array",
         // Only applicable if includeComments is true
-        isApplicableFn: ({ parent }) => parent.includeComments === true,
+        isApplicableFn: ({ parent }) =>
+          (parent as Survey).includeComments === true,
         items: {
           type: "string",
           minLength: 10, // Require substantial comments
@@ -267,7 +270,7 @@ test(`isApplicableFn with root object reference`, () => {
       paymentInfo: {
         type: "object",
         // Only applicable for stage 2 or above
-        isApplicableFn: ({ root }) => root.stage >= 2,
+        isApplicableFn: ({ root }) => (root as FormWithDependencies).stage >= 2,
         properties: {
           cardNumber: { type: "string", pattern: /^\d{16}$/ },
           billingAddress: { type: "string", minLength: 10 },
@@ -276,7 +279,8 @@ test(`isApplicableFn with root object reference`, () => {
       confirmationInfo: {
         type: "object",
         // Only applicable for stage 3
-        isApplicableFn: ({ root }) => root.stage === 3,
+        isApplicableFn: ({ root }) =>
+          (root as FormWithDependencies).stage === 3,
         properties: {
           agreeToTerms: { type: "boolean" },
         },

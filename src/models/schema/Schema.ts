@@ -4,7 +4,6 @@ import { DateSchema } from "./DateSchema";
 import { NumberSchema } from "./NumberSchema";
 import { ObjectSchema } from "./ObjectSchema";
 import { StringSchema } from "./StringSchema";
-import { TupleSchema } from "./TupleSchema";
 
 /**
  * # Terminology (Only required to refer the code)
@@ -16,18 +15,16 @@ import { TupleSchema } from "./TupleSchema";
  * P => parent => The parent of the object being validated. If for [K in keyof T],
  */
 
-export type Schema<T, R = unknown, P = unknown> = T extends string
-  ? StringSchema<R, P>
+export type Schema<T> = T extends string
+  ? StringSchema
   : T extends number
-  ? NumberSchema<R, P>
+  ? NumberSchema
   : T extends Date
-  ? DateSchema<R, P>
+  ? DateSchema
   : T extends boolean
-  ? BooleanSchema<R, P>
+  ? BooleanSchema
   : T extends Array<infer E>
-  ? ArraySchema<E, T, R, P>
-  : T extends [infer U, ...unknown[]]
-  ? TupleSchema<U, R, P>
+  ? ArraySchema<E, T>
   : T extends Object
-  ? ObjectSchema<T, R, P>
+  ? ObjectSchema<T>
   : never;

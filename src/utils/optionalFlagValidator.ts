@@ -17,10 +17,10 @@ const VALID_BASE: ValidationSuccess = {
 };
 
 // this has to be called only when the value is empty
-export const optionalFlagValidator = <R, P>(args: {
-  root: R;
-  parent?: P;
-  flag?: OptionalFlag<R, P>;
+export const optionalFlagValidator = (args: {
+  root: unknown;
+  parent?: unknown;
+  flag?: OptionalFlag;
   path: string[];
 }): ValidationResult => {
   const optional = isOptional(args);
@@ -28,10 +28,10 @@ export const optionalFlagValidator = <R, P>(args: {
   return { ...INVALID_BASE, errorPath: args.path };
 };
 
-export const isOptional = <R, P>(args: {
-  root: R;
-  parent?: P;
-  flag?: OptionalFlag<R, P>;
+export const isOptional = (args: {
+  root: unknown;
+  parent?: unknown;
+  flag?: OptionalFlag;
   path?: string[];
 }): boolean => {
   // flag not set, so the field is not optional

@@ -10,7 +10,7 @@ test(`Compose schema - 1`, () => {
     address: Address;
   };
 
-  const addressSchema: Schema<Address, Customer> = {
+  const addressSchema: Schema<Address> = {
     type: "object",
     properties: {
       city: {

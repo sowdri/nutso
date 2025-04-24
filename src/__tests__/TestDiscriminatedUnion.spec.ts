@@ -150,169 +150,246 @@ describe("Discriminated Union Tests", () => {
       cardType: {
         type: "string",
         values: ["visa", "mastercard", "amex"],
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard",
       },
       cardNumber: {
         type: "string",
         pattern: /^\d{16}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard",
       },
       expiryDate: {
         type: "string",
         pattern: /^\d{2}\/\d{2}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard",
       },
       cvv: {
         type: "string",
         pattern: /^\d{3,4}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard",
       },
       billingAddress: {
         type: "string",
         minLength: 10,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard",
       },
 
       // Amex specific properties (third level)
       tier: {
         type: "string",
         values: ["standard", "gold", "platinum"],
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard" && (parent as any).cardType === "amex",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard" &&
+          (
+            parent as
+              | CreditCardVisa
+              | CreditCardMastercard
+              | CreditCardAmexStandard
+              | CreditCardAmexGold
+              | CreditCardAmexPlatinum
+          ).cardType === "amex",
       },
       membershipPoints: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard" &&
-          (parent as any).cardType === "amex" &&
-          ((parent as any).tier === "gold" ||
-            (parent as any).tier === "platinum"),
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard" &&
+          (
+            parent as
+              | CreditCardVisa
+              | CreditCardMastercard
+              | CreditCardAmexStandard
+              | CreditCardAmexGold
+              | CreditCardAmexPlatinum
+          ).cardType === "amex" &&
+          ((
+            parent as
+              | CreditCardAmexStandard
+              | CreditCardAmexGold
+              | CreditCardAmexPlatinum
+          ).tier === "gold" ||
+            (
+              parent as
+                | CreditCardAmexStandard
+                | CreditCardAmexGold
+                | CreditCardAmexPlatinum
+            ).tier === "platinum"),
       },
       conciergePhone: {
         type: "string",
         pattern: /^\+\d{10,15}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "creditCard" &&
-          (parent as any).cardType === "amex" &&
-          (parent as any).tier === "platinum",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "creditCard" &&
+          (
+            parent as
+              | CreditCardVisa
+              | CreditCardMastercard
+              | CreditCardAmexStandard
+              | CreditCardAmexGold
+              | CreditCardAmexPlatinum
+          ).cardType === "amex" &&
+          (
+            parent as
+              | CreditCardAmexStandard
+              | CreditCardAmexGold
+              | CreditCardAmexPlatinum
+          ).tier === "platinum",
       },
 
       // PayPal specific properties
       accountType: {
         type: "string",
         values: ["personal", "business"],
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "paypal",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "paypal",
       },
       email: {
         type: "string",
         pattern: /^[\w\.-]+@[\w\.-]+\.\w+$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "paypal",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "paypal",
       },
       phone: {
         type: "string",
         pattern: /^\+\d{10,15}$/,
         optional: true,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "paypal" &&
-          (parent as any).accountType === "personal",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "paypal" &&
+          (parent as PayPalPersonal | PayPalBusiness).accountType ===
+            "personal",
       },
       businessName: {
         type: "string",
         minLength: 2,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "paypal" &&
-          (parent as any).accountType === "business",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "paypal" &&
+          (parent as PayPalPersonal | PayPalBusiness).accountType ===
+            "business",
       },
       taxId: {
         type: "string",
         pattern: /^[A-Z0-9\-]{5,20}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "paypal" &&
-          (parent as any).accountType === "business",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "paypal" &&
+          (parent as PayPalPersonal | PayPalBusiness).accountType ===
+            "business",
       },
 
       // Bank Transfer specific properties
       transferType: {
         type: "string",
         values: ["domestic", "international"],
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "bankTransfer",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "bankTransfer",
       },
       accountNumber: {
         type: "string",
         pattern: /^\d{8,17}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          (parent.method === "bankTransfer" &&
-            (parent as any).transferType === "domestic") ||
-          (parent.method === "bankTransfer" &&
-            (parent as any).transferType === "international" &&
-            ((parent as any).region === "asia" ||
-              (parent as any).region === "americas")),
+        isApplicableFn: ({ parent }) =>
+          ((parent as PaymentMethod).method === "bankTransfer" &&
+            (parent as BankTransferDomestic).transferType === "domestic") ||
+          ((parent as PaymentMethod).method === "bankTransfer" &&
+            (
+              parent as
+                | BankTransferInternationalEurope
+                | BankTransferInternationalAsia
+                | BankTransferInternationalAmericas
+            ).transferType === "international" &&
+            ((parent as BankTransferInternationalAsia).region === "asia" ||
+              (parent as BankTransferInternationalAmericas).region ===
+                "americas")),
       },
       routingNumber: {
         type: "string",
         pattern: /^\d{9}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          (parent.method === "bankTransfer" &&
-            (parent as any).transferType === "domestic") ||
-          (parent.method === "bankTransfer" &&
-            (parent as any).transferType === "international" &&
-            (parent as any).region === "americas"),
+        isApplicableFn: ({ parent }) =>
+          ((parent as PaymentMethod).method === "bankTransfer" &&
+            (parent as BankTransferDomestic).transferType === "domestic") ||
+          ((parent as PaymentMethod).method === "bankTransfer" &&
+            (
+              parent as
+                | BankTransferInternationalEurope
+                | BankTransferInternationalAsia
+                | BankTransferInternationalAmericas
+            ).transferType === "international" &&
+            (parent as BankTransferInternationalAmericas).region ===
+              "americas"),
       },
       accountName: {
         type: "string",
         minLength: 2,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "bankTransfer",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "bankTransfer",
       },
 
       // International Bank Transfer properties
       region: {
         type: "string",
         values: ["europe", "asia", "americas"],
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "bankTransfer" &&
-          (parent as any).transferType === "international",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "bankTransfer" &&
+          (
+            parent as
+              | BankTransferInternationalEurope
+              | BankTransferInternationalAsia
+              | BankTransferInternationalAmericas
+          ).transferType === "international",
       },
       iban: {
         type: "string",
         pattern: /^[A-Z]{2}\d{2}[A-Z0-9]{12,30}$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "bankTransfer" &&
-          (parent as any).transferType === "international" &&
-          (parent as any).region === "europe",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "bankTransfer" &&
+          (
+            parent as
+              | BankTransferInternationalEurope
+              | BankTransferInternationalAsia
+              | BankTransferInternationalAmericas
+          ).transferType === "international" &&
+          (parent as BankTransferInternationalEurope).region === "europe",
       },
       swiftCode: {
         type: "string",
         pattern: /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "bankTransfer" &&
-          (parent as any).transferType === "international" &&
-          ((parent as any).region === "europe" ||
-            (parent as any).region === "asia"),
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "bankTransfer" &&
+          (
+            parent as
+              | BankTransferInternationalEurope
+              | BankTransferInternationalAsia
+              | BankTransferInternationalAmericas
+          ).transferType === "international" &&
+          ((parent as BankTransferInternationalEurope).region === "europe" ||
+            (parent as BankTransferInternationalAsia).region === "asia"),
       },
       bankName: {
         type: "string",
         minLength: 2,
-        isApplicableFn: ({ parent }: { parent: PaymentMethod }) =>
-          parent.method === "bankTransfer" &&
-          (parent as any).transferType === "international",
+        isApplicableFn: ({ parent }) =>
+          (parent as PaymentMethod).method === "bankTransfer" &&
+          (
+            parent as
+              | BankTransferInternationalEurope
+              | BankTransferInternationalAsia
+              | BankTransferInternationalAmericas
+          ).transferType === "international",
       },
       intermediaryBank: {
         type: "string",
         optional: true,
         isApplicableFn: ({ parent }) =>
-          parent.method === "bankTransfer" &&
-          (parent as any).transferType === "international" &&
-          (parent as any).region === "asia",
+          (parent as PaymentMethod).method === "bankTransfer" &&
+          (
+            parent as
+              | BankTransferInternationalEurope
+              | BankTransferInternationalAsia
+              | BankTransferInternationalAmericas
+          ).transferType === "international" &&
+          (parent as BankTransferInternationalAsia).region === "asia",
       },
     },
   };

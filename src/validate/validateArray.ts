@@ -7,13 +7,13 @@ import { isNil } from "../utils/typeChecker";
 import { validationFnExecutor } from "../utils/validationFnExecutor";
 import { optionalFlagValidator } from "../utils/optionalFlagValidator";
 
-export const validateArray = <E, T extends E[], R, P>(args: {
+export const validateArray = <E, T extends E[]>(args: {
   value: T | null;
-  root: R;
-  parent: P;
-  schema: ArraySchema<E, T, R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: ArraySchema<E, T>;
   path: string[];
-}): ArrayResult<E> => {
+}): ArrayResult<E, T> => {
   const { value: arr, schema, root, parent, path } = args;
 
   // isApplicableFn

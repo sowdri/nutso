@@ -1,11 +1,11 @@
 import { ValidationFailure, ValidationResult } from "..";
 import { ValidationFn } from "../models/ValidationFn";
 
-export const validationFnExecutor = <T, R, P>(args: {
+export const validationFnExecutor = <T>(args: {
   value: T;
-  root: R;
-  parent: P;
-  validationFn: ValidationFn<T, R, P>;
+  root: unknown;
+  parent?: unknown;
+  validationFn: ValidationFn<T>;
   path: string[];
 }): ValidationResult | undefined => {
   try {

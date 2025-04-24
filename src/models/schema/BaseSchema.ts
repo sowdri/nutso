@@ -10,15 +10,15 @@ import { IsApplicableFn } from "../IsApplicableFn";
  *      explicitly specify R as the root type.
  * P => Parent type
  */
-export type BaseSchema<T, R = unknown, P = unknown> = {
+export type BaseSchema<T> = {
   /** Identifies the schema type */
   type: string;
 
   /** Optional flag to determine if the field is required */
-  optional?: OptionalFlag<R, P>;
+  optional?: OptionalFlag;
 
   /** Custom validation function */
-  validationFn?: ValidationFn<T, R, P>;
+  validationFn?: ValidationFn<T>;
 
   /**
    * Function to determine if a field is applicable in the current context
@@ -30,5 +30,5 @@ export type BaseSchema<T, R = unknown, P = unknown> = {
    * This is especially useful in discriminated union types where certain fields should only be present
    * for specific variants of the union, allowing for more precise schema validation.
    */
-  isApplicableFn?: IsApplicableFn<T, R, P>;
+  isApplicableFn?: IsApplicableFn<T>;
 };

@@ -41,30 +41,44 @@ describe("Discriminated Union Tests", () => {
       radius: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }: { parent: { type: string } }) =>
-          parent.type === "circle",
+        isApplicableFn: (args: {
+          value: number;
+          parent?: unknown;
+          root: unknown;
+        }) => (args.parent as Shape).type === "circle",
       },
 
       // Rectangle-specific properties
       width: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }: { parent: { type: string } }) =>
-          parent.type === "rectangle",
+        isApplicableFn: (args: {
+          value: number;
+          parent?: unknown;
+          root: unknown;
+        }) => (args.parent as Shape).type === "rectangle",
       },
       height: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }: { parent: { type: string } }) =>
-          parent.type === "rectangle" || parent.type === "triangle",
+        isApplicableFn: (args: {
+          value: number;
+          parent?: unknown;
+          root: unknown;
+        }) =>
+          (args.parent as Shape).type === "rectangle" ||
+          (args.parent as Shape).type === "triangle",
       },
 
       // Triangle-specific properties
       base: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }: { parent: { type: string } }) =>
-          parent.type === "triangle",
+        isApplicableFn: (args: {
+          value: number;
+          parent?: unknown;
+          root: unknown;
+        }) => (args.parent as Shape).type === "triangle",
       },
     },
   };

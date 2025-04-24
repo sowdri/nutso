@@ -9,13 +9,9 @@ import { BaseSchema } from "./BaseSchema";
  *
  * Look at this type, we need all 3 types
  */
-export type ArraySchema<E, T extends E[], R, P = unknown> = BaseSchema<
-  T,
-  R,
-  P
-> & {
+export type ArraySchema<E, T extends E[]> = BaseSchema<T> & {
   type: "array";
   minItems?: number;
   maxItems?: number;
-  items: Schema<E, R>; // TODO check how this works in schema definition
+  items: Schema<E>;
 };

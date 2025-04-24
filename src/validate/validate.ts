@@ -1,3 +1,4 @@
+import { NumberResult } from "../models/result/NumberResult";
 import { Result } from "../models/result/Result";
 import { BooleanSchema } from "../models/schema/BooleanSchema";
 import { DateSchema } from "../models/schema/DateSchema";
@@ -20,11 +21,11 @@ import { validateString } from "./validateString";
  * @param schema
  * @param path - Array containing the path to the current field being validated
  */
-export const _validate = <T, R, P>(args: {
+export const _validate = <T>(args: {
   value: T | null;
-  root: R;
-  parent: P;
-  schema: Schema<T, R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: Schema<T>;
   path: string[];
 }): Result<T> => {
   //
@@ -40,17 +41,17 @@ export const _validate = <T, R, P>(args: {
     case "number":
       return validateNumber({
         ...args,
-        schema: args.schema as NumberSchema<R>,
+        schema: args.schema,
       }) as Result<T>;
     case "string":
       return validateString({
         ...args,
-        schema: args.schema as StringSchema<R>,
+        schema: args.schema,
       }) as Result<T>;
     case "boolean":
       return validateBoolean({
         ...args,
-        schema: args.schema as BooleanSchema<R>,
+        schema: args.schema,
       }) as Result<T>;
     case "array":
       // TODO array schema type remove any
@@ -64,20 +65,17 @@ export const _validate = <T, R, P>(args: {
     case "date":
       return validateDate({
         ...args,
-        schema: args.schema as DateSchema<R>,
+        schema: args.schema,
       }) as Result<T>;
   }
   throw new Error(`Unhandled data type`);
 };
 
-export const validate = <T, R = T>(
-  value: T,
-  schema: Schema<T, R>
-): Result<T> => {
+export const validate = <T>(value: T, schema: Schema<T>): Result<T> => {
   return _validate({
     value,
-    root: value as unknown as R,
-    parent: null,
+    root: value,
+    // parent: null, // no parent for the root
     schema: schema,
     path: [], // Initialize with empty path at the top level
   });

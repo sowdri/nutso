@@ -36,4 +36,6 @@ const customerSchema: Schema<Customer> = {
  * value: T cannot be passed on to this function because we cannot use the value to check if this field can be undefined or null.
  */
 
-export type OptionalFlag<R, P> = boolean | ((args: { root: R; parent?: P }) => boolean);
+export type OptionalFlag =
+  | boolean
+  | ((args: { root: unknown; parent?: unknown }) => boolean);

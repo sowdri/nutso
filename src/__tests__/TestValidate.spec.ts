@@ -350,7 +350,7 @@ test(`Test optional flag - array - valid`, () => {
       colors: {
         type: "array",
         optional: (args) => {
-          return args.root.colorBlind;
+          return (args.root as Person).colorBlind;
         },
         items: {
           type: "string",
@@ -385,7 +385,7 @@ test(`Test optional flag - boolean`, () => {
       },
       hasFavColor: {
         type: "boolean",
-        optional: (args) => args.root.colorBlind, // TODO check why parent is unknown
+        optional: (args) => (args.root as Person).colorBlind,
       },
     },
   };
@@ -418,40 +418,7 @@ test(`Test optional flag - string`, () => {
       },
       favColor: {
         type: "string",
-        optional: (args) => args.root.colorBlind,
-      },
-    },
-  };
-
-  // valid
-  const person1: Person = {
-    colorBlind: true,
-  };
-  const result1 = validate(person1, personSchema);
-  expect(result1.isValid).toBeTruthy();
-
-  // invalid
-  const person2: Person = {
-    colorBlind: false,
-  };
-  const result2 = validate(person2, personSchema);
-  expect(result2.isValid).toBeFalsy();
-});
-
-test(`Test optional flag - string`, () => {
-  type Person = {
-    colorBlind: boolean;
-    favColor?: string;
-  };
-  const personSchema: Schema<Person> = {
-    type: "object",
-    properties: {
-      colorBlind: {
-        type: "boolean",
-      },
-      favColor: {
-        type: "string",
-        optional: (args) => args.root.colorBlind,
+        optional: (args) => (args.root as Person).colorBlind,
       },
     },
   };
@@ -484,7 +451,7 @@ test(`Test optional flag - date`, () => {
       },
       dob: {
         type: "date",
-        optional: (args) => args.root.isBorn,
+        optional: (args) => (args.root as Person).isBorn,
       },
     },
   };
@@ -517,7 +484,7 @@ test(`Test optional flag - number`, () => {
       },
       weight: {
         type: "number",
-        optional: (args) => args.root.isBorn,
+        optional: (args) => (args.root as Person).isBorn,
       },
     },
   };
@@ -553,7 +520,7 @@ test(`Test optional flag - object`, () => {
       },
       info: {
         type: "object",
-        optional: (args) => args.root.isBorn,
+        optional: (args) => (args.root as Person).isBorn,
         properties: {
           name: {
             type: "string",

@@ -33,11 +33,11 @@ export const getRegex = (field: string): RegExp => {
   }
 };
 
-export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
+export const validateObject = <T extends { [key: string]: any }>(args: {
   value: T | null;
-  root: R;
-  parent: P;
-  schema: ObjectSchema<T, R, P>;
+  root: unknown;
+  parent?: unknown;
+  schema: ObjectSchema<T>;
   path: string[];
 }): ObjectResult<T> => {
   //
@@ -90,11 +90,11 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
     if (isRegex(field)) continue;
     const fieldKey = field as Extract<keyof T, string>;
     const fieldPath = [...path, field];
-    properties[fieldKey] = _validate<any, R, T>({
+    properties[fieldKey] = _validate<any>({
       ...args,
       value: value ? value[fieldKey] : null,
       parent: value,
-      schema: schema.properties[field] as Schema<any, R, T>,
+      schema: schema.properties[field] as Schema<any>,
       path: fieldPath,
     });
     processedFields.push(field);
@@ -114,11 +114,11 @@ export const validateObject = <T extends { [key: string]: any }, R, P>(args: {
       if (!regex.test(key)) continue;
       const keyAsT = key as Extract<keyof T, string>;
       const keyPath = [...path, key];
-      properties[keyAsT] = _validate<any, R, T>({
+      properties[keyAsT] = _validate<any>({
         ...args,
         value: value ? value[keyAsT] : null,
         parent: value,
-        schema: schema.properties[field] as Schema<any, R, T>,
+        schema: schema.properties[field] as Schema<any>,
         path: keyPath,
       });
       processedFields.push(key);

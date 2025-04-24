@@ -158,18 +158,8 @@ const shapeSchema: Schema<Shape> = {
   },
 };
 
-// Method 2: Using Schema<Union<T>> for better type safety
-import { Union } from "nutso";
-
-const unionShapeSchema: Schema<Union<Shape>> = {
-  type: "object",
-  properties: {
-    // Same properties as above, but TypeScript enforces including all properties
-  },
-};
-
-// Use validate with either schema type
-const result = validate(shape, unionShapeSchema);
+// Use validate with schema
+const result = validate(shape, shapeSchema);
 ```
 
 ## Custom Validation Functions

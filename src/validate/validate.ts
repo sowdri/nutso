@@ -4,7 +4,6 @@ import { DateSchema } from "../models/schema/DateSchema";
 import { NumberSchema } from "../models/schema/NumberSchema";
 import { Schema } from "../models/schema/Schema";
 import { StringSchema } from "../models/schema/StringSchema";
-import { Union } from "../models/Union";
 import { validateArray } from "./validateArray";
 import { validateBoolean } from "./validateBoolean";
 import { validateDate } from "./validateDate";
@@ -73,13 +72,13 @@ export const _validate = <T, R, P>(args: {
 
 export const validate = <T, R = T>(
   value: T,
-  schema: Schema<T | Union<T>, R>
+  schema: Schema<T, R>
 ): Result<T> => {
   return _validate({
     value,
     root: value as unknown as R,
     parent: null,
-    schema: schema as any,
+    schema: schema,
     path: [], // Initialize with empty path at the top level
   });
 };

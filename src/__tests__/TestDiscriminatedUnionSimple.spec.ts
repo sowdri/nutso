@@ -1,5 +1,4 @@
 import { Schema } from "..";
-import { Union } from "../models/Union";
 import { validate } from "../validate/validate";
 
 /**
@@ -32,8 +31,8 @@ describe("Discriminated Union Tests", () => {
   // Define our Shape union type
   type Shape = Circle | Rectangle | Triangle;
 
-  // Define the schema for our Shape union using Union<T>
-  const shapeSchema: Schema<Union<Shape>> = {
+  // Define the schema for our Shape union
+  const shapeSchema: Schema<Shape> = {
     type: "object",
     properties: {
       // Common discriminator field
@@ -55,7 +54,7 @@ describe("Discriminated Union Tests", () => {
       height: {
         type: "number",
         min: 0,
-        isApplicableFn: ({ parent }) =>
+        isApplicableFn: ({ parent }: { parent: Shape }) =>
           parent.type === "rectangle" || parent.type === "triangle",
       },
 

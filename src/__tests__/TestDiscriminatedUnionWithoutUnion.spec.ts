@@ -2,16 +2,13 @@ import { Schema } from "..";
 import { validate } from "../validate/validate";
 
 /**
- * Test file for discriminated unions without using Union<T>
+ * Test file for discriminated unions
  *
  * This example demonstrates how to validate discriminated unions
- * using regular Schema<T> without Union<T>.
- *
- * Note: This approach works but doesn't have the type safety benefits
- * that Union<T> provides when creating the schema.
+ * using regular Schema<T>.
  */
 
-describe("Discriminated Union Tests Without Union<T>", () => {
+describe("Discriminated Union Tests", () => {
   // Define the types for our shape union (same as in TestDiscriminatedUnionSimple)
   type Circle = {
     type: "circle";
@@ -33,7 +30,7 @@ describe("Discriminated Union Tests Without Union<T>", () => {
   // Define our Shape union type
   type Shape = Circle | Rectangle | Triangle;
 
-  // Define the schema for our Shape union WITHOUT using Union<T>
+  // Define the schema for our Shape union
   const shapeSchema: Schema<Shape> = {
     type: "object",
     properties: {
@@ -69,9 +66,6 @@ describe("Discriminated Union Tests Without Union<T>", () => {
         isApplicableFn: ({ parent }: { parent: { type: string } }) =>
           parent.type === "triangle",
       },
-
-      // TypeScript won't complain if we forget properties here
-      // This is the key difference from Union<T>
     },
   };
 
@@ -110,7 +104,6 @@ describe("Discriminated Union Tests Without Union<T>", () => {
     expect(result.isValid).toBe(false);
   });
 
-  // This test is the same as in the Union<T> version
   test("fails when mixing shape properties", () => {
     // A circle shouldn't have width/height properties
     const mixedShape: any = { type: "circle", radius: 5, width: 10, height: 5 };

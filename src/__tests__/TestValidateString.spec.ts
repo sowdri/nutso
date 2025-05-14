@@ -22,7 +22,7 @@ test(`Basic`, () => {
   expect(result2.isValid).toBe(true);
 });
 
-test(`Empty string - invalid`, () => {
+test(`Empty string - is valid`, () => {
   const str = "";
   const schema: StringSchema = {
     type: "string",
@@ -34,17 +34,37 @@ test(`Empty string - invalid`, () => {
     parent: undefined as any,
     path: [],
   });
-  expect(result1.isValid).toBe(false);
+  expect(result1.isValid).toBe(true);
 
   const result2 = validate(str, schema);
-  expect(result2.isValid).toBe(false);
+  expect(result2.isValid).toBe(true);
 });
 
-test(`Empty string - not optional`, () => {
+test(`Empty string - not optional - valid`, () => {
   const str = "";
   const schema: StringSchema = {
     type: "string",
     optional: () => false,
+  };
+  const result1 = validateString({
+    value: str,
+    root: str,
+    schema,
+    parent: undefined as any,
+    path: [],
+  });
+  expect(result1.isValid).toBe(true);
+
+  const result2 = validate(str, schema);
+  expect(result2.isValid).toBe(true);
+});
+
+test(`Empty string - not optional - minLength:1 - invalid`, () => {
+  const str = "";
+  const schema: StringSchema = {
+    type: "string",
+    optional: () => false,
+    minLength: 1,
   };
   const result1 = validateString({
     value: str,
@@ -414,5 +434,50 @@ test(`Exact value - takes precedence over minLength`, () => {
   expect(result2.isValid).toBe(false);
   expect((result2 as ValidationFailure).errorMessage).toContain(
     'Should be exactly: "exact-match"'
+  );
+});
+
+test(`Validation of empty strings - demonstrates recommended approaches`, () => {
+  // 1. Empty string with default string schema - should be valid
+  const emptyString = "";
+  const basicSchema: StringSchema = {
+    type: "string",
+  };
+
+  const result1 = validate(emptyString, basicSchema);
+  expect(result1.isValid).toBe(true);
+
+  // 2. Using minLength to disallow empty strings
+  const disallowEmptySchema: StringSchema = {
+    type: "string",
+    minLength: 1,
+  };
+
+  const result2 = validate(emptyString, disallowEmptySchema);
+  expect(result2.isValid).toBe(false);
+
+  // 3. Using a pattern to disallow empty strings
+  const patternSchema: StringSchema = {
+    type: "string",
+    pattern: /.+/,
+  };
+
+  const result3 = validate(emptyString, patternSchema);
+  expect(result3.isValid).toBe(false);
+
+  // 4. Using validationFn to disallow empty strings
+  const validationFnSchema: StringSchema = {
+    type: "string",
+    validationFn: ({ value }) => {
+      if (value === "") {
+        return { errorMessage: "Empty string not allowed" };
+      }
+    },
+  };
+
+  const result4 = validate(emptyString, validationFnSchema);
+  expect(result4.isValid).toBe(false);
+  expect((result4 as ValidationFailure).errorMessage).toBe(
+    "Empty string not allowed"
   );
 });

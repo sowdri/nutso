@@ -60,13 +60,8 @@ export const validateString = (args: {
 
   // check if empty
   if (str === "") {
-    const optional = isOptional({ ...args, flag: schema.optional });
-    if (!optional)
-      return {
-        isValid: false,
-        errorMessage: `Should not be empty.`,
-        errorPath: path,
-      };
+    // we are not handling empty strings as a special case
+    // if the user does not want to allow empty strings, they can use minLength or pattern to achieve that
   }
 
   // Exact value check - takes precedence over other validations

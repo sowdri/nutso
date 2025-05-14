@@ -163,7 +163,28 @@ const user = {
   name: "John",
   address: {
     street: "123 Main St",
-    city: "", // Invalid - empty string
+    city: "", // Invalid - empty string when minLength: 1 is specified
+  },
+};
+
+// Schema with minLength to disallow empty strings
+const userSchema = {
+  type: "object",
+  properties: {
+    name: {
+      type: "string",
+      minLength: 1, // Disallow empty strings
+    },
+    address: {
+      type: "object",
+      properties: {
+        street: { type: "string" }, // Empty strings are valid here
+        city: {
+          type: "string",
+          minLength: 1, // Disallow empty strings
+        },
+      },
+    },
   },
 };
 
@@ -508,6 +529,8 @@ The following validators are applicable for `string` data type.
 | values       | `string[]` | -       | List of possible values the string can take  |
 | value        | `string`   | -       | Exact value the string must match            |
 | validationFn | `function` | -       | [Validation Function](#validationfn)         |
+
+> **Note**: Empty strings (`""`) are considered valid by default. To disallow empty strings, set `minLength: 1` in your schema.
 
 ## Number validators
 

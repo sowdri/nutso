@@ -1,4 +1,5 @@
 import { ValidationFn } from "../models/ValidationFn";
+import { isNil } from "../utils/typeChecker";
 
 /**
  * A validation function for email addresses that follows standard email format rules.
@@ -35,12 +36,16 @@ import { ValidationFn } from "../models/ValidationFn";
  */
 export const emailValidationFn: ValidationFn<string> = (args) => {
   const { value } = args;
+  // Empty check is already handled by the string validator
+  if (isNil(value)) {
+    return {
+      errorMessage: "Email cannot be empty",
+    };
+  }
+
   if (typeof value !== "string") {
     return { errorMessage: "Email must be a string" };
   }
-
-  // Empty check is already handled by the string validator
-  if (value === "") return;
 
   // Check for basic structure (something @ something)
   if (!value.includes("@")) {

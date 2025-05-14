@@ -6,6 +6,7 @@
 
 - **Validation Result Objects**: Removed `errorMessage` and `errorPath` properties from successful validation results to make types more accurate
 - **ValidationFn**: Updated type signatures for validation functions to consistently use `args` object pattern
+- **String Validation**: Changed empty string validation behavior - empty strings are now considered valid by default. To disallow empty strings, use `minLength: 1`
 
 ### Bug Fixes
 

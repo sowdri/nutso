@@ -82,6 +82,33 @@ export const validateObject = <T extends { [key: string]: any }>(args: {
   }
 
   const obj = value as T;
+
+  // object min-properties
+  if (
+    !isNil(schema.minProperties) &&
+    Object.keys(obj).length < schema.minProperties!
+  ) {
+    return {
+      isValid: false,
+      errorMessage: `Should have at least ${schema.minProperties} properties.`,
+      errorPath: path,
+      properties: {} as any,
+    };
+  }
+
+  // object max-properties
+  if (
+    !isNil(schema.maxProperties) &&
+    Object.keys(obj).length > schema.maxProperties!
+  ) {
+    return {
+      isValid: false,
+      errorMessage: `Should not have more than ${schema.maxProperties} properties.`,
+      errorPath: path,
+      properties: {} as any,
+    };
+  }
+
   const processedFields: string[] = [];
   const properties: Record<string, Result<any>> = {} as any;
 

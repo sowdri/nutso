@@ -582,18 +582,106 @@ The following validators are applicable for `array` data type.
 
 The following validators are applicable for `object` data type.
 
-| name         | type                     | default | description                                               |
-| ------------ | ------------------------ | ------- | --------------------------------------------------------- |
-| type         | `string`                 | -       | The value of this has to be `object`                      |
-| properties   | `Record<string, Schema>` | -       | Object containing schemas for each property               |
-| validationFn | `function`               | -       | [Validation Function](#validationfn)                      |
-| regexFields  | `Record<string, Schema>` | -       | Object containing schemas for properties matching pattern |
+| name          | type                     | default | description                                                             |
+| ------------- | ------------------------ | ------- | ----------------------------------------------------------------------- |
+| type          | `string`                 | -       | The value of this has to be `object`                                    |
+| minProperties | `number`                 | -       | Minimum number of properties required (useful for dynamic objects/maps) |
+| maxProperties | `number`                 | -       | Maximum number of properties allowed (useful for dynamic objects/maps)  |
+| properties    | `Record<string, Schema>` | -       | Object containing schemas for each property                             |
+| validationFn  | `function`               | -       | [Validation Function](#validationfn)                                    |
+| regexFields   | `Record<string, Schema>` | -       | Object containing schemas for properties matching pattern               |
 
 # Object Validation
 
 - Validates object properties against their schemas
 - Supports regex patterns for property names with `regexFields`
+- Supports minimum and maximum property count validation with `minProperties` and `maxProperties`
 - Tracks processed fields to avoid duplicate validation
+
+## Object Property Count Validation
+
+The `minProperties` and `maxProperties` validators are particularly useful for validating dynamic objects like `Record<string, T>` or objects with regex-based property patterns, where the number of properties is not fixed at compile time:
+
+```typescript
+// Example 1: Validating a dynamic configuration map
+type ConfigMap = Record<string, string | number | boolean>;
+
+const configMapSchema: Schema<ConfigMap> = {
+  type: "object",
+  minProperties: 1, // At least one configuration item required
+  maxProperties: 10, // Limit to prevent excessive configurations
+  properties: {
+    // Use regex to match any property name
+    "^.*$": {
+      type: "string", // or union type for string | number | boolean
+    },
+  },
+};
+
+// Valid: 3 properties (within range)
+const validConfig: ConfigMap = {
+  host: "localhost",
+  port: "3000",
+  debug: "true",
+};
+
+// Invalid: Empty object (below minimum)
+const invalidConfig: ConfigMap = {};
+```
+
+```typescript
+// Example 2: Validating feature flags with constraints
+type FeatureFlags = Record<string, boolean>;
+
+const featureFlagsSchema: Schema<FeatureFlags> = {
+  type: "object",
+  minProperties: 1, // At least one feature flag required
+  maxProperties: 50, // Reasonable limit for feature flags
+  properties: {
+    "^[a-zA-Z][a-zA-Z0-9_]*$": {
+      // Feature flag naming pattern
+      type: "boolean",
+    },
+  },
+};
+
+const featureFlags: FeatureFlags = {
+  enableNewUI: true,
+  enableBetaFeatures: false,
+  enableAnalytics: true,
+};
+```
+
+```typescript
+// Example 3: User preferences with flexible structure
+type UserPreferences = {
+  theme?: "light" | "dark";
+  language?: string;
+  [key: string]: any; // Additional dynamic preferences
+};
+
+const userPreferencesSchema: Schema<UserPreferences> = {
+  type: "object",
+  minProperties: 1, // User must have at least one preference set
+  properties: {
+    theme: {
+      type: "string",
+      values: ["light", "dark"],
+      optional: true,
+    },
+    language: {
+      type: "string",
+      optional: true,
+    },
+    // Match any additional preference keys
+    "^(?!theme|language).*$": {
+      type: "string", // or more complex validation
+    },
+  },
+};
+```
+
+> **Note**: For regular objects with fixed properties defined at compile time, `minProperties` and `maxProperties` are typically not needed since TypeScript already enforces the structure. These validators shine when working with dynamic objects, maps, or objects with regex-based property patterns.
 
 # Array Validation
 

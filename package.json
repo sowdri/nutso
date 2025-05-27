@@ -16,7 +16,7 @@
     "build": "node build.js",
     "release": "release-it",
     "release:alpha": "release-it --config=.release-it.alpha.json",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsgo"
   },
   "repository": {
     "type": "git",

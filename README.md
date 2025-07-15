@@ -58,7 +58,7 @@ Schema is the validation definition you write for the type T. It is typesafe, so
 
 - `type` is the only required information for each field. Because nutso uses type inference, the `type` field can only be the type of the field. So you can't go wrong here.
 
-> Optional fields in T are optional in schema as well.
+> **Important**: All fields in the TypeScript type T must be defined in the schema properties, including optional fields. Optional fields in TypeScript are required in the schema definition but can be marked as optional using the `optional` flag.
 
 ```typescript
 const customerSchema: Schema<Customer> = {
@@ -76,6 +76,60 @@ const customerSchema: Schema<Customer> = {
       type: "number",
       min: 0.1,
       max: 7.5,
+    },
+  },
+};
+```
+
+## Handling Optional Fields
+
+Even if a field is optional in your TypeScript type (marked with `?`), you must still define it in the schema's `properties`. Use the `optional` flag to indicate that the field can be undefined:
+
+```typescript
+type User = {
+  name: string;
+  email?: string; // Optional in TypeScript
+  age?: number;   // Optional in TypeScript
+};
+
+const userSchema: Schema<User> = {
+  type: "object",
+  properties: {
+    name: {
+      type: "string",
+      minLength: 1,
+    },
+    email: {
+      type: "string",
+      optional: true, // Mark as optional in schema
+    },
+    age: {
+      type: "number",
+      optional: true, // Mark as optional in schema
+      min: 0,
+    },
+  },
+};
+```
+
+The `optional` flag can also be a function for dynamic determination:
+
+```typescript
+type ConditionalUser = {
+  isAdmin: boolean;
+  adminCode?: string;
+};
+
+const conditionalUserSchema: Schema<ConditionalUser> = {
+  type: "object",
+  properties: {
+    isAdmin: {
+      type: "boolean",
+    },
+    adminCode: {
+      type: "string",
+      // Only required if user is admin
+      optional: ({ root }) => !(root as ConditionalUser).isAdmin,
     },
   },
 };
@@ -625,14 +679,13 @@ The following validators are applicable for `object` data type.
 | type          | `string`                 | -       | The value of this has to be `object`                                    |
 | minProperties | `number`                 | -       | Minimum number of properties required (useful for dynamic objects/maps) |
 | maxProperties | `number`                 | -       | Maximum number of properties allowed (useful for dynamic objects/maps)  |
-| properties    | `Record<string, Schema>` | -       | Object containing schemas for each property                             |
+| properties    | `Record<string, Schema>` | -       | Object containing schemas for each property (supports regex patterns)  |
 | validationFn  | `function`               | -       | [Validation Function](#validationfn)                                    |
-| regexFields   | `Record<string, Schema>` | -       | Object containing schemas for properties matching pattern               |
 
 # Object Validation
 
 - Validates object properties against their schemas
-- Supports regex patterns for property names with `regexFields`
+- Supports regex patterns for property names by using regex strings as keys in `properties`
 - Supports minimum and maximum property count validation with `minProperties` and `maxProperties`
 - Tracks processed fields to avoid duplicate validation
 

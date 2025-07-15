@@ -1,5 +1,19 @@
 # Changelog
 
+## 6.0.0-alpha.12 (2024-12-19)
+
+### Documentation Updates
+
+- **README**: Updated documentation to clarify that optional TypeScript fields are required in schema definition
+- **README**: Fixed incorrect reference to `regexFields` - regex patterns are defined directly in the `properties` object
+- **README**: Added comprehensive examples showing how to handle optional fields using the `optional` flag
+- **README**: Improved documentation for object validation with regex patterns
+
+### Schema Structure
+
+- **ObjectSchema**: Confirmed that all TypeScript properties (including optional ones) must be defined in schema `properties`
+- **Optional Fields**: Use the `optional` flag (boolean or function) to mark fields as optional in validation
+
 ## 6.0.0-alpha.1 (2024-04-09)
 
 ### Breaking Changes

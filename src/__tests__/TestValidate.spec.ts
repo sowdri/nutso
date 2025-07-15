@@ -197,7 +197,7 @@ test(`Test index type - regex`, () => {
       cars: {
         type: "object",
         properties: {
-          "/.*/": {
+          "^.*$": {
             type: "object",
             properties: {
               vin: {
@@ -259,7 +259,7 @@ test(`Test index type - regex - 2`, () => {
       cars: {
         type: "object",
         properties: {
-          "/ru.*/": {
+          "^ru.*$": {
             type: "object",
             properties: {
               vin: {
@@ -316,7 +316,7 @@ test(`Test index type - regex - index type is undefined`, () => {
       cars: {
         type: "object",
         properties: {
-          "/ru.*/": {
+          "^ru.*$": {
             type: "object",
             properties: {
               vin: {

@@ -21,12 +21,7 @@ exports[`Test customer schema 1`] = `
 
 exports[`Test index type - regex - 2 1`] = `
 {
-  "errorMessage": "Required field.",
-  "errorPath": [
-    "cars",
-    "/ru.*/",
-  ],
-  "isValid": false,
+  "isValid": true,
   "properties": {
     "address": {
       "isValid": true,
@@ -37,21 +32,23 @@ exports[`Test index type - regex - 2 1`] = `
       },
     },
     "cars": {
-      "errorMessage": "Required field.",
-      "errorPath": [
-        "cars",
-        "/ru.*/",
-      ],
-      "isValid": false,
+      "isValid": true,
       "properties": {
-        "/ru.*/": {
-          "errorMessage": "Required field.",
-          "errorPath": [
-            "cars",
-            "/ru.*/",
-          ],
-          "isValid": false,
-          "properties": {},
+        "ruby": {
+          "isValid": true,
+          "properties": {
+            "vin": {
+              "isValid": true,
+            },
+          },
+        },
+        "rugby": {
+          "isValid": true,
+          "properties": {
+            "vin": {
+              "isValid": true,
+            },
+          },
         },
       },
     },
@@ -87,12 +84,7 @@ exports[`Test index type - regex - index type is undefined 1`] = `
 
 exports[`Test index type - regex 1`] = `
 {
-  "errorMessage": "Required field.",
-  "errorPath": [
-    "cars",
-    "/.*/",
-  ],
-  "isValid": false,
+  "isValid": true,
   "properties": {
     "address": {
       "isValid": true,
@@ -103,21 +95,15 @@ exports[`Test index type - regex 1`] = `
       },
     },
     "cars": {
-      "errorMessage": "Required field.",
-      "errorPath": [
-        "cars",
-        "/.*/",
-      ],
-      "isValid": false,
+      "isValid": true,
       "properties": {
-        "/.*/": {
-          "errorMessage": "Required field.",
-          "errorPath": [
-            "cars",
-            "/.*/",
-          ],
-          "isValid": false,
-          "properties": {},
+        "rugby": {
+          "isValid": true,
+          "properties": {
+            "vin": {
+              "isValid": true,
+            },
+          },
         },
       },
     },

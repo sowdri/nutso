@@ -689,6 +689,19 @@ The following validators are applicable for `object` data type.
 - Supports minimum and maximum property count validation with `minProperties` and `maxProperties`
 - Tracks processed fields to avoid duplicate validation
 
+## Regex Pattern Identification
+
+For a property key to be considered a valid regex pattern, it must:
+- Start with the `^` symbol
+- End with the `$` symbol
+
+For example:
+- `"^.*$"` - matches any property name
+- `"^[a-zA-Z][a-zA-Z0-9_]*$"` - matches property names starting with a letter followed by letters, numbers, or underscores
+- `"^(?!reserved).*$"` - matches any property name except "reserved"
+
+Any property key that doesn't follow this pattern will be treated as a literal property name.
+
 ## Object Property Count Validation
 
 The `minProperties` and `maxProperties` validators are particularly useful for validating dynamic objects like `Record<string, T>` or objects with regex-based property patterns, where the number of properties is not fixed at compile time:

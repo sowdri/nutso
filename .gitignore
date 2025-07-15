@@ -3,3 +3,4 @@ publish.sh
 .npmrc
 .parcel-cache
 dist
+.envrc

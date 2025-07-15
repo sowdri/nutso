@@ -153,6 +153,44 @@ result.properties.age.isValid;
 result.properties.height.errorMessage;
 ```
 
+## Type Guards for Result
+
+For more convenient handling of validation results, `nutso` provides type guards that help you distinguish between success and failure cases with proper TypeScript type narrowing:
+
+```typescript
+import { validate, isValidationFailure, isValidationSuccess } from 'nutso';
+
+const result = validate(customer, customerSchema);
+
+// Using isValidationFailure type guard
+if (isValidationFailure(result)) {
+  // TypeScript knows result is ValidationFailure here
+  console.log('Validation failed:', result.errorMessage);
+  console.log('Error path:', result.errorPath);
+  // You can safely access errorMessage and errorPath
+} else {
+  // TypeScript knows result is ValidationSuccess here
+  console.log('Validation passed!');
+  // result.errorMessage and result.errorPath are not available here
+}
+
+// Using isValidationSuccess type guard
+if (isValidationSuccess(result)) {
+  // TypeScript knows result is ValidationSuccess here
+  console.log('Validation succeeded!');
+} else {
+  // TypeScript knows result is ValidationFailure here
+  console.log('Validation failed:', result.errorMessage);
+}
+```
+
+### Available Type Guards
+
+- `isValidationFailure(result: Result<T>): result is ValidationFailure` - Returns `true` if the validation failed
+- `isValidationSuccess(result: Result<T>): result is ValidationSuccess` - Returns `true` if the validation succeeded
+
+These type guards provide better type safety and code clarity when working with validation results, especially in complex validation scenarios where you need to handle both success and failure cases differently.
+
 ## Error Paths
 
 When validation errors occur, `nutso` provides precise error paths that indicate exactly where in the object structure the error occurred. The `errorPath` property is an array of strings that represents the path to the error:

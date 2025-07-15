@@ -16,3 +16,11 @@ export type ValidationFailure = {
 };
 
 export type ValidationResult = ValidationSuccess | ValidationFailure;
+
+export const isValidationFailure = (result: ValidationResult): result is ValidationFailure => {
+  return !result.isValid;
+};
+
+export const isValidationSuccess = (result: ValidationResult): result is ValidationSuccess => {
+  return result.isValid;
+};

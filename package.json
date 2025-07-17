@@ -1,6 +1,6 @@
 {
   "name": "nutso",
-  "version": "6.1.0",
+  "version": "6.1.1",
   "description": "a typesafe validation library for typescript",
   "source": "src/index.ts",
   "main": "dist/main.js",
@@ -26,7 +26,6 @@
     "typescript",
     "validation"
   ],
-  "author": "sowdri@restoplus.com.au",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/sowdri/nutso/issues"

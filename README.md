@@ -452,6 +452,89 @@ The `validationFn`, `optionalFlagValidator` and `isApplicableFn` all use the `un
 - When implementing these functions, developers should properly type cast these parameters
 - This design choice ensures type safety while providing flexibility
 
+### Understanding Root vs Parent Parameters
+
+It's crucial to understand the distinction between `root` and `parent` parameters in validation functions:
+
+**`root`**: Always refers to the root object on which the validation is being performed. This value changes depending upon the composition of the Schema. When you call `validate(object, schema)`, the `root` parameter will always refer to that top-level `object` being validated.
+
+**`parent`**: Always refers to the immediate parent of the specific field being validated. This is the direct container (object or array) that holds the current field.
+
+**Key Insight**: In most validation scenarios, validating against the `parent` is sufficient because it provides access to sibling fields within the same object. The `parent` parameter gives you the immediate context needed for cross-field validation.
+
+#### Example: Root vs Parent in Practice
+
+```typescript
+type Order = {
+  customerId: string;
+  items: {
+    productId: string;
+    quantity: number;
+    price: number;
+  }[];
+  totalAmount: number;
+};
+
+const orderSchema: Schema<Order> = {
+  type: "object",
+  properties: {
+    customerId: { type: "string" },
+    items: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          productId: { type: "string" },
+          quantity: { type: "number" },
+          price: {
+            type: "number",
+            validationFn: ({ value, parent, root }) => {
+              // parent: refers to the current item object { productId, quantity, price }
+              const currentItem = parent as Order['items'][0];
+              
+              // root: refers to the entire Order object
+              const order = root as Order;
+              
+              // Usually, validating against parent is sufficient:
+              if (currentItem.quantity > 10 && value < 5) {
+                return { errorMessage: "Bulk orders require minimum price of 5" };
+              }
+              
+              // Sometimes you need root for global validations:
+              if (order.items.length > 5 && value > 1000) {
+                return { errorMessage: "Large orders cannot have items over $1000" };
+              }
+            }
+          }
+        }
+      }
+    },
+    totalAmount: {
+      type: "number",
+      validationFn: ({ value, parent, root }) => {
+        // parent: undefined (since this is a root-level field)
+        // root: refers to the entire Order object
+        const order = root as Order;
+        
+        const calculatedTotal = order.items.reduce(
+          (sum, item) => sum + (item.quantity * item.price), 0
+        );
+        
+        if (Math.abs(value - calculatedTotal) > 0.01) {
+          return { errorMessage: "Total amount doesn't match sum of items" };
+        }
+      }
+    }
+  }
+};
+```
+
+In this example:
+- When validating `price`, `parent` is the individual item object, `root` is the entire order
+- When validating `totalAmount`, `parent` is undefined (root-level field), `root` is the entire order
+- Most validations only need `parent` for sibling field access
+- Use `root` when you need access to the entire object being validated
+
 ## Discriminated Unions
 
 Discriminated unions are a powerful TypeScript pattern where objects share a common property (the discriminator) that determines which variant of the union the object represents. Nutso provides excellent support for validating discriminated unions using the `isApplicableFn` feature.

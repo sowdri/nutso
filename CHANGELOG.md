@@ -1,5 +1,14 @@
 # Changelog
 
+## 6.1.0 (2024-12-21)
+
+### Documentation Updates
+
+- **README**: Added comprehensive section explaining the crucial distinction between `root` and `parent` parameters in validation functions
+- **README**: Clarified that `root` always refers to the top-level object being validated, while `parent` refers to the immediate container of the current field
+- **README**: Added practical examples showing when to use `parent` vs `root` in validation scenarios
+- **README**: Emphasized that in most cases, validating against `parent` is sufficient for cross-field validation
+
 ## 6.0.0-alpha.12 (2024-12-19)
 
 ### Documentation Updates
